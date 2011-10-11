@@ -4,12 +4,11 @@ xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
 xmlns="http://www.w3.org/TR/REC-html40">
 
 <head>
-<meta name=Title content="">
+<title>OOSE Group 7 - Requirements</title>
+<meta name=Title content="OOSE Group 7 - Requirements">
 <meta name=Keywords content="">
 <meta http-equiv=Content-Type content="text/html; charset=macintosh">
 <meta name=ProgId content=Word.Document>
-<meta name=Generator content="Microsoft Word 2008">
-<meta name=Originator content="Microsoft Word 2008">
 <link rel=File-List href="iter_1_writeup_files/filelist.xml">
 <!--[if gte mso 9]><xml>
  <o:DocumentProperties>
@@ -557,10 +556,23 @@ table.MsoNormalTable
 <body bgcolor=white lang=EN-US style='tab-interval:36.0pt'>
 
 <div class=Section1>
+<a href="#Vision_Statement">Vision Statement</a><br/>
+<a href="#Domain_Model">Domain Model</a><br/>
+<a href="#GUI_Sketches">GUI Sketches</a><br/> 
+<a href="#Actors">Actors</a><br/>
+<a href="#Use_Cases">Use Cases</a><br/>
+<a href="#Core_Features">Core Features</a><br/>
+<a href="#Extra_Features">Extra Features</a><br/>
+<a href="#Architecture">Architecture</a><br/>
+<a href="#Resources">Resources</a><br/>
+</div>
+<br/>
+<br/>
+<div class=Section1>
 
-<p class=MsoNormal><span style='font-family:Arial'>Vision Statement:<o:p></o:p></span></p>
+<p id="Vision_Statement" class=MsoNormal><span style='font-family:Arial'><b>Vision Statement:</b><o:p></o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>NAME is a tag based file
+<p class=MsoNormal><span style='font-family:Arial'>Our application is a tag based file
 organizer. The application addresses the problem of a collection (such as a
 Downloads directory) filled with unread, unidentifiable articles with cryptic
 filenames. The application allows the user to filter through files by tag or by
@@ -577,13 +589,13 @@ a file, and a tabbed and muli-windowed reading interface.<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Domain Model:<o:p></o:p></span></p>
+<p id="Domain_Model" class=MsoNormal><span style='font-family:Arial'><b>Domain Model:</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Tags form a directed graph,
 with an edge representing that the destination tag node is a subset of the
 source node. This indicates that tagging something with the destination node
 implicitly tags it with the source node, such that when the user filters her
-files based on the parent tag, all files tagged with all the children’s tags
+files based on the parent tag, all files tagged with all the children's tags
 will be selected as well. A single tag is an object, uniquely identified by a
 single line of text.<o:p></o:p></span></p>
 
@@ -619,7 +631,7 @@ last opened, date imported, etc.<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Actors:<o:p></o:p></span></p>
+<p id="Actors" class=MsoNormal><span style='font-family:Arial'><b>Actors:</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>The user. This is a
 personal, desktop application.<o:p></o:p></span></p>
@@ -632,17 +644,17 @@ mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
 EN-US'><br clear=ALL style='page-break-before:always'>
 </span>
 
-<p class=MsoNormal><span style='font-family:Arial'>Core Features<o:p></o:p></span></p>
+<p id="Core_Features" class=MsoNormal><span style='font-family:Arial'><b>Core Features</b><o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Display text
 file(s) in integrated view (serve as file reader)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Locate a file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
@@ -656,14 +668,14 @@ selected tags<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>choose from the
 list of tags in search tab<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>choose from the
 list of matching tags that pops up after search by tag text<o:p></o:p></span></p>
 
@@ -677,7 +689,7 @@ style='font-family:Arial'>Search by tag text<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>return all
 associated tags<o:p></o:p></span></p>
 
@@ -691,7 +703,7 @@ of text files<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Import file(s)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
@@ -711,14 +723,14 @@ style='font-family:Arial'>Set the library directory<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>use the default
 folder<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>choose a folder<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
@@ -731,27 +743,27 @@ style='font-family:Arial'>Import options:<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Copy file to the
 library<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Move the file to
 the library <o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Track the file
 (save link to file), but leave it in place<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Tag file in the
 library<o:p></o:p></span></p>
 
@@ -765,13 +777,13 @@ style='font-family:Arial'>Tag with existing tag(s)<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Suggested tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Implicitly tag
 with all parent tags<o:p></o:p></span></p>
 
@@ -785,18 +797,18 @@ style='font-family:Arial'>Create new tag(s), prompt for:<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>name of tag<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>association<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Manage tags
 library<o:p></o:p></span></p>
 
@@ -817,39 +829,39 @@ style='font-family:Arial'>Edit tags<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Rename<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l8 level3 lfo1'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Associate tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Bookmark a
 location in a single file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Associate tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l8 level1 lfo1'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Data about # of
 times a file has been opened, last used date<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Extra Features<o:p></o:p></span></p>
+<p id="Extra_Features" class=MsoNormal><span style='font-family:Arial'><b>Extra Features</b><o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Support reading
 file formats other than PDF<o:p></o:p></span></p>
 
@@ -862,18 +874,18 @@ style='font-family:Arial'>E-books (e.g. MOBI, EPUB), text files (.odt, .txt)<o:p
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Music, video<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Integrate with
 RSS feeds / subscriptions <o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Suggest tags
 when importing<o:p></o:p></span></p>
 
@@ -889,7 +901,7 @@ auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>ex1. PDF file: author, publish date, etc<o:p></o:p></span></p>
+style='font-family:Arial'>ex1. PDF file: author, publish date, etc.<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
@@ -904,11 +916,18 @@ style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
 style='font-family:Arial'>if not tagged after importing, automatically tagged
-as “untagged”<o:p></o:p></span></p>
+as &quot;untagged&quot;<o:p></o:p></span></p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
+auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
+style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
+mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+style='font-family:Arial'>Suggest based on clustering<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Full text search
 <o:p></o:p></span></p>
 
@@ -917,24 +936,24 @@ auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>search within a tag category (author: title: etc) <o:p></o:p></span></p>
+style='font-family:Arial'>search within a tag category (author: title: etc.) <o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Directory
 watcher to automatically import all files added to a specified directory<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
+<!--<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
+auto;text-indent:-18.0pt;mso-list:l1 level2 lfo2'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>JNI plugin <o:p></o:p></span></p>
+style='font-family:Arial'>JNI plugin <o:p></o:p></span></p>-->
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Display usage
 information<o:p></o:p></span></p>
 
@@ -961,21 +980,14 @@ style='font-family:Arial'>Recent files <o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Restore last
 session <o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>GUI<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
-style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
-mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>tabs / windows<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l10 level2 lfo2'><![if !supportLists]><span
@@ -987,47 +999,68 @@ style='font-family:Arial'>search panel<o:p></o:p></span></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l10 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>pop in as tab<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l10 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>hide to the side<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Tag bookmarks<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Attach note(s)
 to a bookmark or file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Undo operation<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l10 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A detailed
-tutorial (with videos and screenshots) demonstrating use of many of the “invisible”
+tutorial (with videos and screenshots) demonstrating use of many of the &quot;invisible&quot;
 actions a user can take<o:p></o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+<br/>
+<br/>
+<p id="GUI_Sketches" class="MsoNormal"><span style='font-family:Arial'><b>GUI Sketches:</b><o:p></o:p></span></p>
+<img src="import_gui_sketch.png"/><br/>
+<p>The import screen.  Tags that are entered in the text field at the lower left are applied to all
+selected files when the &quot;Apply&quot; button is pressed.  The radio buttons beneath each file
+determine whether the file is moved to our central store, copied to the store, or if the application simply
+references the existing file in place.
+</p><br/>
+<img src="searching_gui_sketch.png"/><br/>
+<p>Searching by tag.  Full text search is done by selecing the "Full Text" radio button.</p><br/>
+<img src="reading_gui_sketch.png"/><br/>
+<p>The integrated PDF reader.  Right-clicking brings up a contextual menu that
+allows the user to add tags, bookmarks, or examine the properties of that document.
+The search panel on the right pops in and out by pressing the triangle button at the
+upper right of the panel.  The files that match the current search criteria appear in the
+sub-panel at the bottom of the search panel.
+</p><br/>
+<img src="manage_tags_gui_sketch.png"/><br/>
+<p>The dialog that lets the user add and edit tags and categories.</p><br/>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Use-Cases<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+
+<p id="Use_Cases" class=MsoNormal><span style='font-family:Arial'><b>Use Cases</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Importing files<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Importing files</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user has
 files on their computer that are not in the applications library<o:p></o:p></span></p>
@@ -1037,19 +1070,19 @@ the files with their respective tags in the library<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
 &quot;Import...&quot; from options menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Application opens
 a file browser dialog box.<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User enters file
 path name(s)<o:p></o:p></span></p>
 
@@ -1058,45 +1091,47 @@ auto;text-indent:-18.0pt;mso-list:l4 level2 lfo6'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>If user doesn’t know path, they can browse to its
+style='font-family:Arial'>If user doesn&apos;t know path, they can browse to its
 location and select by left click<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l4 level3 lfo6'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+Wingdings'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>They can select
 multiple files in same directory<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
 whether they want to move the file to the library or leave it in place<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>The application
 determines whether this is a file that the application can read (initially just
 PDF)<o:p></o:p></span></p>
-
+.
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>The application
 prompts the user to tag the file(s)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l4 level1 lfo6'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Once the user is
 done tagging (see tagging use case for more explanation) the library is
 displayed with new files highlighted<o:p></o:p></span></p>
 
+<img src="import_activity_diagram.png"/>
+
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Edit a tag<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Edit a tag</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to change the state of the tags<o:p></o:p></span></p>
@@ -1106,7 +1141,7 @@ deleted the tags they wanted to<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right
 clicks on tag<o:p></o:p></span></p>
 
@@ -1119,30 +1154,30 @@ style='font-family:Arial'>Can select edit tags from menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Tag menu
-appears. This has &quot;Edit&quot;, &quot;View Files&quot; etc<o:p></o:p></span></p>
+appears. This has &quot;Edit,&quot; &quot;View Files&quot; etc.<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
 Edit option<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Editing options
-are: “Delete”, “Associate with another tag” etc<o:p></o:p></span></p>
+are: &quot;Delete,&quot; &quot;Associate with another tag,&quot; etc.<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User edits tag<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l16 level1 lfo7'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Selects OK on
 menu to finish<o:p></o:p></span></p>
 
@@ -1155,7 +1190,7 @@ style='font-family:Arial'>Can also select cancel to cancel operation<o:p></o:p><
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Create tag<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Create tag</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to add a tag to the library<o:p></o:p></span></p>
@@ -1165,31 +1200,31 @@ the tag and placed it into the categories they want<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l2 level1 lfo8'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
 &quot;Create tag...&quot; from a menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l2 level1 lfo8'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Application
 opens create tag dialog<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l2 level1 lfo8'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Users enters tag
 metadata (name, tags that it associated with, category it belongs to)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l2 level1 lfo8'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User tags files
 with new tag<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Tag a file<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Tag a file</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to further organize their library by adding tags to files<o:p></o:p></span></p>
@@ -1199,64 +1234,64 @@ have the new tags associated with them<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User select one
 or multiple files in file navigator panel<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right clicks
-on them and selects “add tag…”<o:p></o:p></span></p>
+on them and selects &quot;add tag.&quot;<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A dialog window
 pops up<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User searches
 for tags by name or creates a new tag<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User select one
 or multiple tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Application tag
 the selected files with the selected tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User keep
-editing until they press “OK”<o:p></o:p></span></p>
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User keeps
+editing until they press &quot;OK.&quot;<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
 auto;text-indent:-18.0pt;mso-list:l13 level2 lfo9'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>User can press “Cancel” in which case all of their
+style='font-family:Arial'>User can press &quot;Cancel&quot; in which case all of their
 changes will be rolled back<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l13 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Application
 closes the dialog window<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>&quot;Watch a
-directory&quot; for added files (e.g. Downloads folder)<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>&quot;Watch a
+directory&quot; for added files (e.g. Downloads folder)</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to automatically import all files added to a particular directory<o:p></o:p></span></p>
@@ -1266,26 +1301,26 @@ automatically imports all new files in that directory<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l14 level1 lfo10'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User chooses
 &quot;Watch a directory&quot; from the menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l14 level1 lfo10'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program creates
 a directory navigator dialog<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l14 level1 lfo10'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User navigates
 through file system and chooses a folder<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l14 level1 lfo10'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>Program add a
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>Program adds a
 new listener (OS dependent) to monitor that folder<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='margin-left:72.0pt;mso-add-space:auto;
@@ -1296,7 +1331,7 @@ style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![
 style='font-family:Arial'>Alternate implementation: Application checks
 directory on startup and at regular intervals while running<o:p></o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Add a note<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Add a note</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: User wants to
 annotate file with personal notes<o:p></o:p></span></p>
@@ -1306,37 +1341,37 @@ entered text associated with that file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l3 level1 lfo11'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects a
 file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l3 level1 lfo11'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right
-clicks and selects “Add a Note” option<o:p></o:p></span></p>
+clicks and selects &quot;Add a Note&quot; option<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l3 level1 lfo11'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A plain text
 editor tab opens and allow user to write comments<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l3 level1 lfo11'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User save the
 comments<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l3 level1 lfo11'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program associates
 the note with the file<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Get info about a file<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Get info about a file</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to know the metadata associated with a file<o:p></o:p></span></p>
@@ -1346,26 +1381,26 @@ information they are looking for<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l7 level1 lfo12'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right
 clicks on a file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l7 level1 lfo12'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User chooses “Properties”
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User chooses &quot;Properties&quot;
 entry from right click menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l7 level1 lfo12'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A window will
 show up with all the info about the chosen file (tags it has been tagged with, last
 modified date, import date, number of times viewed through application)<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Get info about a tag<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Get info about a tag</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to know information about a tag<o:p></o:p></span></p>
@@ -1375,19 +1410,19 @@ information they need<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l5 level1 lfo13'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right
 clicks a tag<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l5 level1 lfo13'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User chooses “Properties”
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User chooses &quot;Properties&quot;
 from right click menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l5 level1 lfo13'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A window will
 show up with all the info about the chosen tag (tag name, tag hierarchy, number
 of file tagged with it, list of files with this tag, date created, categories
@@ -1395,7 +1430,7 @@ it is in)<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:18.0pt'><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Text Search<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Text Search</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to search for files based on their textual content<o:p></o:p></span></p>
@@ -1405,38 +1440,38 @@ of files containg the search term in their text<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User clicks in
 search bar<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
-radio button saying “Full Text Search” (as opposed to search for tags)<o:p></o:p></span></p>
+radio button saying &quot;Full Text Search&quot; (as opposed to search for tags)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User types in
 search term<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program displays
 a list of files<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>When the user
 selects one of these files to view, the search term is highlighted throughout
 the document<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Search for a tag <o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Search for a tag</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: User wants to
 find a tag based on its name<o:p></o:p></span></p>
@@ -1446,19 +1481,19 @@ they are looking for<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User clicks in
 search bar<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User selects
-radio button saying “Full Text Search” (as opposed to search for tags)<o:p></o:p></span></p>
+radio button saying &quot;Search Tags&quot; (as opposed to &quot;Full Text Search&quot;)<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l9 level1 lfo15'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User types a tag
 name<o:p></o:p></span></p>
 
@@ -1469,17 +1504,17 @@ mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
 style='font-family:Arial'>Program will autocomplete with possible tags matching
 the term typed so far as the user types, similar to the way email clients
-suggest addresses as they are being typed<o:p></o:p></span></p>
+suggest addresses as they are being typed.<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l9 level1 lfo15'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program displays
 a list of tags matching that search term<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Filter by tag<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Filter by tag</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to see only files tagged with certain tags<br>
@@ -1487,32 +1522,25 @@ Goal: User sees subset of files based on the tags they selected<o:p></o:p></span
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User selects a
-set of tags<o:p></o:p></span></p>
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User searches for and finds the desired tags<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User right
-clicks<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
-style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User selects “Filter”
-from right click menu<o:p></o:p></span></p>
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User checks the boxes to the left of each tag name
+<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l6 level1 lfo14'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program displays
 files matching ALL of the tags selected (it is an intersection of the tags
-selected, not a union)<o:p></o:p></span></p>
+selected, not a union).<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Read a pdf<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Read a pdf</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: User wants to
 view a PDF file<o:p></o:p></span></p>
@@ -1522,7 +1550,7 @@ annotate the opened file<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l11 level1 lfo16'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User double
 clicks on a pdf file in the library<o:p></o:p></span></p>
 
@@ -1531,18 +1559,18 @@ auto;text-indent:-18.0pt;mso-list:l11 level2 lfo16'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
 mso-bidi-font-family:"Courier New"'><span style='mso-list:Ignore'>o<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-family:Arial'>They can also right click and select “Open” from the
+style='font-family:Arial'>They can also right click and select &quot;Open&quot; from the
 right click menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l11 level1 lfo16'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program displays
 the pdf in a new tab<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Bookmark a file<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><b>Bookmark a file</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'>Pre-condition: The user
 wants to save a particular spot in a file they are reading<o:p></o:p></span></p>
@@ -1552,45 +1580,64 @@ spot with enough contextual information for them to find it again easily<o:p></o
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l15 level1 lfo17'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User right
 clicks on the pdf they are viewing<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l15 level1 lfo17'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-family:Arial'>User selects “Bookmark
-current page” from right click menu<o:p></o:p></span></p>
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-family:Arial'>User selects &quot;Bookmark
+current page&quot; from right click menu<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l15 level1 lfo17'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>A bookmark
 dialog pops up<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l15 level1 lfo17'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>User enters name
 and optionally tags the bookmark<o:p></o:p></span></p>
 
 <p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l15 level1 lfo17'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='font-family:Arial'>Program adds the
 file into a bookmark list which is viewable from a menu on the menubar<o:p></o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+<br/>
+<br/>
+
+<p id="Architecture" class="MsoNormal"><span style='font-family:Arial'><b>Architecture:</b><o:p></o:p></span></p>
+
+<p>
+The application is a single-user desktop application.
+Our application will use Hibernate and SQLite for persistently storing data
+and managing it.
+</p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>Resources:<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+
+<p id="Resources" class=MsoNormal><span style='font-family:Arial'><b>Resources:</b><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'>The file is examined (with a
-MIME type utility library such as mime-util or JMimeMagic, see
-http://www.rgagnon.com/javadetails/java-0487.html) to determine file type<o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-family:Arial'>
+We plan to use the Java programming language and Swing for
+the GUI.  We will examine the file types with with a
+MIME type utility library such as mime-util or JMimeMagic (see
+<a href="http://www.rgagnon.com/javadetails/java-0487.html">here</a> for some details)
+ to determine file type.
+We will use <a href="http://www.eclipse.org">Eclipse</a> for Java development.
+We will use <a href="http://git-scm.org">git</a> and <a href="http://www.github.com">github</a>
+for version control.  The private repository is at <a href="https://github.com/dcrankshaw/OOSE-Project">
+https://github.com/dcrankshaw/OOSE-Project</a>.
+<o:p></o:p></span></p>
 
 </div>
 
