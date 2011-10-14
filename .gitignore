@@ -2,3 +2,5 @@
 *~
 *.o
 *.class
+Biblio/*
+!Biblio/src/
