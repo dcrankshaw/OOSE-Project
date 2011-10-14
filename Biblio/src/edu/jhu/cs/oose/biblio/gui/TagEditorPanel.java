@@ -35,6 +35,21 @@ public abstract class TagEditorPanel extends JPanel {
 	/** A button to delete all of the currently checked categories */
 	private JButton deleteCategoryButton;
 	
+	/** A table containing all of the tag categories each with an accompanying checkbox */
+	private JTable categoryTable;
+	
+	/** Create a new tag */
+	public void newTag(){}
+	
+	/** Delete the selected tag */
+	public void deleteTag(){}
+	
+	/** Add a new category */
+	public void newCategory(){}
+	
+	/** Delete all of the currently selected categories */
+	public void deleteCategory(){}
+	
 	
 
 }

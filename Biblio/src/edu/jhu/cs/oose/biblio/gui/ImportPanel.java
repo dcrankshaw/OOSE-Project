@@ -5,6 +5,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.Tag;
+
 /**
  * GUI element that houses all the components needed to import a set of files into a Biblio library.
  * It has a set of FileImportCells laid out in a grid pattern in a JScrollPane.
@@ -38,7 +41,17 @@ public class ImportPanel extends JPanel {
 	 * Creates a FileImportCell for each of these files and adds them to the display
 	 * @param files
 	 */
-	public void setFiles(List<FileMetada> files){}
+	public void setFiles(List<FileMetadata> files){}
+	
+	/**
+	 * Finishes the import by committing transactions to the model and signaling to close the import window
+	 */
+	public void finishImport(){}
+	
+	/**
+	 * Finishes the import by closing import window without committing changes to the model
+	 */
+	public void cancelImport(){}
 	
 	
 

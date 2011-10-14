@@ -1,5 +1,15 @@
 package edu.jhu.cs.oose.biblio.gui;
 
-public abstract class PreviewPanel extends FileDisplayPanel {
 
+/**
+ * Displays a preview of thumbnail of a file. Subclasses determine what exactly a preview of that
+ * file type should be. For example, the first page of a PDF or a thumbnail of an image.
+ */
+
+
+//TODO any methods???
+public abstract class PreviewPanel extends FileDisplayPanel {
+	
+	/** An abstract method to draw a preview of the file */
+	public abstract void displayPreview();
 }

@@ -1,7 +1,7 @@
 package edu.jhu.cs.oose.biblio.model.pdf;
 
-import edu.jhu.cs.oose.biblio.model.FileMetaData;
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
-public class PDFFile extends FileMetaData {
+public class PDFFile extends FileMetadata {
 
 }
