@@ -1,1 +1,5 @@
 edu.jhu.cs.oose.biblio
+edu.jhu.cs.oose.biblio.gui
+edu.jhu.cs.oose.biblio.gui.pdf
+edu.jhu.cs.oose.biblio.model
+edu.jhu.cs.oose.biblio.model.pdf
