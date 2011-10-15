@@ -11,14 +11,14 @@ public class Bookmark {
 	public FileMetadata file;
 
 	/**
-	*The location int the file
+	*The location in the file
 	*/
 	public Location location;
 	//TODO
 
 	/**
-	*Tagging of the bookmark that allows users to put up a inter-file 		*excerpt/study note.
-	*/
+	 * A set of tags associated with this bookmark
+	 */
 	public Set<Tag> tags;
 
 }

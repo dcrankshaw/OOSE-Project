@@ -7,13 +7,22 @@ import edu.jhu.cs.oose.biblio.model.FileContents;
  * 
  */
 
-public class PDFFileContents extends FileContents {
+public class PDFFileContents implements FileContents {
 
 	/**
 	* Get the contents of the PDF file.
 	* @return contents The contents.
 	*/
 	public FileContents getPDFData(){
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int search(String searchTerm) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

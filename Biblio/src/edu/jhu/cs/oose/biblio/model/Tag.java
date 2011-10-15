@@ -1,7 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
 /**
-*Instantiate a Tag that associates a group of files or bookmarks.
+*A label to associate a group of files and bookmarks.
 */
 public class Tag {
 
@@ -11,7 +11,7 @@ public class Tag {
 	public String name;
 
 	/**
-	* The derived tagging.
+	* The tags implied by this tag.
 	*/
 	public Set<Tag> children;
 

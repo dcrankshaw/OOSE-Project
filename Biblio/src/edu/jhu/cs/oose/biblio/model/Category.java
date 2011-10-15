@@ -1,7 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
 /**
-*Instantiate a Category to associate a group of tags
+*An group of tags
 */
 public class Category {
 
