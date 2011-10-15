@@ -563,13 +563,14 @@ table.MsoNormalTable
 
 <div class=Section1>
 <a href="#Overview">Overview</a><br/>
-<a href="#Domain_Model">Domain Model</a><br/>
-<a href="#GUI_Sketches">GUI Sketches</a><br/> 
-<a href="#Actors">Actors</a><br/>
-<a href="#Use_Cases">Use Cases</a><br/>
 <a href="#Core_Features">Core Features</a><br/>
 <a href="#Extra_Features">Extra Features</a><br/>
+<a href="#GUI_Sketches">GUI Sketches</a><br/> 
 <a href="#Architecture">Architecture</a><br/>
+<a href="#Use_Cases">Use Cases</a><br/>
+<a href="#Domain_Model">Domain Model</a><br/>
+<a href="doc/index.html">Javadoc</a><br/>
+<a href="#Class_Diagram">Class Diagram</a><br/>
 <a href="#Resources">Resources</a><br/>
 </div>
 <br/>
@@ -591,56 +592,7 @@ lightweight interface for reading and interacting with these text based files.
 These interactions include bookmarking a location in the file, adding notes to
 a file, and a tabbed and muli-windowed reading interface.</span></p>
 
-<p id="Domain_Model"><h2><span style='font-family:Arial'><b>Domain Model:</b></h2></span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'>Tags form a directed graph,
-with an edge representing that the destination tag node is a subset of the
-source node. This indicates that tagging something with the destination node
-implicitly tags it with the source node, such that when the user filters her
-files based on the parent tag, all files tagged with all the children's tags
-will be selected as well. A single tag is an object, uniquely identified by a
-single line of text.</span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'>Tags can be placed into categories.
-A tag may be in multiple categories. There are no relationships between
-categories, they are simply sets of tags, named with a single line of text. A
-user may filter files by category, which is the equivalent of selecting all
-files in the union of the files each tag in the category has tagged. A category
-is uniquely identified by a single line of text.</span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'>A bookmark is a location in
-a file. A bookmark may have tags (e.g. for keeping track of a study session).
-This does not imply that the file the bookmark is located in also has that tag.
-When filtering by tag, bookmarks and files will be returned, but the bookmarks
-will be differentiated (put in a lower section, highlighted with a different
-color, or something along those lines).</span></p>
-
-<br/>
-
-<p class=MsoNormal><span style='font-family:Arial'>A note is a piece of text
-associated with a file or bookmark. A file or bookmark may have many notes.</span></p>
-
-<br/>
-
-<p class=MsoNormal><span style='font-family:Arial'>A file is the familiar
-entity actually on disk. It will be encapsulated along with some metadata in an
-object. A file has a (possibly empty) set of tags. Other metadata include date
-last opened, date imported, etc.</span></p>
-
-<br/>
-
-<p id="Actors" class=MsoNormal><h2><span style='font-family:Arial'><b>Actors:</b></span></h2></p>
-
-<p class=MsoNormal><span style='font-family:Arial'>The user. This is a
-personal, desktop application.</span></p>
-
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
-
-<span style='font-size:12.0pt;font-family:Arial;mso-fareast-font-family:Cambria;
+  <span style='font-size:12.0pt;font-family:Arial;mso-fareast-font-family:Cambria;
 mso-fareast-theme-font:minor-latin;mso-bidi-font-family:"Times New Roman";
 mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
 EN-US'><br clear=ALL style='page-break-before:always'>
@@ -1083,6 +1035,7 @@ multimedia files)</span></p>
 
 <br/>
 <br/>
+
 <p id="GUI_Sketches"><h2><span style='font-family:Arial'><b>GUI Sketches:</b></span></h2></p>
 <h3><span style='font-family:Arial'>Import Dialog</span></h3>
 <img src="import_gui_sketch.png"/><br/>
@@ -1139,6 +1092,7 @@ The check boxes in the &quot;Categories&quot; table show which
 categories this tag belongs to.  In this case, the &quot;SQL&quot; tag
 is not in either of the &quot;Title&quot; or &quot;Author&quot; categories.
 </p><br/>
+  
 
 
 <p id="Use_Cases" class=MsoNormal><h2><span style='font-family:Arial'><b>Use Cases</b></span></h2>
@@ -1700,6 +1654,48 @@ file into a bookmark list which is viewable from a menu on the menubar</span></p
 <br/>
 <br/>
 
+<p id="Domain_Model"><h2><span style='font-family:Arial'><b>Domain Model:</b></h2></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Tags form a directed graph,
+with an edge representing that the destination tag node is a subset of the
+source node. This indicates that tagging something with the destination node
+implicitly tags it with the source node, such that when the user filters her
+files based on the parent tag, all files tagged with all the children's tags
+will be selected as well. A single tag is an object, uniquely identified by a
+single line of text.</span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>Tags can be placed into categories.
+A tag may be in multiple categories. There are no relationships between
+categories, they are simply sets of tags, named with a single line of text. A
+user may filter files by category, which is the equivalent of selecting all
+files in the union of the files each tag in the category has tagged. A category
+is uniquely identified by a single line of text.</span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Arial'>A bookmark is a location in
+a file. A bookmark may have tags (e.g. for keeping track of a study session).
+This does not imply that the file the bookmark is located in also has that tag.
+When filtering by tag, bookmarks and files will be returned, but the bookmarks
+will be differentiated (put in a lower section, highlighted with a different
+color, or something along those lines).</span></p>
+
+<br/>
+
+<p class=MsoNormal><span style='font-family:Arial'>A note is a piece of text
+associated with a file or bookmark. A file or bookmark may have many notes.</span></p>
+
+<br/>
+
+<p class=MsoNormal><span style='font-family:Arial'>A file is the familiar
+entity actually on disk. It will be encapsulated along with some metadata in an
+object. A file has a (possibly empty) set of tags. Other metadata include date
+last opened, date imported, etc.</span></p>
+
+<br/>
+
 <p id="Architecture" class="MsoNormal"><h2><span style='font-family:Arial'><b>Architecture:</b></span></h2></p>
 
 <p>
@@ -1710,7 +1706,11 @@ and managing it.
 
 <p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+<p id="Class_Diagram"><h2><span style='font-family:Arial'><b>Class
+Diagram:</b></span></h2></p>
+<img src="Class Diagram.png"/>
+<br/>
+<br/>
 
 <p id="Resources" class=MsoNormal><h2><span style='font-family:Arial'><b>Resources:</b></span></h2></p>
 
