@@ -2,12 +2,14 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+
+import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
- * Abstract class to provide the functionality needed to edit tags. Classes will subclass this to provide
- * the ability to edit tags in different contexts.
+ * Provides the functionality needed to get the user input to edit tags.
  */
-public abstract class TagEditorPanel extends JPanel {
+public class TagEditorPanel extends JPanel {
 	
 	/** A table containg all of the tags. The user can select from here to edit
 	 * existing tags.
@@ -18,7 +20,7 @@ public abstract class TagEditorPanel extends JPanel {
 	 * Contains all of the tags that currently selected tag has been associated with (all of these
 	 * tags point to the selected tag).
 	 */
-	private TagListPane associatedTagPane;
+	private TagsListPane associatedTagPane;
 	
 	/** The currently selected tag*/
 	private Tag selectedTag;

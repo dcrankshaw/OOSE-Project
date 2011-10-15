@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.Set;
+
 /**
 *A label to associate a group of files and bookmarks.
 */

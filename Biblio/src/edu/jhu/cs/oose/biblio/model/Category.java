@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.Set;
+
 /**
 *An group of tags
 */

@@ -22,7 +22,6 @@ public class TagsListPane {
 	public void parseString() {}
 	
 	/** creates a new tag from user entered text and adds it to the list of tags associated with this file */
-	//TODO - added parameter to method, need to add to classname
 	public void createTag(String tagname) {}
 
 }

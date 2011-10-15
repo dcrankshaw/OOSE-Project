@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.gui;
 
+import java.util.List;
+
 import javax.swing.JPanel;
 
 /**
@@ -8,8 +10,6 @@ import javax.swing.JPanel;
  * of each file.
  */
 public class SearchResultsPreviewPanel extends JPanel {
-
-	//TODO need to add to class digram
 	
 	/** All of the files that match the search criteria */
 	public List<PreviewPanel> matchingFiles;

@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio;
 
+import edu.jhu.cs.oose.biblio.gui.SearchPanel;
+
 /**
  * Controls all of the searching logic. It gets a search term and mode from the SearchPanel
  * and actually executes the search. It then provides the results to its listeners
@@ -11,7 +13,7 @@ public class SearchController {
 	public SearchPanel queryInterface;
 	
 	/** An interface to display all of the search results */
-	public SearchResultsPanel results;
+	public SearchPanel results;
 	
 	/** Conducts a search of all of the tags */
 	public void searchTags(){}

@@ -2,6 +2,9 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import javax.swing.JRadioButton;
 
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.Tag;
+
 /**
  * These are laid out in a grid on the ImportPanel. They each display
  * a preview of the file, allow the user to add tags, and decide
@@ -12,7 +15,7 @@ public class FileImportCell {
 	/** the preview of the file to display to the user */
 	public PreviewPanel preview;
 	/** The list of tags this file has already been tagged with */
-	public TagsListPanel tagsPanel;
+	public TagsListPane tagsPanel;
 	/** All of the associated meta data that accompanies this file */
 	public FileMetadata file;
 	/** Whether this file is currently selected to add tags to */

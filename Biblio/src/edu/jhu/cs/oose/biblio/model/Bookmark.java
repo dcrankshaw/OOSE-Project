@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.Set;
+
 /**
 *Instantiate a bookmark that maps to a location in a file
 */

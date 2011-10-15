@@ -21,7 +21,6 @@ public class PDFFileContents implements FileContents {
 	 */
 	@Override
 	public int search(String searchTerm) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

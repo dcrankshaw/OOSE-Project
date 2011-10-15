@@ -30,7 +30,6 @@ public class ImportPanel extends JPanel {
 	JButton finishButton;
 	
 	
-	//TODO move some of the import functionality to an ImportController class of some sort
 	/**
 	 * Applies the supplied tag to all of the files that have been selected by the user.
 	 * @param tag The tag to apply to all of the selected files

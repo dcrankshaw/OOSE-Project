@@ -4,3 +4,4 @@
 *.class
 Biblio/*
 !Biblio/src/
+!Biblio/doc/

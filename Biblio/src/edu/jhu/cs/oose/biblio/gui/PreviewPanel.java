@@ -7,9 +7,5 @@ package edu.jhu.cs.oose.biblio.gui;
  */
 
 
-//TODO any methods???
 public abstract class PreviewPanel extends FileDisplayPanel {
-	
-	/** An abstract method to draw a preview of the file */
-	public abstract void displayPreview();
 }
