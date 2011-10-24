@@ -20,7 +20,7 @@ public class FileMetadata {
 	 */
 	public String pathToFile;
 	
-	/**
+	/**  
 	 * The date of the last time the file was opened
 	 */
 	public Date lastOpened;
