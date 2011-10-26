@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,27 +14,60 @@ public class FileMetadata {
 	/**
 	 * The set of tags associated with this file
 	 */
-	public Set<Tag> tags;
+	private Set<Tag> tags;
 	
 	/**
 	 * The full path name of the file
 	 */
-	public String pathToFile;
+	private String pathToFile;
 	
-	/**
+	/**  
 	 * The date of the last time the file was opened
 	 */
-	public Date lastOpened;
+	private Date lastOpened;
 
 	/**
 	 * The number of the times the file has been opened
 	 */
-	public int openedCount;
+	private int openedCount;
 	
 	/**
 	 * Get the file contents
 	 * @return contents The file contents
 	 */
-	public FileContents getContents(){}
+	public FileContents getContents()
+	{
+		return null;
+	}
+
+	public Set<Tag> getTags() {
+		return (Set<Tag>) Collections.unmodifiableCollection(tags);
+	}
+
+
+	public String getPathToFile() {
+		return pathToFile;
+	}
+
+	public void setPathToFile(String pathToFile) {
+		this.pathToFile = pathToFile;
+	}
+
+	public Date getLastOpened() {
+		return lastOpened;
+	}
+
+	public void setLastOpened(Date lastOpened) {
+		this.lastOpened = lastOpened;
+	}
+
+	public int getOpenedCount() {
+		return openedCount;
+	}
+
+	public void setOpenedCount(int openedCount) {
+		this.openedCount = openedCount;
+	}
+	
 	
 }
