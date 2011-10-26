@@ -1,6 +1,8 @@
 package edu.jhu.cs.oose.biblio.gui.pdf;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 
 import org.jpedal.exception.PdfException;
@@ -24,7 +26,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 */
 	public PDFPreviewPanel()
 	{
-		contents = null;
+		setContents(null);
 	}
 	
 	/**
@@ -32,8 +34,9 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 * of the given file contents
 	 * @param contents the file contents to preview
 	 */
-	public PDFPreviewPanel(PDFFileContents c) {
-		contents = c;
+	public PDFPreviewPanel(PDFFileContents c)
+	{
+		setContents(c);
 	}
 	
 	@Override
@@ -50,5 +53,28 @@ public class PDFPreviewPanel extends PreviewPanel {
 		}
 		// TODO this should probably be something sensible, and not magic numbers
 		return new Dimension(10, 10);
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		try {
+			Image thumbnail = contents.getThumbnail();
+			if( this.getSize().equals(this.getPreferredSize())) {
+				g.drawImage(thumbnail, 0, 0, null);
+			}
+			else {
+				Image preview = thumbnail.getScaledInstance(getSize().width, getSize().height, Image.SCALE_DEFAULT);
+				g.drawImage(preview, 0, 0, null);
+			}
+		}
+		catch(PdfException e) {
+			// TODO draw something that indicates what went wrong
+			g.setColor(Color.RED);
+			g.fillRect(0, 0, getSize().width, getSize().height);
+		}
+	}
+	
+	public void setContents(PDFFileContents c) {
+		contents = c;
 	}
 }
