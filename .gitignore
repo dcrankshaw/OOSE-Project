@@ -5,3 +5,4 @@
 Biblio/*
 !Biblio/src/
 !Biblio/doc/
+.metadata
