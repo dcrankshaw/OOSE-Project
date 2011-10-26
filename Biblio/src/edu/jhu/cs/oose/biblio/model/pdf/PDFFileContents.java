@@ -57,6 +57,40 @@ public class PDFFileContents implements FileContents {
 	}
 	
 	/**
+	 * Read a page of the PDF file from disk
+	 * @param pageNum the page to read
+	 * @return the page
+	 * @throws PdfException on errors reading / parsing the file
+	 */
+	private Image readPage(int pageNum) throws PdfException {
+		Image page = decoder.getPageAsImage(pageNum);
+		pages.put(pageNum, page);
+		
+		// If this was the last page in the PDF document,
+		// then we can close the file and dump the decoder
+		if( pages.size() == decoder.getPageCount() ) {
+			decoder.closePdfFile();
+			decoder = null;
+		}
+		return page;
+	}
+	
+	/**
+	 * Gets the image of a page from the cache, or reads
+	 * it from disk if it has not been read already.
+	 * @param pageNum the page of the PDF to get, starting with 1
+	 * @return an image of the page
+	 * @throws PdfException if there was an error reading / parsing the PDF
+	 */
+	public Image getPage(int pageNum) throws PdfException {
+		Image page = pages.get(pageNum);
+		if( null == page ) {
+			page = readPage(pageNum);
+		}
+		return page;
+	}
+	
+	/**
 	 * Gets the thumbnail, or preview, for this document.
 	 * This may create it if necessary, which may take nontrivial time.
 	 * @return the preview of the document
@@ -72,16 +106,12 @@ public class PDFFileContents implements FileContents {
 		// We're going to generate the thumbnail from the first page
 		// of the PDF document.  If that page is not already loaded,
 		// then load it.
-		if( !pages.containsKey(THUMBNAIL_PAGE) ) {
-			Image firstPage = decoder.getPageAsImage(THUMBNAIL_PAGE);
-			pages.put(THUMBNAIL_PAGE, firstPage);
-		}
+		Image thumbnailPage = getPage(THUMBNAIL_PAGE);
 		
 		// Create the thumbnail from the proper page of the PDF document
-		Image firstPage = pages.get(THUMBNAIL_PAGE);
 		// TODO we should agree on some method of determining the preview /
 		// thumbnail size, so I'm just using magic numbers for now.
-		thumbnail = firstPage.getScaledInstance(850/4, -1100/4, Image.SCALE_DEFAULT);
+		thumbnail = thumbnailPage.getScaledInstance(850/4, -1100/4, Image.SCALE_DEFAULT);
 		return thumbnail;
 	}
 
