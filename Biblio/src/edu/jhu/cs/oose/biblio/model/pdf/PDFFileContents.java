@@ -97,7 +97,7 @@ public class PDFFileContents implements FileContents {
 	 * @throws PdfException if there were errors reading or parsing
 	 * the pdf document
 	 */
-	Image getThumbnail() throws PdfException {
+	public Image getThumbnail() throws PdfException {
 		// if the thumbnail already exists, then just return it
 		if( thumbnail != null ) {
 			return thumbnail;
@@ -111,7 +111,7 @@ public class PDFFileContents implements FileContents {
 		// Create the thumbnail from the proper page of the PDF document
 		// TODO we should agree on some method of determining the preview /
 		// thumbnail size, so I'm just using magic numbers for now.
-		thumbnail = thumbnailPage.getScaledInstance(850/4, -1100/4, Image.SCALE_DEFAULT);
+		thumbnail = thumbnailPage.getScaledInstance(thumbnailPage.getWidth(null) / 4, -1, Image.SCALE_DEFAULT);
 		return thumbnail;
 	}
 
