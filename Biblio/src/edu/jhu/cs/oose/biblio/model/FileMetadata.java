@@ -18,7 +18,7 @@ import javax.persistence.*;
  * 
  */
 
-public class FileMetadata {
+public abstract class FileMetadata {
 
 	private FileTypes type;
 
@@ -43,7 +43,6 @@ public class FileMetadata {
 	 */
 	private int openedCount;
 	
-	// this does not copy the set of tags, is that what we want? - Paul
 	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
 		this.lastOpened = date;
 		this.openedCount = timesOpened;
@@ -56,9 +55,7 @@ public class FileMetadata {
 	 * 
 	 * @return contents The file contents
 	 */
-	public FileContents getContents() {
-		return null;
-	}
+	public abstract FileContents getContents();
 	
 	public boolean equals(FileMetadata otherFile)
 	{
