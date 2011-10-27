@@ -4,11 +4,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.crypto.Data;
+
+//import org.hibernate.annotations.Entity;
+//import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table( name = "FILEMETADATA" )
@@ -18,18 +19,20 @@ import javax.xml.crypto.Data;
  */
 
 public class FileMetadata {
-	
+
+	private FileTypes type;
+
 	/**
 	 * The set of tags associated with this file
 	 */
 	private Set<Tag> tags;
-	
+
 	/**
 	 * The full path name of the file
 	 */
 	private String pathToFile;
-	
-	/**  
+
+	/**
 	 * The date of the last time the file was opened
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
@@ -40,26 +43,30 @@ public class FileMetadata {
 	 */
 	private int openedCount;
 	
-	public FileMetadata(Data d, int o, String p, Set<Tag> t) {
-		this.lastOpened = (Date) d;
-		this.openedCount = o;
-		this.pathToFile = p;
-		this.tags = t;
+	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
+		this.lastOpened = date;
+		this.openedCount = timesOpened;
+		this.pathToFile = path;
+		this.tags = fileTags;
 	}
 	
 	/**
 	 * Get the file contents
+	 * 
 	 * @return contents The file contents
 	 */
-	public FileContents getContents()
-	{
+	public FileContents getContents() {
 		return null;
+	}
+	
+	public boolean equals(FileMetadata otherFile)
+	{
+		return otherFile.getPathToFile().equals(this.pathToFile);
 	}
 
 	public Set<Tag> getTags() {
 		return (Set<Tag>) Collections.unmodifiableCollection(tags);
 	}
-
 
 	public String getPathToFile() {
 		return pathToFile;
@@ -84,6 +91,9 @@ public class FileMetadata {
 	public void setOpenedCount(int openedCount) {
 		this.openedCount = openedCount;
 	}
-	
-	
+
+	public FileTypes getType() {
+		return this.type;
+	}
+
 }

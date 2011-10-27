@@ -21,8 +21,7 @@ public class Bookmark {
 	*The location in the file
 	*/
 	public Location location;
-	//TODO
-
+	
 	/**
 	 * A set of tags associated with this bookmark
 	 */
@@ -39,6 +38,12 @@ public class Bookmark {
 		this.tags = t;
 	}
 	
+	// Paul: I don't like the existence of this method
+	// Why should we use this over creating a new bookmark?
+	// I could see changing the location (say, by dragging the
+	// bookmark around in the window) but I don't see a use
+	// case for completely setting a new place for the bookmark.
+	// Also, I think mark is a bad name, but this needs to get discussed
 	public boolean mark(FileMetadata f, Location l) {
 		this.file = f;
 		this.location = l;

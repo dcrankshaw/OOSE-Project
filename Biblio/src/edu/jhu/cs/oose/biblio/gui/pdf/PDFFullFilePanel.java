@@ -8,8 +8,4 @@ import edu.jhu.cs.oose.biblio.gui.FullFilePanel;
 
 public class PDFFullFilePanel extends FullFilePanel {
 
-	/** The method to display the file */
-	@Override
-	public void displayFile() {}
-
 }
