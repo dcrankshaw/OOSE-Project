@@ -23,7 +23,7 @@ public class DBManager {
 		entityManager.close();
 	}
 	
-	public List<Bookmark> get(String query) {
+	public Collection<?> get(String query) {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		return entityManager.createQuery( query ).getResultList();
