@@ -34,8 +34,13 @@ public class Tag {
 		this.taggedFiles = ta;
 	}
 	
-	public void setName(String n) {
+	public boolean setName(String n) {
 		this.name = n;
+		return true;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 	
 	public boolean addChildren(Tag tag) {
@@ -49,4 +54,6 @@ public class Tag {
 	public boolean tagFile(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
+
+
 }
