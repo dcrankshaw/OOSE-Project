@@ -1,8 +1,7 @@
 package edu.jhu.cs.oose.biblio.model.pdf;
 
+import java.util.Date;
 import java.util.Set;
-
-import javax.xml.crypto.Data;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -13,9 +12,12 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 */
 public class PDFFileMetadata extends FileMetadata {
 
-	public PDFFileMetadata(Data d, int o, String p, Set<Tag> t) {
-		super(d, o, p, t);
+	public PDFFileMetadata(Date date, int timesOpened, String path,
+			Set<Tag> fileTags) {
+		super(date, timesOpened, path, fileTags);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 }
