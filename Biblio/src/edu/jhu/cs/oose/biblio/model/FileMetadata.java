@@ -4,7 +4,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
-import javax.xml.crypto.Data;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+//import org.hibernate.annotations.Entity;
+//import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table( name = "FILEMETADATA" )
@@ -38,11 +43,11 @@ public class FileMetadata {
 	 */
 	private int openedCount;
 	
-	public FileMetadata(Data d, int o, String p, Set<Tag> t) {
-		this.lastOpened = (Date) d;
-		this.openedCount = o;
-		this.pathToFile = p;
-		this.tags = t;
+	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
+		this.lastOpened = date;
+		this.openedCount = timesOpened;
+		this.pathToFile = path;
+		this.tags = fileTags;
 	}
 	
 	/**

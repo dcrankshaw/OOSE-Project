@@ -1,6 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Collection;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
