@@ -1,2 +1,13 @@
-This will be the repo for our OOSE Fall Project
+This is the repository for OOSE group 7's Biblio project.
 
+We're using Eclipse.  We promise.
+We haven't commited the project because it includes absolute pathnames we don't want to deal with.
+
+You can build the (interesting parts of the) project by running ./build.sh, and you can run it with ./run.sh.  You should build before you run.
+
+If you just run the project, it will get a bunch of NULLPointerExceptions.  We know.
+The absolute paths for our testing PDF files are hard coded into Biblio/src/edu/jhu/cs/oose/biblio/gui/tests/ImportDialogGUITest.java.  You should probably change them to match your environment.  This will get fixed, probably in the next Iteration.
+
+Also, if you resize the winodw too much, then the program starts getting OutOfMemory errors.  We'll deal with them.
+
+For more info on the project, check out website/index.html
