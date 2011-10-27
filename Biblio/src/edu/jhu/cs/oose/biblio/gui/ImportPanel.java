@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneLayout;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -67,7 +67,6 @@ public class ImportPanel extends JPanel {
 
 		// Initialize components
 
-		// TODO these need action listeners
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
 		applyButton.addMouseListener(new MouseAdapter() {
@@ -119,17 +118,19 @@ public class ImportPanel extends JPanel {
 
 		// Configure Pane
 		this.setLayout(new BorderLayout());
-		JScrollPane fileCellsPanel = new JScrollPane();
-		this.add(fileCellsPanel);
+		//JScrollPane fileCellsPanel = new JScrollPane();
+		JPanel fileCellsPanel = new JPanel();
+		
 		int rows = files.size() / PREVIEW_PANEL_COLUMNS;
 		if (files.size() % PREVIEW_PANEL_COLUMNS > 0) {
 			rows++;
 		}
-
+//rows, PREVIEW_PANEL_COLUMNS)
+		//fileCellsPanel.setLayout(new ScrollPaneLayout());
 		fileCellsPanel.setLayout(new GridLayout(rows, PREVIEW_PANEL_COLUMNS));
 		JPanel globalOptionsPanel = new JPanel();
 		globalOptionsPanel.setLayout(new GridLayout());
-		this.add(globalOptionsPanel);
+		this.add(globalOptionsPanel, BorderLayout.SOUTH);
 
 		// Add components to the Pane
 		globalOptionsPanel.add(tagEntryField);
@@ -139,6 +140,7 @@ public class ImportPanel extends JPanel {
 		for (FileImportCell cell : fileCellArray) {
 			fileCellsPanel.add(cell);
 		}
+		this.add(fileCellsPanel, BorderLayout.NORTH);
 
 	}
 

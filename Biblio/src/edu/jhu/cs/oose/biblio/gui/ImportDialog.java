@@ -25,5 +25,6 @@ public class ImportDialog extends JDialog
 		this.setContentPane(importPanel);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
+		setVisible(true);
 	}
 }

@@ -43,11 +43,12 @@ public class FileMetadata {
 	 */
 	private int openedCount;
 	
-	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
+	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags, FileTypes fileType) {
 		this.lastOpened = date;
 		this.openedCount = timesOpened;
 		this.pathToFile = path;
 		this.tags = fileTags;
+		this.type = fileType;
 	}
 	
 	/**

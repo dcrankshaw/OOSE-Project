@@ -18,6 +18,10 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileContents;
 
 public class PDFPreviewPanel extends PreviewPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** The contents of the file we are showing a preview of */
 	public PDFFileContents contents;
 
