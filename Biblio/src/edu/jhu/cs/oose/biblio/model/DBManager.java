@@ -5,12 +5,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class DBmanager {
+public class DBManager {
 	
 	private EntityManagerFactory entityManagerFactory;
 	
-	public DBmanager() {
-		entityManagerFactory = Persistence.createEntityManagerFactory( "iTag.jpa" );
+	public DBManager() {
+		entityManagerFactory = Persistence.createEntityManagerFactory( "edu.jhu.cs.oose.biblio.model.jpa" );
 	}
 	
 	public void store(Object obj) {
