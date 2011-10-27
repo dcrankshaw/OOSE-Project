@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -30,8 +31,11 @@ public class Bookmark {
 	public Bookmark(FileMetadata f, Location l) {
 		this.file = f;
 		this.location = l;
+		this.tags = new HashSet<Tag>();
 	}
 	
+	// This constructor does NOT copy the set of tags,
+	// is that the desired behavior - Paul
 	public Bookmark(FileMetadata f, Location l, Set<Tag> t) {
 		this.file = f;
 		this.location = l;

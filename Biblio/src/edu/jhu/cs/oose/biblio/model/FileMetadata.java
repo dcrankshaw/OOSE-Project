@@ -43,6 +43,7 @@ public class FileMetadata {
 	 */
 	private int openedCount;
 	
+	// this does not copy the set of tags, is that what we want? - Paul
 	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
 		this.lastOpened = date;
 		this.openedCount = timesOpened;

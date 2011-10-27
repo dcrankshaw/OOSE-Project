@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class Category {
 	*/
 	public Set<Tag> tags;
 
+	// this does not copy the set of tags - is that what we want?- Paul
 	public Category(String n, Set<Tag> t) {
 		this.name = n;
 		this.tags = t;
