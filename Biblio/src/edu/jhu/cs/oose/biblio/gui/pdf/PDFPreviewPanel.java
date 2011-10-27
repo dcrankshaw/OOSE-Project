@@ -36,7 +36,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 	/**
 	 * Creates a new PDFPreviewPanel that displays a preview
 	 * of the given file contents
-	 * @param contents the file contents to preview
+	 * @param c the file contents to preview
 	 */
 	public PDFPreviewPanel(PDFFileContents c)
 	{
