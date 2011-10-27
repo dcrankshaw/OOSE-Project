@@ -5,6 +5,7 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import junit.framework.TestCase;
 
+// TODO This class needs to check the results of the methods
 public class TagTest extends TestCase {
 	
 	Tag tag, tag1;

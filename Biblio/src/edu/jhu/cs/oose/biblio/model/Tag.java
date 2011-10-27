@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,14 +62,24 @@ public class Tag {
 		return this.children.add(tag);
 	}
 	
+	public Collection<Tag> getChildren() {
+		return Collections.unmodifiableCollection(children);
+	}
+	
 	public boolean tagBookmark(Bookmark bkmk) {
 		return this.taggedBookmarks.add(bkmk);
+	}
+	
+	public Collection<Bookmark> getBookmarks() {
+		return Collections.unmodifiableCollection(taggedBookmarks);
 	}
 	
 	// does this also need to update the file's list of tags? - Paul
 	public boolean tagFile(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
-
-
+	
+	public Collection<FileMetadata> getFiles() {
+		return Collections.unmodifiableCollection(taggedFiles);
+	}
 }

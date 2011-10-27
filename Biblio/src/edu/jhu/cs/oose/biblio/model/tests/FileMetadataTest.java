@@ -22,10 +22,10 @@ public class FileMetadataTest extends TestCase {
 	
 	public void testUpdateLastOpened()throws ParseException{
 		fail("not yet implemented");
-	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	    //Date d1 = df.parse(file.lastOpened);
-	    //file.updateLastOpened();
-	    //assertTrue ("Updated LastOpened date is incorrect.", file.lastOpened.after(d1));
+
+	    Date d1 = file.getLastOpened();
+	    file.setLastOpened(new Date());
+	    assertTrue ("Updated LastOpened date is after now.", file.getLastOpened().after(d1));
 
 	}
 	

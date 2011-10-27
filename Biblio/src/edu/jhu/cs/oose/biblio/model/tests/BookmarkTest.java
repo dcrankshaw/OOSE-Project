@@ -1,6 +1,6 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
-import java.util.List;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -20,10 +20,17 @@ public class BookmarkTest extends TestCase {
 		DBManager manager = new DBManager();
 		assertTrue("Bad input", bkmk.mark(file, loc));//test how to handle bad input
 		manager.store(bkmk);
-		List<Bookmark> l = (List<Bookmark>) manager.get("from BOOKMARK");
-		Bookmark b = l.get(1);
+
+		
+		// see DBManager.get(query) for why this has a warning
+		Collection<Bookmark> l = (Collection<Bookmark>)manager.get("from BOOKMARK");
+		
+		// grab an element from the collection
+		Bookmark b = l.iterator().next();
+		
 		// test if the data stored in database is consistent with the object data
-		assertSame("Inconsistancy", b.getFile(),file);
+		assertSame("Inconsistancy", b.getFile(), file);
+		// Paul: I have no idea what the line above does...
 		
 		// test whether allow to bookmark the same destination twice.
 		bkmk1.mark(file, loc);

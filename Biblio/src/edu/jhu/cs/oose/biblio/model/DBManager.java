@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +22,9 @@ public class DBManager {
 		entityManager.close();
 	}
 	
+	// Because of generics, this isn't type safe.
+	// we should change something so that we don't have to
+	// cast everything everywhere. - Paul
 	public Collection<?> get(String query) {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
