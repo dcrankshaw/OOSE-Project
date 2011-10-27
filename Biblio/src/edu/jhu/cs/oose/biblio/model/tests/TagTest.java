@@ -29,7 +29,7 @@ public class TagTest extends TestCase {
 	
 	public void testGetChildren() {
 		fail("not yet implemented");
-		tag.getChildren();
+		//tag.getChildren();
 	}
 	
 	public void testTagBookmarks() {
@@ -39,7 +39,7 @@ public class TagTest extends TestCase {
 	
 	public void testGetBookmarks() {
 		fail("not yet implemented");
-		tag.getBookmarks();
+		//tag.getBookmarks();
 	}
 	
 	public void testTagFile() {
@@ -49,7 +49,7 @@ public class TagTest extends TestCase {
 	
 	public void testGetFiles() {
 		fail("not yet implemented");
-		tag.getFiles();
+		//tag.getFiles();
 	}
 
 	

@@ -3,8 +3,9 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.List;
 
 import junit.framework.TestCase;
+
 import edu.jhu.cs.oose.biblio.model.Bookmark;
-import edu.jhu.cs.oose.biblio.model.DBmanager;
+import edu.jhu.cs.oose.biblio.model.DBManager;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Location;
 
@@ -19,7 +20,7 @@ public class BookmarkTest extends TestCase {
 		DBManager manager = new DBManager();
 		assertTrue("Bad input", bkmk.mark(file, loc));//test how to handle bad input
 		manager.store(bkmk);
-		List<Bookmark> l = manager.get("from BOOKMARK");
+		List<Bookmark> l = (List<Bookmark>) manager.get("from BOOKMARK");
 		Bookmark b = l.get(1);
 		// test if the data stored in database is consistent with the object data
 		assertSame("Inconsistancy", b.getFile(),file);

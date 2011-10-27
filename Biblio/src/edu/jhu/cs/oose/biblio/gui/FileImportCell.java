@@ -39,6 +39,9 @@ public class FileImportCell extends JPanel
 	private JRadioButton copyStatusButton;
 	private JRadioButton moveStatusButton;
 	private JRadioButton leaveStatusButton;
+	private static String moveString = "move";
+	private static String leaveInPlaceString = "In Place";
+	private static String copyString = "Copy";
 	
 	public FileImportCell(FileMetadata fileMetadata)
 	{
@@ -55,7 +58,7 @@ public class FileImportCell extends JPanel
 			preview = null; //means we can't display a preview of the file, which is okay
 		}
 		
-		this.copyStatusButton = new JRadioButton(CopyStatus.COPYFILE.toString());
+		this.copyStatusButton = new JRadioButton(copyString);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -64,7 +67,7 @@ public class FileImportCell extends JPanel
 			}	
 		});
 		
-		this.moveStatusButton = new JRadioButton(CopyStatus.MOVEFILE.toString());
+		this.moveStatusButton = new JRadioButton(moveString);
 		this.moveStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -74,7 +77,7 @@ public class FileImportCell extends JPanel
 		});
 		this.moveStatusButton.setSelected(true);
 		copyStatus = DEFAULT_COPY_STATUS;
-		this.leaveStatusButton = new JRadioButton(CopyStatus.LEAVEINPLACE.toString());
+		this.leaveStatusButton = new JRadioButton(leaveInPlaceString);
 		this.leaveStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -98,7 +101,6 @@ public class FileImportCell extends JPanel
 			this.add(preview, BorderLayout.WEST);
 		}
 		this.add(tagsPanel, BorderLayout.EAST);
-		System.out.println("FileImportCell Constructed");
 		
 	}
 	

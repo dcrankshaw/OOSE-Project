@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -137,10 +138,11 @@ public class ImportPanel extends JPanel {
 		globalOptionsPanel.add(applyButton);
 		globalOptionsPanel.add(cancelButton);
 		globalOptionsPanel.add(finishButton);
+		globalOptionsPanel.setPreferredSize(new Dimension(400, 50));
 		for (FileImportCell cell : fileCellArray) {
 			fileCellsPanel.add(cell);
 		}
-		this.add(fileCellsPanel, BorderLayout.NORTH);
+		this.add(fileCellsPanel, BorderLayout.CENTER);
 
 	}
 
@@ -148,8 +150,7 @@ public class ImportPanel extends JPanel {
 	 * Applies the supplied tag to all of the files that have been selected by
 	 * the user.
 	 * 
-	 * @param tag
-	 *            The tag to apply to all of the selected files
+	 * @param tag The tag to apply to all of the selected files
 	 */
 	public void applyTagToMany(Tag tag) {
 		for (FileImportCell cell : fileCellArray) {
@@ -175,6 +176,12 @@ public class ImportPanel extends JPanel {
 
 	}
 	
+	/**
+	 * A private mouse listener class that allows the ImportPanel to detect when a particular
+	 * cell has been clicked on
+	 * @author Daniel
+	 *
+	 */
 	private class ImportCellListener extends MouseAdapter
 	{
 		FileImportCell cell;
@@ -198,6 +205,7 @@ public class ImportPanel extends JPanel {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paint(g);
 	}
+	
 	
 	public void unselectAllCells()
 	{
