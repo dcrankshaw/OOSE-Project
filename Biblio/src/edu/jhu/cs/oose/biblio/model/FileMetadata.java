@@ -14,18 +14,20 @@ import javax.xml.crypto.Data;
  */
 
 public class FileMetadata {
-	
+
+	private FileTypes type;
+
 	/**
 	 * The set of tags associated with this file
 	 */
 	private Set<Tag> tags;
-	
+
 	/**
 	 * The full path name of the file
 	 */
 	private String pathToFile;
-	
-	/**  
+
+	/**
 	 * The date of the last time the file was opened
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
@@ -45,17 +47,21 @@ public class FileMetadata {
 	
 	/**
 	 * Get the file contents
+	 * 
 	 * @return contents The file contents
 	 */
-	public FileContents getContents()
-	{
+	public FileContents getContents() {
 		return null;
+	}
+	
+	public boolean equals(FileMetadata otherFile)
+	{
+		return otherFile.getPathToFile().equals(this.pathToFile);
 	}
 
 	public Set<Tag> getTags() {
 		return (Set<Tag>) Collections.unmodifiableCollection(tags);
 	}
-
 
 	public String getPathToFile() {
 		return pathToFile;
@@ -80,6 +86,9 @@ public class FileMetadata {
 	public void setOpenedCount(int openedCount) {
 		this.openedCount = openedCount;
 	}
-	
-	
+
+	public FileTypes getType() {
+		return this.type;
+	}
+
 }

@@ -15,7 +15,7 @@ public class PropertiesPanel extends JPanel {
 	/**
 	 * The list of tags the file is associated with
 	 */
-	private TagsListPane tagsListPane;
+	private TagsListPanel tagsListPane;
 
 	/**
 	 * The file whose properties are being displayed

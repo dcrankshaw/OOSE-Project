@@ -20,7 +20,7 @@ public class TagEditorPanel extends JPanel {
 	 * Contains all of the tags that currently selected tag has been associated with (all of these
 	 * tags point to the selected tag).
 	 */
-	private TagsListPane associatedTagPane;
+	private TagsListPanel associatedTagPane;
 	
 	/** The currently selected tag*/
 	private Tag selectedTag;
