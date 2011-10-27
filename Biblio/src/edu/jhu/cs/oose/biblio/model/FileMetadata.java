@@ -18,7 +18,7 @@ import javax.persistence.*;
  * 
  */
 
-public class FileMetadata {
+public abstract class FileMetadata {
 
 	private FileTypes type;
 
@@ -56,9 +56,7 @@ public class FileMetadata {
 	 * 
 	 * @return contents The file contents
 	 */
-	public FileContents getContents() {
-		return null;
-	}
+	public abstract FileContents getContents();
 	
 	public boolean equals(FileMetadata otherFile)
 	{

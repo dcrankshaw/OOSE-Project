@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -29,6 +30,8 @@ public class Tag {
 	
 	public Tag(String tagName) {
 		name = tagName;
+		children = new HashSet<Tag>();
+		taggedFiles = new HashSet<FileMetadata>();
 	}
 
 	public boolean addTag(Tag tag)
@@ -36,6 +39,7 @@ public class Tag {
 		return false;
 	}
 
+	// TODO This constructor does not copy the sets, is that desirable?  - Paul
 	public Tag(Set<Tag> c, String n, Set<Bookmark> t, Set<FileMetadata> ta) {
 		this.children = c;
 		this.name = n;
@@ -43,8 +47,13 @@ public class Tag {
 		this.taggedFiles = ta;
 	}
 	
-	public void setName(String n) {
+	public boolean setName(String n) {
 		this.name = n;
+		return true;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 	
 	public boolean addChildren(Tag tag) {
@@ -55,7 +64,10 @@ public class Tag {
 		return this.taggedBookmarks.add(bkmk);
 	}
 	
+	// does this also need to update the file's list of tags? - Paul
 	public boolean tagFile(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
+
+
 }

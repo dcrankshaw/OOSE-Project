@@ -1,6 +1,8 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -21,7 +23,7 @@ public class DBManager {
 		entityManager.close();
 	}
 	
-	public Collection get(String query) {
+	public Collection<?> get(String query) {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		return entityManager.createQuery( query ).getResultList();
