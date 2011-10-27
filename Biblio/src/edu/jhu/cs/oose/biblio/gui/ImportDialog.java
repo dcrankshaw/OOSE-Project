@@ -21,13 +21,8 @@ public class ImportDialog extends JDialog
 	{
 		
 		super(owner, "Import", true); //creates a modal dialog
-		JPanel importPanel = new ImportPanel(files);
+		JPanel importPanel = new ImportPanel(files, this);
 		this.setContentPane(importPanel);
-		
-		
-		
+		this.pack();
 	}
-	
-	
-	
 }

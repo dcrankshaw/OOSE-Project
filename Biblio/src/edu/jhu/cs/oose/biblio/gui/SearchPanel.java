@@ -30,19 +30,25 @@ public class SearchPanel extends JPanel {
 	private JTable possibleTagsTable;
 	
 	/** Gets all of the selected tags from the possibleTagsTable */
-	public Set<Tag> getSelectedTags(){}
+	public Set<Tag> getSelectedTags(){
+		return null;
+	}
 	
 	/**
 	 * Gets the search term
 	 * @return the search term
 	 */
-	public String getQueryText(){}
+	public String getQueryText(){
+		return null;
+	}
 	
 	/** 
 	 * Gets the type of search the user wants to do
 	 * @return the search mode
 	 */
-	public SearchMode getSearchMode() {}
+	public SearchMode getSearchMode() {
+		return SearchMode.TAGS;
+	}
 	
 	
 }

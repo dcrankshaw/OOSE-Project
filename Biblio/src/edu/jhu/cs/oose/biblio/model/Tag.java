@@ -26,5 +26,14 @@ public class Tag {
 	* The set of bookmarks tagged by this Tag.
 	*/
 	public Set<Bookmark> taggedBookmarks;
+	
+	public Tag(String tagName) {
+		name = tagName;
+	}
+
+	public boolean addTag(Tag tag)
+	{
+		return false;
+	}
 
 }

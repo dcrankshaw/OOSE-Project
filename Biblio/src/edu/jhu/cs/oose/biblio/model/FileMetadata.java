@@ -10,18 +10,20 @@ import java.util.Set;
  */
 
 public class FileMetadata {
-	
+
+	private FileTypes type;
+
 	/**
 	 * The set of tags associated with this file
 	 */
 	private Set<Tag> tags;
-	
+
 	/**
 	 * The full path name of the file
 	 */
 	private String pathToFile;
-	
-	/**  
+
+	/**
 	 * The date of the last time the file was opened
 	 */
 	private Date lastOpened;
@@ -30,20 +32,24 @@ public class FileMetadata {
 	 * The number of the times the file has been opened
 	 */
 	private int openedCount;
-	
+
 	/**
 	 * Get the file contents
+	 * 
 	 * @return contents The file contents
 	 */
-	public FileContents getContents()
-	{
+	public FileContents getContents() {
 		return null;
+	}
+	
+	public boolean equals(FileMetadata otherFile)
+	{
+		return otherFile.getPathToFile().equals(this.pathToFile);
 	}
 
 	public Set<Tag> getTags() {
 		return (Set<Tag>) Collections.unmodifiableCollection(tags);
 	}
-
 
 	public String getPathToFile() {
 		return pathToFile;
@@ -68,6 +74,9 @@ public class FileMetadata {
 	public void setOpenedCount(int openedCount) {
 		this.openedCount = openedCount;
 	}
-	
-	
+
+	public FileTypes getType() {
+		return this.type;
+	}
+
 }

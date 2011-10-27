@@ -1,6 +1,7 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -60,11 +61,9 @@ public class ImportPanel extends JPanel {
 
 	Collection<Tag> newTags;
 
-	Collection<FileImportCell> selectedFiles;
-
 	JDialog owner;
 
-	public ImportPanel(List<FileMetadata> files, JDialog currentOwner) {
+	public ImportPanel(List<FileMetadata> files, ImportDialog currentOwner) {
 
 		// Initialize components
 
@@ -115,13 +114,13 @@ public class ImportPanel extends JPanel {
 		tagEntryField = new JTextField(TEXT_FIELD_WIDTH);
 		newTags = new ArrayList<Tag>();
 
-		selectedFiles = new LinkedList<FileImportCell>();
 		fileCellArray = new ArrayList<FileImportCell>();
 		setFiles(files);
 
 		// Configure Pane
 		this.setLayout(new BorderLayout());
 		JScrollPane fileCellsPanel = new JScrollPane();
+		this.add(fileCellsPanel);
 		int rows = files.size() / PREVIEW_PANEL_COLUMNS;
 		if (files.size() % PREVIEW_PANEL_COLUMNS > 0) {
 			rows++;
@@ -130,6 +129,7 @@ public class ImportPanel extends JPanel {
 		fileCellsPanel.setLayout(new GridLayout(rows, PREVIEW_PANEL_COLUMNS));
 		JPanel globalOptionsPanel = new JPanel();
 		globalOptionsPanel.setLayout(new GridLayout());
+		this.add(globalOptionsPanel);
 
 		// Add components to the Pane
 		globalOptionsPanel.add(tagEntryField);
@@ -150,9 +150,12 @@ public class ImportPanel extends JPanel {
 	 *            The tag to apply to all of the selected files
 	 */
 	public void applyTagToMany(Tag tag) {
-		for (FileImportCell cell : selectedFiles) {
-			// add tag to file
-			// cell.getFileMetadata().addTag();
+		for (FileImportCell cell : fileCellArray) {
+			if(cell.isSelected())
+			{
+				// add tag to file
+				// cell.getFileMetadata().addTag();
+			}	
 		}
 	}
 
@@ -163,16 +166,43 @@ public class ImportPanel extends JPanel {
 	 */
 	public void setFiles(List<FileMetadata> files) {
 		for (FileMetadata file : files) {
-			fileCellArray.add(new FileImportCell(file));
+			FileImportCell current = new FileImportCell(file);
+			current.addMouseListener(new ImportCellListener(current));
+			fileCellArray.add(current);
 		}
 
 	}
+	
+	private class ImportCellListener extends MouseAdapter
+	{
+		FileImportCell cell;
+		public ImportCellListener(FileImportCell c)
+		{
+			cell = c;
+		}
+		public void mouseClicked(MouseEvent e) {
+			if(!e.isShiftDown())
+			{
+				ImportPanel.this.unselectAllCells();
+			}
+			cell.setSelected(true);
+		}
+	}
 
-	//May not need
 	@Override
 	public void paint(Graphics g)
 	{
-		
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		super.paint(g);
+	}
+	
+	public void unselectAllCells()
+	{
+		for(FileImportCell file: fileCellArray)
+		{
+			file.setSelected(false);
+		}
 	}
 	
 	/**
