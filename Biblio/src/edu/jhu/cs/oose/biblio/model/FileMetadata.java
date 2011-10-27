@@ -4,6 +4,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.crypto.Data;
+
+@Entity
+@Table( name = "FILEMETADATA" )
 /**
  * A set of information about a file
  * 
@@ -24,12 +32,20 @@ public class FileMetadata {
 	/**  
 	 * The date of the last time the file was opened
 	 */
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastOpened;
 
 	/**
 	 * The number of the times the file has been opened
 	 */
 	private int openedCount;
+	
+	public FileMetadata(Data d, int o, String p, Set<Tag> t) {
+		this.lastOpened = (Date) d;
+		this.openedCount = o;
+		this.pathToFile = p;
+		this.tags = t;
+	}
 	
 	/**
 	 * Get the file contents

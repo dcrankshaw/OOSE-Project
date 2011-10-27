@@ -1,5 +1,12 @@
 package edu.jhu.cs.oose.biblio.model;
 
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table( name = "LOCATION" )
 /**
 * Store a location in a file to be used for a bookmark
 */
@@ -12,5 +19,7 @@ public class Location {
 	
 	
 	//TODO
-
+	public Location(float p) {
+		this.percentageOfFile = p;
+	}
 }

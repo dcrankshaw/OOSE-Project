@@ -27,4 +27,26 @@ public class Tag {
 	*/
 	public Set<Bookmark> taggedBookmarks;
 
+	public Tag(Set<Tag> c, String n, Set<Bookmark> t, Set<FileMetadata> ta) {
+		this.children = c;
+		this.name = n;
+		this.taggedBookmarks = t;
+		this.taggedFiles = ta;
+	}
+	
+	public void setName(String n) {
+		this.name = n;
+	}
+	
+	public boolean addChildren(Tag tag) {
+		return this.children.add(tag);
+	}
+	
+	public boolean tagBookmark(Bookmark bkmk) {
+		return this.taggedBookmarks.add(bkmk);
+	}
+	
+	public boolean tagFile(FileMetadata file) {
+		return this.taggedFiles.add(file);
+	}
 }
