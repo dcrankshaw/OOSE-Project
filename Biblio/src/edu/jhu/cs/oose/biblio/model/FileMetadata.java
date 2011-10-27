@@ -4,10 +4,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.crypto.Data;
 
 @Entity
