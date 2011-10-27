@@ -1,0 +1,27 @@
+In this iteration we began to implement a few of the core features. We focused on two aspects of the code.
+The first was integrating with Hibernate, and figuring out how to use it. We now have Hibernate integrated 
+with our code, although we are still searching for the right database solution. There is not a supported
+Hibernate configuration for SQLite, which would have been the obvious choice. We are now looking at H2
+and HSQLDB. The other part we focused on was getting the GUI started. This involved getting JPedal,
+our PDF library, working, as well as writing the Swing components. We have JPedal working in its
+basic functionality, and can render PDFs to preview. The first GUI component we started working on was
+the Import Dialog box. This is also working in a basic way, although the view does not have a lot of the
+associated control it will eventually have (for example, a button will know it's pressed, but not interact
+with the model yet).
+
+For iteration 4, we will have full integration between the model and GUI, and have all of the basic GUI
+elements working. This means that a user will be able to import a file, add tags to it, then view
+it in the reader. This will require a working database with Hibernate. Having a working database
+will also allow us to get searching and filtering by tags done pretty easily. We will also begin to
+work on full text searching of a PDF, and do some preliminary research on RSS integration.
+
+For iteration 5, we will add bookmarking functionality and expand our supported file formats to other 
+text files. We will continue our work on full text searching, and the goal is to have at least a naive
+search algorithm in place. Some RSS reading functionality will be coded, but not necessarily passing
+tests yet. We will also polish the GUI to provide a more user friendly format. Finally, we will allow the
+user to mark a directory to be watched, and Biblio will automatically import any new files in supported
+formats added to that directory.
+
+For iteration 6, we will RSS reading and full-text searching fully implemented. The user will be able to bookmark
+PDFs and other text files. Depending on the state of the project, we will also try to provide support for
+ebook files (such as MOBI or EPUB).
