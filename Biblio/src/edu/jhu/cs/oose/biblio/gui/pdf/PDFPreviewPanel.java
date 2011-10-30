@@ -78,6 +78,11 @@ public class PDFPreviewPanel extends PreviewPanel {
 		}
 	}
 	
+	/**
+	 * Sets the file contents that will be displayed
+	 * in this preview.
+	 * @param c the file contents to display
+	 */
 	public void setContents(PDFFileContents c) {
 		contents = c;
 	}

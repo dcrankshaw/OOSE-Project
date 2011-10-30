@@ -16,20 +16,33 @@ import edu.jhu.cs.oose.biblio.model.FileContents;
 
 public class PDFFileContents implements FileContents {
 
-	// This variable controls which page of the PDF document is
-	// used to generate the thumbnail
+	/**
+	 * Which page of the PDF document is
+	 * used to generate the thumbnail.
+	 */
 	private static final int THUMBNAIL_PAGE = 1;
 	
-	// This object is from the JPedal library
-	// we use it to read the PDF file from disk
+	/**
+	 * This object is from the JPedal library.
+	 * We use it to read the PDF file from disk
+	 */
 	private PdfDecoder decoder;
 	
-	// All the pages that have been read into memory so far
+	/**
+	 * A cache of all the pages that have been read into memory so far
+	 */
 	private Map<Integer, Image> pages;
 	
-	// The preview of this document
+	/**
+	 *  The preview of this document
+	 */
 	private Image thumbnail;
 	
+	/**
+	 * Creates a new FileContents with the pdf file at the given path.
+	 * @param filename the path to the PDF to read
+	 * @throws PdfException if there was an error opening the pdf
+	 */
 	public PDFFileContents(String filename) throws PdfException
 	{
 		pages = new HashMap<Integer, Image>();
@@ -113,6 +126,20 @@ public class PDFFileContents implements FileContents {
 		// thumbnail size, so I'm just using magic numbers for now.
 		thumbnail = thumbnailPage.getScaledInstance(thumbnailPage.getWidth(null) / 4, -1, Image.SCALE_DEFAULT);
 		return thumbnail;
+	}
+	
+	/**
+	 * Gets the number of pages in this pdf document
+	 * @return the number of pages in the pdf document
+	 * @throws PdfException if there was an error reading/parsing the pdf
+	 */
+	public int getPageCount() throws PdfException {
+		if( decoder != null ) {
+			return decoder.getPageCount();
+		}
+		else {
+			return pages.size();
+		}
 	}
 
 }
