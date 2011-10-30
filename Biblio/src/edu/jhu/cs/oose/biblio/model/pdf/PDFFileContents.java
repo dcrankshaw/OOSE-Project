@@ -11,9 +11,7 @@ import edu.jhu.cs.oose.biblio.model.FileContents;
 
 /**
  * Contains the contents of a PDF file
- * 
  */
-
 public class PDFFileContents implements FileContents {
 
 	/**
