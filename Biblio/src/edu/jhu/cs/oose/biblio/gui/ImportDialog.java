@@ -16,7 +16,7 @@ public class ImportDialog extends JDialog
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//Will probably need some sort of refernce to the model/database
+	//Will probably need some sort of reference to the model/database
 	public ImportDialog(List<FileMetadata> files, JFrame owner)
 	{
 		
