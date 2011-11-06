@@ -30,6 +30,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 */
 	public PDFPreviewPanel()
 	{
+		super();
 		setContents(null);
 	}
 	
@@ -40,6 +41,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 */
 	public PDFPreviewPanel(PDFFileContents c)
 	{
+		super();
 		setContents(c);
 	}
 	
@@ -89,6 +91,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 			g.setColor(Color.RED);
 			g.fillRect(0, 0, getSize().width, getSize().height);
 		}
+		this.getBorder().paintBorder(this, g, 0, 0, this.getSize().width, this.getSize().height);
 	}
 	
 	/**
