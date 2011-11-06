@@ -39,7 +39,7 @@ public class FileImportCell extends JPanel
 	private JRadioButton copyStatusButton;
 	private JRadioButton moveStatusButton;
 	private JRadioButton leaveStatusButton;
-	private static String moveString = "move";
+	private static String moveString = "Move";
 	private static String leaveInPlaceString = "In Place";
 	private static String copyString = "Copy";
 	
