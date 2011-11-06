@@ -19,6 +19,31 @@ public class SearchController {
 	public void searchTags(){}
 	
 	/** Conducts a search of the full text of each document */
-	public void searchText() {}
+	public void searchText()
+	{
+		/*
+		 * - get list of possible files to search (all of the files matching current tags filter)
+		 * - for each file, conduct a textSearch(FileTextContents file, String searchTerm) on it
+		 * - this will return an int indicating how well the contents match the search term
+		 * - all files above a certain match threshold will be displayed ranked by how well they match
+		 * 		--not in this iteration, but searching these could/should be done in separate threads
+		 */
+		
+		/************************************************************************************
+		 * 
+		 * Things to Decide:
+		 * -what string searching/matching algorithm to use
+		 * 		-presumably this will lead to some sort of scoring algorithm for how well the text matches
+		 * 		- this algorithm needs to take into account documents of differing length, so it can't be
+		 * 		  absolute number of matches, must be normalized in some way
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
+		
+		
+	}
 	
 }

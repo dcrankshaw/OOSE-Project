@@ -4,12 +4,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-//import org.hibernate.annotations.Entity;
-//import org.hibernate.annotations.Table;
-import javax.persistence.*;
 
 @Entity
 @Table( name = "FILEMETADATA" )
