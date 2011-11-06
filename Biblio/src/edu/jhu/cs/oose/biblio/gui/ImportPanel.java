@@ -15,9 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -31,41 +29,56 @@ public class ImportPanel extends JPanel {
 
 	// TODO set this to something intelligent, or figure out a better way to do
 	// this
+	/**
+	 * The widths of the text fields used for entering tags
+	 */
 	private static final int TEXT_FIELD_WIDTH = 30;
 
-	private static final int PREVIEW_PANEL_COLUMNS = 2;
 	/**
-		 * 
-		 */
-	private static final long serialVersionUID = 1L;
+	 * The number of columns of documents displayed in the import panel.
+	 */
+	private static final int PREVIEW_PANEL_COLUMNS = 2;
 
 	/** Contains all of the files being imported */
-	List<FileImportCell> fileCellArray;
+	private List<FileImportCell> fileCellArray;
 
 	/** A text box to enter in a tag to apply to multiple files at once */
-	JTextField tagEntryField;
+	private JTextField tagEntryField;
 
 	/**
 	 * A button to signal to apply the tag entered in the TagsListPane to the
 	 * selected files
 	 */
-	JButton applyButton;
+	private JButton applyButton;
 
 	/** A button to cancel the current import transaction discarding all changes */
-	JButton cancelButton;
+	private JButton cancelButton;
 
 	/**
 	 * A button to finish the current import transaction, applying all changes
 	 * to the model
 	 */
-	JButton finishButton;
+	private JButton finishButton;
 
-	Collection<Tag> newTags;
-
+	/**
+	 * Tags that have been created during the current import session.
+	 */
+	private Collection<Tag> newTags;
+	
+	/**
+	 * The parent dialog box containing this import panel.
+	 */
 	JDialog owner;
 
+	/**
+	 * Creates a new ImportPanel initialized with the list of files
+	 * and belonging to the given dialog.
+	 * @param files the files to be imported
+	 * @param currentOwner the dialog enclosing this panel
+	 */
 	public ImportPanel(List<FileMetadata> files, ImportDialog currentOwner) {
-
+		// TODO this.owner is of type JDialog, so why do we require that it
+		// is an ImportDialog here? - Paul
 		// Initialize components
 
 		applyButton = new JButton("Apply");
@@ -75,9 +88,9 @@ public class ImportPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String tagName = tagEntryField.getText();
-				tagEntryField.setText(null);
+				tagEntryField.setText("");
 				/*
-				 * If model doesnt contains tag: Tag current = new Tag(tagName);
+				 * If model doesn't contains tag: Tag current = new Tag(tagName);
 				 * newTags.add(current);
 				 * 
 				 * applyTagToMany(current);
@@ -165,7 +178,7 @@ public class ImportPanel extends JPanel {
 	/**
 	 * Creates a FileImportCell for each file
 	 * 
-	 * @param files
+	 * @param files the files to place in the import cells
 	 */
 	public void setFiles(List<FileMetadata> files) {
 		for (FileMetadata file : files) {
@@ -180,11 +193,16 @@ public class ImportPanel extends JPanel {
 	 * A private mouse listener class that allows the ImportPanel to detect when a particular
 	 * cell has been clicked on
 	 * @author Daniel
-	 *
 	 */
 	private class ImportCellListener extends MouseAdapter
 	{
-		FileImportCell cell;
+		/** The cell associated with this listener;
+		 *  the one that got clicked. */
+		private FileImportCell cell;
+		/**
+		 * Creates a new listener for the given cell
+		 * @param c the cell to listen for clicks on
+		 */
 		public ImportCellListener(FileImportCell c)
 		{
 			cell = c;
@@ -206,7 +224,9 @@ public class ImportPanel extends JPanel {
 		super.paint(g);
 	}
 	
-	
+	/**
+	 * Deselects all the cells in the import panel.
+	 */
 	public void unselectAllCells()
 	{
 		for(FileImportCell file: fileCellArray)

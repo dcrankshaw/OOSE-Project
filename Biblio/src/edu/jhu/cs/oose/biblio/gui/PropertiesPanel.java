@@ -11,7 +11,6 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
  */
 
 public class PropertiesPanel extends JPanel {
-	
 	/**
 	 * The list of tags the file is associated with
 	 */

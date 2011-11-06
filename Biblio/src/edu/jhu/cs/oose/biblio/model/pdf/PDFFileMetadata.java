@@ -19,13 +19,24 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  * Contains PDF specific metadata on top of that stored in FileMetadata
  */
 public class PDFFileMetadata extends FileMetadata {
-
-	PDFFileContents contents;
-
+	
+	/**
+	 * The contents of this file, if they have been read
+	 */
+	private PDFFileContents contents;
+	
+	/**
+	 * Creates a new PDFFileMetadata, initialized with the given arguments
+	 * @param date the last time file was opened
+	 * @param timesOpened the number of times it has been opened
+	 * @param path the path to the contents on disk
+	 * @param fileTags the tags that should be applied already (NOT copied)
+	 */
 	public PDFFileMetadata(Date date, int timesOpened, String path,
 			Set<Tag> fileTags) {
 		super(date, timesOpened, path, fileTags, FileTypes.PDF);
 		// TODO Auto-generated constructor stub
+		this.contents = null;
 	}
 
 	@Override

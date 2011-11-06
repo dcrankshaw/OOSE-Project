@@ -12,10 +12,16 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
+/**
+ * Draws the import dialog box, for testing.
+ * @author Dan Crankshaw
+ */
 public class ImportDialogGUITest {
 
 	/**
-	 * @param args
+	 * Displays the import dialog, putting 2 files from our
+	 * repository into the preview panels
+	 * @param args ignored
 	 */
 	public static void main(String[] args) {
 		try

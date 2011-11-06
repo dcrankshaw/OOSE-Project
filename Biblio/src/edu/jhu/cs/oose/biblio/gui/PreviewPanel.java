@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
 
 
 /**
@@ -11,6 +10,10 @@ import javax.swing.border.BevelBorder;
 
 
 public abstract class PreviewPanel extends FileDisplayPanel {
+	
+	/**
+	 * Creates a new PreviewPanel and sets the border.
+	 */
 	public PreviewPanel() {
 		this.setBorder(BorderFactory.createEtchedBorder());
 	}
