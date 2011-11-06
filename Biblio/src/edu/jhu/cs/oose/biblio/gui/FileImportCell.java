@@ -98,7 +98,7 @@ public class FileImportCell extends JPanel
 		copyButtonsPanel.add(leaveStatusButton);
 		this.add(copyButtonsPanel, BorderLayout.SOUTH);
 		if(preview != null) {
-			this.add(preview, BorderLayout.WEST);
+			this.add(preview, BorderLayout.CENTER);
 		}
 		this.add(tagsPanel, BorderLayout.EAST);
 		

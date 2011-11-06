@@ -62,14 +62,27 @@ public class PDFPreviewPanel extends PreviewPanel {
 	@Override
 	public void paint(Graphics g) {
 		try {
-			Image thumbnail = contents.getThumbnail();
-			if( this.getSize().equals(this.getPreferredSize())) {
-				g.drawImage(thumbnail, 0, 0, null);
+			Image thumbnail = contents.getPage(1);
+			// scale the image appropriately
+			double widthRatio = this.getSize().getWidth() /  (double)thumbnail.getWidth(null);
+			double heightRatio = this.getSize().getHeight() /  (double)thumbnail.getHeight(null);
+			double ratio = 1;
+			if( widthRatio < heightRatio ) {
+				ratio = widthRatio;
 			}
 			else {
-				Image preview = thumbnail.getScaledInstance(getSize().width, getSize().height, Image.SCALE_DEFAULT);
-				g.drawImage(preview, 0, 0, null);
+				ratio = heightRatio;
 			}
+			ratio = Math.min(ratio, 1.0);
+			
+			int width = (int)(thumbnail.getWidth(null)*ratio);
+			int height = (int)(thumbnail.getHeight(null) * ratio);
+			
+			int leftEdge = (this.getSize().width - width) / 2;
+			int bottomEdge = (this.getSize().height - height) / 2;
+			
+			g.drawImage(thumbnail, leftEdge, bottomEdge, leftEdge + width, bottomEdge + height,
+					0, 0, thumbnail.getWidth(null), thumbnail.getHeight(null), null);
 		}
 		catch(PdfException e) {
 			// TODO draw something that indicates what went wrong
