@@ -63,6 +63,7 @@ public class Tag implements Comparable<Tag>
 		return this.children.add(tag);
 	}
 	
+	// TODO change these to return sets instead of collections?
 	public Collection<Tag> getChildren() {
 		return Collections.unmodifiableCollection(children);
 	}

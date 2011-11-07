@@ -89,14 +89,14 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 	}
 
 	public class TagSelectionChangedEvent extends TableModelEvent {
-		Collection<Tag> oldTags;
-		Collection<Tag> newTags;
-		Collection<Tag> removedTags;
+		Set<Tag> oldTags;
+		Set<Tag> newTags;
+		Set<Tag> removedTags;
 
 		// The event takes ownership of these things and assumes that
 		// they will not be changed later, i.e., they are already copies
 		public TagSelectionChangedEvent(TableModel model, int row,
-				Collection<Tag> old, Collection<Tag> n, Collection<Tag> gone) {
+				Set<Tag> old, Set<Tag> n, Set<Tag> gone) {
 			super(model, row);
 			oldTags = old;
 			newTags = n;
@@ -115,9 +115,9 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		}
 		
 		// grab a copy of the tags right now, for the event
-		Collection<Tag> oldTags = Collections.unmodifiableCollection(this.selectedTags);
-		Collection<Tag> newTags = null;
-		Collection<Tag> rmTags = null;
+		Set<Tag> oldTags = Collections.unmodifiableSet(this.selectedTags);
+		Set<Tag> newTags = null;
+		Set<Tag> rmTags = null;
 		// this cast will always succeed because we do the
 		// runtime check just above
 		Boolean val = (Boolean)(newValue);

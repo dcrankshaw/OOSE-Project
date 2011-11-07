@@ -85,7 +85,7 @@ public abstract class FileMetadata {
 	 * @return a copy of the set of tags applied to this file.
 	 */
 	public Set<Tag> getTags() {
-		return (Set<Tag>) Collections.unmodifiableCollection(tags);
+		return Collections.unmodifiableSet(tags);
 	}
 
 	/**
