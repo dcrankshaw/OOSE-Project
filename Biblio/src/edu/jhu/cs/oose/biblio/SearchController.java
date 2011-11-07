@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -16,11 +18,16 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 
 public class SearchController {
 
+	private Set<SearchResultsListener> resultsListeners;
+	private Set<SearchTagsListener> tagListeners;
+	
 	/** The UI for the user to enter a search term */
 	public SearchPanel queryInterface;
 	
-	/** An interface to display all of the search results */
-	public SearchPanel results;
+	public SearchController() {
+		resultsListeners = new HashSet<SearchResultsListener>();
+		tagListeners = new HashSet<SearchTagsListener>();
+	}
 	
 	/** Conducts a search of all of the tags */
 	public void searchTags(EntityManagerFactory entityManagerFactory, String searchTerm)
@@ -63,4 +70,19 @@ public class SearchController {
 		
 	}
 	
+	public void addResultsListener(SearchResultsListener list) {
+		resultsListeners.add(list);
+	}
+	
+	public void removeResultsListener(SearchResultsListener list) {
+		resultsListeners.remove(list);
+	}
+	
+	public void addTagsListener(SearchTagsListener list) {
+		tagListeners.add(list);
+	}
+	
+	public void removeTagsListener(SearchTagsListener list) {
+		tagListeners.remove(list);
+	}
 }
