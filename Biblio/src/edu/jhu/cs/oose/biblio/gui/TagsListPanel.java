@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -23,6 +22,10 @@ public class TagsListPanel extends JPanel {
 	
 	/** All of the tags already added to the file */
 	public DefaultListModel tags;
+	// TODO migrate this to a List<Tag> extends ListModel (for the JList)
+	// or, combine the text field in the bottom with the
+	// list, so that you type into the list, and it absorbs
+	// recognized tags into atomic units.  Just my thoughts... Paul
 	
 	private FileMetadata file;
 	
@@ -35,13 +38,11 @@ public class TagsListPanel extends JPanel {
 	
 	JList addedTags;
 	
-	public TagsListPanel(FileMetadata fileMetadata)
-	{
-		file = fileMetadata;
+	public TagsListPanel() {
 		tagsLabel = new JLabel("Tags:");
 		newTagField = new JTextField();
 		newTagField.setColumns(10);
-		// Paul: Can we do this with an ActionListener instead?
+		// TODO Paul: Can we do this with an ActionListener instead?
 		// That's probably "the right way" to do what we want.
 		newTagField.addKeyListener(new KeyAdapter() {
 			
@@ -53,6 +54,7 @@ public class TagsListPanel extends JPanel {
 				}
 			}
 		});
+
 		tags = new DefaultListModel();
 		addedTags = new JList(tags);
 		addedTags.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -63,6 +65,11 @@ public class TagsListPanel extends JPanel {
 		this.add(tagsLabel, BorderLayout.NORTH);
 	}
 	
+	public TagsListPanel(FileMetadata fileMetadata)
+	{
+		this();
+		this.setFile(fileMetadata);
+	}
 	
 	/** Parses the text the user has entered and attempts to find the matching tag */
 	public void parseString() {}
@@ -79,5 +86,13 @@ public class TagsListPanel extends JPanel {
 	{
 		//file.addTag(t);
 		tags.addElement(t.name);
+	}
+	
+	public void setFile(FileMetadata f) {
+		this.file = f;
+		tags.clear();
+		for( Tag t : file.getTags() ) {
+			tags.addElement(t);
+		}
 	}
 }

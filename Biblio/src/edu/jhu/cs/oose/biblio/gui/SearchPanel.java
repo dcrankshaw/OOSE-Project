@@ -2,15 +2,12 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
  * Provides the UI to search. Encloses the text field where search terms are entered, as well as the list of possible tags
