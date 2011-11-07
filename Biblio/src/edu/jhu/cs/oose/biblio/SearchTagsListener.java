@@ -11,17 +11,12 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  */
 
 
-public abstract class SearchTagsListener {
+public interface SearchTagsListener {
 	
 	/**
 	 * Called when a search is executed. Tells the owner of this SearchTagsListener
 	 * to display the results of the search
 	 * @param matches All of the matching tags
 	 */
-	public void matchedTags(Set<Tag> matches) {}
-	
-	
-	
-	
-
+	public void matchedTags(Set<Tag> matches);
 }

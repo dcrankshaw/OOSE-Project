@@ -10,12 +10,12 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
  * depending on the context)
  */
 
-public abstract class SearchResultsListener {
+public interface SearchResultsListener {
 	
 	/**
 	 * Called when a search is executed. Tells the owner of this SearchResultsListener
 	 * to display the results of the search
 	 * @param results The list of matching documents in order
 	 */
-	public void displayResults(List<FileMetadata> results){}
+	public void displayResults(List<FileMetadata> results);
 }
