@@ -6,11 +6,11 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table( name = "CATEGORY" )
 /**
 *An group of tags
 */
+@Entity
+@Table( name = "CATEGORY" )
 public class Category {
 
 	/**
@@ -27,5 +27,10 @@ public class Category {
 	public Category(String n, Set<Tag> t) {
 		this.name = n;
 		this.tags = t;
+	}
+	
+	public Category(String n) {
+		this.name = n;
+		this.tags = new HashSet<Tag>();
 	}
 }

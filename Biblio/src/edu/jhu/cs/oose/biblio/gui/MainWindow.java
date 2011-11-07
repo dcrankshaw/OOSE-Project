@@ -31,8 +31,6 @@ public class MainWindow extends JFrame {
 		tabs = new JTabbedPane();
 		JPanel searchPanel = makeSearchPanel();
 		tabs.add("Search", searchPanel);
-		tabs.add("Doc1", new JPanel());
-		tabs.add("Doc2", new JPanel());
 		this.getContentPane().add(tabs);
 	}
 	
