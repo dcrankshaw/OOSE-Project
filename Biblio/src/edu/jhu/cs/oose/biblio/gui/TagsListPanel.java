@@ -1,17 +1,15 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.nio.ByteOrder;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -42,6 +40,9 @@ public class TagsListPanel extends JPanel {
 		file = fileMetadata;
 		tagsLabel = new JLabel("Tags:");
 		newTagField = new JTextField();
+		newTagField.setColumns(10);
+		// Paul: Can we do this with an ActionListener instead?
+		// That's probably "the right way" to do what we want.
 		newTagField.addKeyListener(new KeyAdapter() {
 			
 			@Override
@@ -79,9 +80,4 @@ public class TagsListPanel extends JPanel {
 		//file.addTag(t);
 		tags.addElement(t.name);
 	}
-	
-	
-	
-	
-
 }
