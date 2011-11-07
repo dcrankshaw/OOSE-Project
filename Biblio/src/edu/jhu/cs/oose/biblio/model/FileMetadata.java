@@ -18,12 +18,6 @@ import javax.persistence.TemporalType;
 public abstract class FileMetadata {
 
 	/**
-	 * The kind of file this is.
-	 * TODO I (Paul) think we can do this with inheritance instead.
-	 */
-	private FileTypes type;
-
-	/**
 	 * The set of tags associated with this file
 	 */
 	private Set<Tag> tags;
@@ -53,8 +47,6 @@ public abstract class FileMetadata {
 		this.openedCount = 0;
 		this.pathToFile = path;
 		this.tags = new HashSet<Tag>();
-		// TODO I just put this here to make it compile...
-		this.type = FileTypes.PDF;
 	}
 	
 	/**
@@ -63,14 +55,12 @@ public abstract class FileMetadata {
 	 * @param timesOpened the number of times this was opened 
 	 * @param path the path to the file contents residing on disk
 	 * @param fileTags the tags to be applied to this file (This is NOT copied)
-	 * @param fileType (Paul - not quite sure)
 	 */
-	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags, FileTypes fileType) {
+	public FileMetadata(Date date, int timesOpened, String path, Set<Tag> fileTags) {
 		this.lastOpened = date;
 		this.openedCount = timesOpened;
 		this.pathToFile = path;
 		this.tags = fileTags;
-		this.type = fileType;
 	}
 	
 	/**
@@ -152,15 +142,6 @@ public abstract class FileMetadata {
 	public void incrementOpenCount() {
 		this.openedCount += 1;
 	}
-
-	/**
-	 * Returns the type of this file.
-	 * @return the type of this file.
-	 */
-	public FileTypes getType() {
-		return this.type;
-	}
-	
 	/**
 	 * Searches the associated FileContents for the given search term
 	 * @param searchTerm the text to search for
@@ -169,5 +150,4 @@ public abstract class FileMetadata {
 	 */
 	//TODO change this to a more specific exception - Dan
 	public abstract int searchText(String searchTerm) throws Exception;
-
 }

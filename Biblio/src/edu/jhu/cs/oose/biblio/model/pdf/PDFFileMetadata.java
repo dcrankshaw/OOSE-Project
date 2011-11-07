@@ -12,7 +12,6 @@ import org.jpedal.objects.PdfPageData;
 
 import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
-import edu.jhu.cs.oose.biblio.model.FileTypes;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
@@ -34,8 +33,7 @@ public class PDFFileMetadata extends FileMetadata {
 	 */
 	public PDFFileMetadata(Date date, int timesOpened, String path,
 			Set<Tag> fileTags) {
-		super(date, timesOpened, path, fileTags, FileTypes.PDF);
-		// TODO Auto-generated constructor stub
+		super(date, timesOpened, path, fileTags);
 		this.contents = null;
 	}
 
