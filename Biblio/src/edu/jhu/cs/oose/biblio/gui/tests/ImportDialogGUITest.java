@@ -24,6 +24,8 @@ public class ImportDialogGUITest {
 	 * @param args ignored
 	 */
 	public static void main(String[] args) {
+		// BUG this does not quit on command-q or selecting quit from the menu
+		// I think this is because it's in a dialog, not a frame. - Paul
 		try
 		{
 			JFrame frame = new JFrame();
