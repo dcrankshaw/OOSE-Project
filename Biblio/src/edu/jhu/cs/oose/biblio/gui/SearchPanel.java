@@ -3,6 +3,7 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -42,13 +43,16 @@ public class SearchPanel extends JPanel {
 		upperPanel.add(queryField, BorderLayout.NORTH);
 		
 		JPanel radioPanel = new JPanel();
+		ButtonGroup searchChoiceGroup = new ButtonGroup();
 		radioPanel.setLayout(new GridLayout(1, 2));
 		searchTagsButton = new JRadioButton("Search Tags");
-		searchTagsButton.setSelected(true);
+		searchChoiceGroup.add(searchTagsButton);
 		searchTextButton = new JRadioButton("Full Text Search");
+		searchChoiceGroup.add(searchTextButton);
 		radioPanel.add(searchTagsButton);
 		radioPanel.add(searchTextButton);
 		upperPanel.add(radioPanel, BorderLayout.CENTER);
+		searchChoiceGroup.setSelected(searchTagsButton.getModel(), true);
 		
 		this.add(upperPanel, BorderLayout.NORTH);
 		tagsScrollPane = new JScrollPane(possibleTagsTable);
