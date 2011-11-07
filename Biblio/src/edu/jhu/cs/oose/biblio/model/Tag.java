@@ -8,7 +8,8 @@ import java.util.Set;
 /**
 *A label to associate a group of files and bookmarks.
 */
-public class Tag {
+public class Tag implements Comparable<Tag>
+{
 
 	/**
 	* The name of the Tag.
@@ -81,5 +82,10 @@ public class Tag {
 	
 	public Collection<FileMetadata> getFiles() {
 		return Collections.unmodifiableCollection(taggedFiles);
+	}
+	
+	@Override
+	public int compareTo(Tag other) {
+		return getName().compareTo(other.getName());
 	}
 }
