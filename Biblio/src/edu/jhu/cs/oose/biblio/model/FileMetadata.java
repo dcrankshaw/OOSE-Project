@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.jpedal.exception.PdfException;
+
 @Entity
 @Table( name = "FILEMETADATA" )
 /**
@@ -92,5 +94,14 @@ public abstract class FileMetadata {
 	public FileTypes getType() {
 		return this.type;
 	}
+	
+	/**
+	 * Searches the associated FileContents for the given search term
+	 * @param searchTerm the text to search for
+	 * @return the number of the times the term occurs
+	 * @throws Exception 
+	 */
+	//TODO change this to a more specific exception - Dan
+	public abstract int searchText(String searchTerm) throws Exception;
 
 }
