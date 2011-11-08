@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,12 +23,20 @@ public class SearchController {
 	private Set<SearchResultsListener> resultsListeners;
 	private Set<SearchTagsListener> tagListeners;
 	
+	/**
+	 * Fire the file search result to each listener
+	 * @param results
+	 */
 	private void fireSearchResult(List<FileMetadata> results){
 		for (SearchResultsListener r : resultsListeners){
 			r.displayResults(results);
 		}
 	}
 	
+	/**
+	 * Fire the tag search result to each listener
+	 * @param matches 
+	 */
 	private void fireSearchTags(Set<Tag> matches){
 		for (SearchTagsListener t : tagListeners){
 			t.matchedTags(matches);
@@ -51,12 +61,14 @@ public class SearchController {
 				"(Select distinct t FROM Tag t join Tag_child c where t.name like \"%" + searchTerm + "%\" and c.parent_name = t.name) tt "
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
 		
+
 		
 		
 	}
 	
-	/** Conducts a search of the full text of each document */
-	public void searchText(List<FileMetadata> files, String searchTerm)
+	/** Conducts a search of the full text of each document 
+	 * @return */
+	public List<ResultsPair> searchText(List<FileMetadata> files, String searchTerm)
 	{
 		
 		
@@ -78,24 +90,54 @@ public class SearchController {
 		 * 
 		 * 
 		 * 
+		 * 
 		 */
 		
-		/*
-		List<ResultsPair> sdkjfhdskj = new List();
-		for(FIle file: files)
-		{
-			int result = file.searchText(searchTerm);
-			listresults.add(new ResultsPair(int, filemetadata));
-			//sort (Collections.sort())
-			//remove all files with 0 occurrences
-			//return the list
-		}*/
+		/**
+		 * 
+		 */
+		List<ResultsPair> pairs = new ArrayList<ResultsPair>();
+		for(FileMetadata file: files)
+		{	
+			int freq = 0;
+			try {
+				freq = file.searchText(searchTerm);
+			} catch (Exception e) {
+				// TODO why does it have to be wrapped with try and catch??? -Cain
+				// Is that because the searchText method requires to throw Exception?
+				e.printStackTrace();
+			}
+			if(freq != 0){
+				//remove all files with 0 occurrences
+				pairs.add(new ResultsPair(freq, file){});	
+			}
+		}
+		Collections.sort(pairs);
+		return pairs;
 		
 		
 	}
 	
-	private class ResultsPair
+	private class ResultsPair implements Comparable<ResultsPair>
 	{
+		private int freq;
+		private FileMetadata file;
+		
+		private ResultsPair(int fq, FileMetadata fl){
+			file = fl;
+			freq = fq;			
+		}
+
+		@Override
+		//TODO why public??
+		public int compareTo(ResultsPair temp) {
+			if( temp.freq >= this.freq ){
+				return 0;
+				}
+			else {
+				return 1;
+			}
+		}
 		
 	}
 	
