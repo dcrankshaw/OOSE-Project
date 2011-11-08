@@ -21,6 +21,18 @@ public class SearchController {
 	private Set<SearchResultsListener> resultsListeners;
 	private Set<SearchTagsListener> tagListeners;
 	
+	private void fireSearchResult(List<FileMetadata> results){
+		for (SearchResultsListener r : resultsListeners){
+			r.displayResults(results);
+		}
+	}
+	
+	private void fireSearchTags(Set<Tag> matches){
+		for (SearchTagsListener t : tagListeners){
+			t.matchedTags(matches);
+		}
+	}
+	
 	/** The UI for the user to enter a search term */
 	public SearchPanel queryInterface;
 	
@@ -38,6 +50,7 @@ public class SearchController {
 				"select tt, distinct ft from " +
 				"(Select distinct t FROM Tag t join Tag_child c where t.name like \"%" + searchTerm + "%\" and c.parent_name = t.name) tt "
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
+		
 		
 		
 	}

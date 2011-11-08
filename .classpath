@@ -4,5 +4,9 @@
 	<classpathentry kind="src" path="Project_db_v1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="C:/Users/msi/workspace/OOSE-Project/libraries/javax.persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msi/workspace/OOSE-Project/libraries/jpedal_lgpl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msi/workspace/OOSE-Project/libraries/hsqldb.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msi/workspace/OOSE-Project/libraries/hibernate3.jar"/>
 	<classpathentry kind="output" path="Biblio/bin"/>
 </classpath>
