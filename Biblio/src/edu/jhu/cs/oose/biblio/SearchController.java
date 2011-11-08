@@ -103,8 +103,8 @@ public class SearchController {
 			try {
 				freq = file.searchText(searchTerm);
 			} catch (Exception e) {
-				// TODO why does it have to be wrapped with try and catch??? -Cain
-				// Is that because the searchText method requires to throw Exception?
+				// TODO why does it have to be wrapped with try and catch??? 
+				// Is that because the searchText method requires to throw Exception? -Cain
 				e.printStackTrace();
 			}
 			if(freq != 0){
@@ -118,6 +118,11 @@ public class SearchController {
 		
 	}
 	
+	/**
+	 * The comparable class that stores a tuple of <int, FileMetadata>
+	 * Enable sort() in Collection utility class
+	 *
+	 */
 	private class ResultsPair implements Comparable<ResultsPair>
 	{
 		private int freq;
@@ -132,7 +137,7 @@ public class SearchController {
 		//TODO why public??
 		public int compareTo(ResultsPair temp) {
 			if( temp.freq >= this.freq ){
-				return 0;
+				return 0; //TODO need to check if it is sorting in the right order
 				}
 			else {
 				return 1;

@@ -1,4 +1,3 @@
-package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Collections;
 import java.util.Date;
