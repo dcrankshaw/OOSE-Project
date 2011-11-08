@@ -125,23 +125,27 @@ public class SearchController {
 	 */
 	private class ResultsPair implements Comparable<ResultsPair>
 	{
-		private int freq;
+		private float density;
 		private FileMetadata file;
 		
-		private ResultsPair(int fq, FileMetadata fl){
+		private ResultsPair(float d, FileMetadata fl){
 			file = fl;
-			freq = fq;			
+			density = d;			
 		}
 
 		@Override
 		//TODO why public??
+		// this.compareTo(other)   ...   this < other?-  this = other?0  this > other?+
 		public int compareTo(ResultsPair temp) {
-			if( temp.freq >= this.freq ){
-				return 0; //TODO need to check if it is sorting in the right order
+
+			if( this.density < temp.density ){
+				return -1; //TODO need to check if it is sorting in the right order
+				//change into density of search
 				}
-			else {
-				return 1;
+			else if (this.density == temp.density) {
+				return 0;
 			}
+			else return 1;
 		}
 		
 	}

@@ -1,3 +1,4 @@
+package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Collections;
 import java.util.Date;
@@ -148,5 +149,6 @@ public abstract class FileMetadata {
 	 * @throws Exception 
 	 */
 	//TODO change this to a more specific exception - Dan
+	//yep, probably not throwing Exception
 	public abstract int searchText(String searchTerm) throws Exception;
 }
