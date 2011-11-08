@@ -1,11 +1,11 @@
 package edu.jhu.cs.oose.biblio;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.HashSet;
-import java.util.Set;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -56,7 +56,7 @@ public class SearchController {
 	}
 	
 	/** Conducts a search of the full text of each document */
-	public void searchText()
+	public void searchText(List<FileMetadata> files, String searchTerm)
 	{
 		
 		
@@ -80,6 +80,22 @@ public class SearchController {
 		 * 
 		 */
 		
+		/*
+		List<ResultsPair> sdkjfhdskj = new List();
+		for(FIle file: files)
+		{
+			int result = file.searchText(searchTerm);
+			listresults.add(new ResultsPair(int, filemetadata));
+			//sort (Collections.sort())
+			//remove all files with 0 occurrences
+			//return the list
+		}*/
+		
+		
+	}
+	
+	private class ResultsPair
+	{
 		
 	}
 	
