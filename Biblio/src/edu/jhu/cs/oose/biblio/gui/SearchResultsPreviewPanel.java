@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
-import edu.jhu.cs.oose.biblio.model.SearchController;
+import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
 import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
 
@@ -21,7 +21,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	/** All of the files that match the search criteria */
 	private List<PreviewPanel> matchingFiles;
 	
-	private SearchController controller;
+	private SearchManager controller;
 	
 	private GridLayout layout;
 	private int columnCount;
@@ -38,7 +38,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 		this.setLayout(layout);
 	}
 	
-	void setSearchController(SearchController sc) {
+	void setSearchController(SearchManager sc) {
 		if( null != controller ) {
 			this.controller.removeResultsListener(this);
 		}

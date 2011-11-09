@@ -15,19 +15,44 @@ import edu.jhu.cs.oose.biblio.gui.SearchPanel;
  * Controls all of the searching logic. It gets a search term and mode from the SearchPanel
  * and actually executes the search. It then provides the results to its listeners
  */
-// TODO Zach suggested we change the name of this class into SearchManager, to eliminate the confusion with MVC in grading
-public class SearchController {
+public class SearchManager {
 
 	private Set<SearchResultsListener> resultsListeners;
 	private Set<SearchTagsListener> tagListeners;
+	private List<FileMetadata> selectedFiles;
+	
+	EntityManagerFactory entityManagerFactory;
+	
+	
+	
+	/** The UI for the user to enter a search term */
+	public SearchPanel queryInterface; //TODO add a listener to this in our constructor - Dan
+	
+	public SearchManager() {
+		resultsListeners = new HashSet<SearchResultsListener>();
+		tagListeners = new HashSet<SearchTagsListener>();
+		selectedFiles = new ArrayList<FileMetadata>();
+		//TODO: how to instantiate an EntityManagerFactory? 
+		//entityManagerFactory = new EntityManagerFactory();
+	}
+	
+	//Constructor just for testing purposes
+	public SearchManager(List<FileMetadata> files) {
+		resultsListeners = new HashSet<SearchResultsListener>();
+		tagListeners = new HashSet<SearchTagsListener>();
+		selectedFiles = files;
+		//TODO: how to instantiate an EntityManagerFactory? 
+		//entityManagerFactory = new EntityManagerFactory();
+	}
+	
 	
 	/**
 	 * Fire the file search result to each listener
 	 * @param results
 	 */
-	private void fireSearchResult(List<FileMetadata> results){
+	private void fireSearchResult(){
 		for (SearchResultsListener r : resultsListeners){
-			r.displayResults(results);
+			r.displayResults(selectedFiles);
 		}
 	}
 	
@@ -41,16 +66,13 @@ public class SearchController {
 		}
 	}
 	
-	/** The UI for the user to enter a search term */
-	public SearchPanel queryInterface;
-	
-	public SearchController() {
-		resultsListeners = new HashSet<SearchResultsListener>();
-		tagListeners = new HashSet<SearchTagsListener>();
+	public void filterByTags(List<Tag> tags)
+	{
+		
 	}
 	
 	/** Conducts a search of all of the tags */
-	public void searchTags(EntityManagerFactory entityManagerFactory, String searchTerm)
+	public void searchTags(String searchTerm)
 	{
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -67,7 +89,7 @@ public class SearchController {
 	/** Conducts a search of the full text of each document 
 	 *
 	 */
-	public void searchText(List<FileMetadata> files, String searchTerm) throws Exception
+	public void searchText(String searchTerm)
 	{
 		
 		
@@ -85,7 +107,7 @@ public class SearchController {
 		 * 
 		 */
 		List<ResultsPair> pairs = new ArrayList<ResultsPair>();
-		for(FileMetadata file: files)
+		for(FileMetadata file: selectedFiles)
 		{	
 			int freq = 0;
 			try {
@@ -95,7 +117,7 @@ public class SearchController {
 				// Is that because the searchText method requires to throw Exception? -Cain
 				// Yes - Dan
 				e.printStackTrace();
-				throw new Exception("Error in full text search");
+				//TODO: maybe launch a dialog warning about a corrupted file - Dan
 			}
 			if(freq != 0){
 				//remove all files with 0 occurrences
@@ -110,8 +132,9 @@ public class SearchController {
 		{
 			matchedFiles.add(pair.file);
 		}
+		selectedFiles = matchedFiles;
 		
-		fireSearchResult(matchedFiles);
+		fireSearchResult();
 	}
 	
 	/**
@@ -146,19 +169,21 @@ public class SearchController {
 		
 	}
 	
-	public void addResultsListener(SearchResultsListener list) {
-		resultsListeners.add(list);
+	public void addResultsListener(SearchResultsListener listener) {
+		resultsListeners.add(listener);
+		listener.displayResults(selectedFiles);
+		
 	}
 	
-	public void removeResultsListener(SearchResultsListener list) {
-		resultsListeners.remove(list);
+	public void removeResultsListener(SearchResultsListener listener) {
+		resultsListeners.remove(listener);
 	}
 	
-	public void addTagsListener(SearchTagsListener list) {
-		tagListeners.add(list);
+	public void addTagsListener(SearchTagsListener listener) {
+		tagListeners.add(listener);
 	}
 	
-	public void removeTagsListener(SearchTagsListener list) {
-		tagListeners.remove(list);
+	public void removeTagsListener(SearchTagsListener listener) {
+		tagListeners.remove(listener);
 	}
 }

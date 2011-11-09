@@ -50,6 +50,14 @@ public class PDFFileMetadata extends FileMetadata {
 		return contents;
 	}
 
+	/**
+	 * Some source taken from:
+	 * http://www.jpedal.org/gplSrc/org/jpedal/examples/text/FindTextInRectangle.java.html
+	 * Searches a document page by page for the number of a times a string appears
+	 * in the document.
+	 * @param searchTerm The string to search for
+	 * @return the number of times the string occurs
+	 */
 	
 	@Override 
 	//TODO Zach suggested not to throw Exception

@@ -15,7 +15,7 @@ import junit.framework.TestCase;
  * 
  *
  */
-public class SearchControllerTest extends TestCase {
+public class SearchManagerTest extends TestCase {
 	
 	PDFFileMetadata testFile1,testFile2,testFile3;
 	
