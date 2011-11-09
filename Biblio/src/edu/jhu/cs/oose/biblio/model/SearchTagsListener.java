@@ -1,8 +1,7 @@
-package edu.jhu.cs.oose.biblio;
+package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Set;
 
-import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
  * When a search of the tags has been completed, this provides a list of the matching tags.

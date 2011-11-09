@@ -6,9 +6,9 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.jhu.cs.oose.biblio.SearchController;
-import edu.jhu.cs.oose.biblio.SearchResultsListener;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.SearchController;
+import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
 import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
 
 /**

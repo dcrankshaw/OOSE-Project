@@ -1,8 +1,7 @@
-package edu.jhu.cs.oose.biblio;
+package edu.jhu.cs.oose.biblio.model;
 
 import java.util.List;
 
-import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
 /**
  * When a search of the documents has been completed, this provides a list of the matching files.

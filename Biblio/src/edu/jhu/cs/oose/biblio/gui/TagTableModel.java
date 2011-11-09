@@ -11,7 +11,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import edu.jhu.cs.oose.biblio.SearchTagsListener;
+import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
 public class TagTableModel implements TableModel, SearchTagsListener {

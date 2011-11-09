@@ -1,4 +1,4 @@
-package edu.jhu.cs.oose.biblio;
+package edu.jhu.cs.oose.biblio.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
-import edu.jhu.cs.oose.biblio.model.FileMetadata;
-import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
  * Controls all of the searching logic. It gets a search term and mode from the SearchPanel
@@ -67,30 +65,20 @@ public class SearchController {
 	}
 	
 	/** Conducts a search of the full text of each document 
-	 * @return */
-	public List<ResultsPair> searchText(List<FileMetadata> files, String searchTerm)
+	 *
+	 */
+	public void searchText(List<FileMetadata> files, String searchTerm) throws Exception
 	{
 		
 		
-		/*
-		 * - get list of possible files to search (all of the files matching current tags filter)
-		 * - for each file, conduct a textSearch(FileTextContents file, String searchTerm) on it
-		 * - this will return an int indicating how well the contents match the search term
-		 * - all files above a certain match threshold will be displayed ranked by how well they match
-		 * 		--not in this iteration, but searching these could/should be done in separate threads
-		 */
+		
 		
 		/************************************************************************************
+		 * We need to figure out a way (or if we even need to) normalize our search
+		 * results that doesn't automatically give higher precedence to longer documents - Dan
 		 * 
-		 * Things to Decide:
-		 * -what string searching/matching algorithm to use
-		 * 		-presumably this will lead to some sort of scoring algorithm for how well the text matches
-		 * 		- this algorithm needs to take into account documents of differing length, so it can't be
-		 * 		  absolute number of matches, must be normalized in some way
-		 * 
-		 * 
-		 * 
-		 * 
+		 * Also, eventually searching can be done in a separate thread(s)
+		 *
 		 */
 		
 		/**
@@ -105,44 +93,52 @@ public class SearchController {
 			} catch (Exception e) {
 				// TODO why does it have to be wrapped with try and catch??? 
 				// Is that because the searchText method requires to throw Exception? -Cain
+				// Yes - Dan
 				e.printStackTrace();
+				throw new Exception("Error in full text search");
 			}
 			if(freq != 0){
 				//remove all files with 0 occurrences
 				pairs.add(new ResultsPair(freq, file){});	
 			}
 		}
+		
 		Collections.sort(pairs);
-		return pairs;
+		List<FileMetadata> matchedFiles = new ArrayList<FileMetadata>();
 		
+		for(ResultsPair pair: pairs)
+		{
+			matchedFiles.add(pair.file);
+		}
 		
+		fireSearchResult(matchedFiles);
 	}
 	
 	/**
-	 * The comparable class that stores a tuple of <int, FileMetadata>
-	 * Enable sort() in Collection utility class
+	 * A Comparable object to store the results of each file's search. The object
+	 * allows for sorting based on the relevance of each search results, so we
+	 * can provide a list of search results ordered by relevance.
 	 *
 	 */
 	private class ResultsPair implements Comparable<ResultsPair>
 	{
-		private float density;
+		private int occurrences;
 		private FileMetadata file;
 		
-		private ResultsPair(float d, FileMetadata fl){
+		private ResultsPair(int d, FileMetadata fl){
 			file = fl;
-			density = d;			
+			occurrences = d;			
 		}
 
 		@Override
-		//TODO why public??
-		// this.compareTo(other)   ...   this < other?-  this = other?0  this > other?+
 		public int compareTo(ResultsPair temp) {
 
-			if( this.density < temp.density ){
-				return -1; //TODO need to check if it is sorting in the right order
-				//change into density of search
+			//TODO: the more occurrences a pair has, the closer to the front of the list (and therefore the "smaller")
+			// it should be, double check that this does that - Dan
+			if( this.occurrences > temp.occurrences ){
+				return -1; 
 				}
-			else if (this.density == temp.density) {
+			else if (this.occurrences == temp.occurrences) {
 				return 0;
 			}
 			else return 1;
