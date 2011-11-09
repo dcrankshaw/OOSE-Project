@@ -51,7 +51,8 @@ public class PDFFileMetadata extends FileMetadata {
 	}
 
 	
-	@Override
+	@Override 
+	//TODO Zach suggested not to throw Exception
 	public int searchText(String searchTerm) throws Exception {
 
 		PdfDecoder decodePdf;
@@ -118,5 +119,12 @@ public class PDFFileMetadata extends FileMetadata {
 		}
 		return num_results;
 	}
-
+	
+//	//TODO need to discuss how to normalize
+//	public float normalize(int freq){
+//		
+//		return normed;
+//		
+//	}
+	
 }

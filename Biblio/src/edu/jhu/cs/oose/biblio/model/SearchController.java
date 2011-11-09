@@ -15,7 +15,7 @@ import edu.jhu.cs.oose.biblio.gui.SearchPanel;
  * Controls all of the searching logic. It gets a search term and mode from the SearchPanel
  * and actually executes the search. It then provides the results to its listeners
  */
-
+// TODO Zach suggested we change the name of this class into SearchManager, to eliminate the confusion with MVC in grading
 public class SearchController {
 
 	private Set<SearchResultsListener> resultsListeners;
