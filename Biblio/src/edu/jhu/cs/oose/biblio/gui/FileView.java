@@ -9,5 +9,9 @@ package edu.jhu.cs.oose.biblio.gui;
  * can make the right tab the current tab.
  */
 public interface FileView {
+	/**
+	 * Makes this view visible, say, by selecting the right tab
+	 * or making the window the one on top.
+	 */
 	public void makeVisible();
 }
