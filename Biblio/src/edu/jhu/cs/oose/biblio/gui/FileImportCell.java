@@ -20,11 +20,6 @@ import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
  */
 public class FileImportCell extends JPanel
 {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	/** the preview of the file to display to the user */
 	public PreviewPanel preview;
 	/** The list of tags this file has already been tagged with */
@@ -35,14 +30,28 @@ public class FileImportCell extends JPanel
 	private boolean isSelected;
 	/** Value determines what the user wants to do with the file. */
 	private CopyStatus copyStatus;
+	/** Our preferred choice for copying/moving/leaving files */
 	private static final CopyStatus DEFAULT_COPY_STATUS = CopyStatus.MOVEFILE;
+	/** The button that tells us to copy the file into our repository. */
 	private JRadioButton copyStatusButton;
+	/** The button that tells us to move the file into our repository. */
 	private JRadioButton moveStatusButton;
+	/** The button that tells us to reference the existing file.
+	 * There will not be a copy in our repository. */
 	private JRadioButton leaveStatusButton;
-	private static String moveString = "Move";
-	private static String leaveInPlaceString = "In Place";
-	private static String copyString = "Copy";
+	/** The string telling the user that the file will be moved into the repository. */
+	private static final String MOVE_STRING = "Move";
+	/** The string telling the user that the file will be left along and not copied to the repository. */
+	private static final String LEAVE_IN_PLACE_STRING = "In Place";
+	/** The string telling the user that the file will be copied into the repository. */
+	private static final String COPY_STRING = "Copy";
 	
+	/**
+	 * Creates a cell that allows the user to describe how this file
+	 * should be imported.  This panel gets used to apply tags
+	 * and select how the file should be copied.
+	 * @param fileMetadata the file to handle
+	 */
 	public FileImportCell(FileMetadata fileMetadata)
 	{
 		this.file = fileMetadata;
@@ -58,7 +67,7 @@ public class FileImportCell extends JPanel
 			preview = null; //means we can't display a preview of the file, which is okay
 		}
 		
-		this.copyStatusButton = new JRadioButton(copyString);
+		this.copyStatusButton = new JRadioButton(COPY_STRING);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -67,7 +76,7 @@ public class FileImportCell extends JPanel
 			}	
 		});
 		
-		this.moveStatusButton = new JRadioButton(moveString);
+		this.moveStatusButton = new JRadioButton(MOVE_STRING);
 		this.moveStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -77,7 +86,7 @@ public class FileImportCell extends JPanel
 		});
 		this.moveStatusButton.setSelected(true);
 		copyStatus = DEFAULT_COPY_STATUS;
-		this.leaveStatusButton = new JRadioButton(leaveInPlaceString);
+		this.leaveStatusButton = new JRadioButton(LEAVE_IN_PLACE_STRING);
 		this.leaveStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -104,9 +113,6 @@ public class FileImportCell extends JPanel
 		
 	}
 	
-	
-	
-	
 	/**
 	 * Adds a tag to the FileMetadata for the file this cell is previewing
 	 * @param tag The tag the user wants to add to the FileMetadata
@@ -116,26 +122,56 @@ public class FileImportCell extends JPanel
 		this.tagsPanel.addTag(tag);
 	}
 	
+	/**
+	 * Gets the file being tagged, etc. by this cell.
+	 * @return the file being tagged, etc. by this cell.
+	 */
 	public FileMetadata getFileMetadata() {
 		return file;
 	}
 
+	/**
+	 * Sets the file being tagged, etc. by this cell.
+	 * @param file the file being tagged, etc. by this cell.
+	 */
 	public void setFileMetadata(FileMetadata file) {
 		this.file = file;
 	}
 
+	/**
+	 * Whether or not this cell is highlighted.  If the cell
+	 * selected, then tags applied to multiple files at once
+	 * will be applied to this file.
+	 * @return true if the cell is selected, false otherwise
+	 */
 	public boolean isSelected() {
 		return isSelected;
 	}
 
+	/**
+	 * Sets whether or not this cell is highlighted.  If the cell
+	 * selected, then tags applied to multiple files at once
+	 * will be applied to this file.
+	 * @param isSelected the selection state of the cell
+	 */
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
 
+	/**
+	 * Returns whether this file should be copied or moved
+	 * into the repository, or just referenced in place.
+	 * @return how to reference the file in our repository
+	 */
 	public CopyStatus getCopyStatus() {
 		return copyStatus;
 	}
 
+	/**
+	 * Sets whether this file should be copied or moved
+	 * into the repository, or just referenced in place.
+	 * @param copyStatus how to reference the file in our repository
+	 */
 	private void setCopyStatus(CopyStatus copyStatus) {
 		this.copyStatus = copyStatus;
 	}

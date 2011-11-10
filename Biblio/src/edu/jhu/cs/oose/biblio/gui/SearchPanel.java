@@ -24,15 +24,8 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  */
 public class SearchPanel extends JPanel {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7701379661120997247L;
-
-
 	/** The text field for the user to enter search terms */
 	private JTextField queryField;
-	
 	
 	/** A radio button to indicate whether to search for tags */
 	private JRadioButton searchTagsButton;
@@ -46,12 +39,22 @@ public class SearchPanel extends JPanel {
 	/** A scroll pane to contain the table of tags.	 */
 	private JScrollPane  tagsScrollPane;
 	
+	/** Whether the next search should be tags or full text. */
 	private SearchMode currentSearchMode;
 	
+	/** The object that will actually do the searching. */
 	private SearchManager controller;
 	
+	/**
+	 * The table that stores which tags are currently
+	 * selected for filtering and displays results of searching
+	 * for tags
+	 */
 	private TagTableModel tagTable;
 	
+	/**
+	 * Creates a new UI for searching.
+	 */
 	public SearchPanel() {
 		currentSearchMode = SearchMode.TAGS;
 		
@@ -112,7 +115,12 @@ public class SearchPanel extends JPanel {
 		tagsScrollPane = new JScrollPane(possibleTagsTable);
 		this.add(tagsScrollPane, BorderLayout.CENTER);
 	}
-		
+	
+	/**
+	 * Sets how the next search should be conducted,
+	 * either for tags or for text
+	 * @param newMode the next search method
+	 */
 	public void setSearchMode(SearchMode newMode) {
 		this.currentSearchMode = newMode;
 	}
@@ -134,6 +142,7 @@ public class SearchPanel extends JPanel {
 		controller.filterByTags(selectedTags);
 	}
 	
+	/** Triggers execution of the search. */
 	private void executeSearch() {
 		if( this.currentSearchMode == SearchMode.FULLTEXT ) {
 			controller.searchText(queryField.getText());

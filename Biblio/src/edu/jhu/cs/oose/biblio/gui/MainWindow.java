@@ -8,11 +8,22 @@ import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
+/**
+ * The main window that contains the interface to Biblio 
+ */
 public class MainWindow extends JFrame {
 
+	/**
+	 * The tabs that select between searching and reading documents.
+	 */
 	private JTabbedPane tabs;
+	/** An object that can produce full views of files. */
 	private FullFilePanelFactory factory;
 	
+	/**
+	 * Creates the Searching tab of the interface.
+	 * @return the searching panel
+	 */
 	private JPanel makeSearchPanel() {
 		JPanel largePanel = new JPanel();
 		
@@ -29,6 +40,9 @@ public class MainWindow extends JFrame {
 		return largePanel;
 	}
 	
+	/**
+	 * Creates a new GUI.  This is the reading/searching window.
+	 */
 	public MainWindow() {
 		super();
 		this.factory = new FullFilePanelFactory();
@@ -45,6 +59,10 @@ public class MainWindow extends JFrame {
 		FileViewManager.getPropertiesManager().setFactory(new PropertiesWindowFactory());
 	}
 	
+	/**
+	 * Creates a new window and displays it onscreen.
+	 * @param args  Command line arguments - they get ignored.
+	 */
 	public static void main(String[] args) {
 		// Initialize the DB?
 		MainWindow win = new MainWindow();
@@ -52,10 +70,16 @@ public class MainWindow extends JFrame {
 		win.setVisible(true);
 	}
 	
+	/** The tabs displayed in the interface
+	 * @return the tabs displayed in the interface
+	 */
 	private JTabbedPane getTabbedPane() {
 		return this.tabs;
 	}
 	
+	/**
+	 * Creates new tabs that display full files.
+	 */
 	private class FileTabFactory implements FileViewFactory {
 		@Override
 		public FileView newView(FileMetadata file) {
@@ -65,12 +89,20 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * A wrapper for the tabs, so that the FileViewManager can
+	 * manage the full views of files.
+	 */
 	private class FileTab extends JPanel implements FileView {
 		@Override
 		public void makeVisible() {
 			getTabbedPane().setSelectedComponent(this);
 		}
 		
+		/**
+		 * Creates a new tab that displays the given file
+		 * @param data the file to display
+		 */
 		public FileTab(FileMetadata data) {
 			this.add(factory.newFullFilePanel(data));
 		}

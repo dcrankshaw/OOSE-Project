@@ -19,6 +19,4 @@ public class SearchResultsListPanel extends JPanel {
 	 * Table where the results are displayed
 	 */
 	private JTable table;
-	
-	
 }

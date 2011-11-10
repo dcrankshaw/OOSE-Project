@@ -2,13 +2,11 @@ package edu.jhu.cs.oose.biblio.model;
 
 import java.util.List;
 
-
 /**
  * When a search of the documents has been completed, this provides a list of the matching files.
  * The ordering of the files will reflect a priority ordering (either alphabetical or relevance
  * depending on the context)
  */
-
 public interface SearchResultsListener {
 	
 	/**

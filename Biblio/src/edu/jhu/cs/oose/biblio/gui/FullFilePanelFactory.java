@@ -5,7 +5,16 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileContents;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
+/**
+ * Factory class for producing panels that display
+ * an entire file.
+ */
 public class FullFilePanelFactory {
+	/**
+	 * Creates a Panel that displays the full version of the given file.
+	 * @param file the file to display
+	 * @return a Panel that displays the file
+	 */
 	public FullFilePanel newFullFilePanel(FileMetadata file) {
 		// TODO Zach says to use the visitor pattern here
 		if( file instanceof PDFFileMetadata ) {

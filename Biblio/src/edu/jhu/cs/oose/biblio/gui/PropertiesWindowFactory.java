@@ -7,10 +7,23 @@ import javax.swing.JFrame;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
+/**
+ * A class that creates the Properties windows for
+ * all the files.
+ */
 public class PropertiesWindowFactory implements FileViewFactory {
+	/**
+	 * A window that contains a PropertiesPanel and removes
+	 * the view from the manager when it is closed.
+	 */
 	private class PropertiesFrame extends JFrame implements FileView
 	{
+		/** The panel displaying the proprties of the file */
 		private PropertiesPanel panel;
+		/**
+		 * Creates a new window to display the properties of the given file.
+		 * @param f the file whose properties should be displayed.
+		 */
 		public PropertiesFrame(FileMetadata f) {
 			super();
 			this.panel = new PropertiesPanel(f);

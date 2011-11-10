@@ -1,5 +1,14 @@
 This is the repository for OOSE group 7's Biblio project.
 
+Iteration 4:
+The Eclipse project is in the Biblio Directory.
+
+The following parts can be run:
+The classes in edu.jhu.cs.oose.biblio.model.tests can be run as JUnit tests.
+The class edu.jhu.cs.oose.biblio.gui.MainWindow can be run as a Java Application
+The classes in edu.jhu.cs.oose.biblio.gui.tests can be run as Java Applications
+
+Iteration 3:
 We're using Eclipse.  We promise.
 We haven't commited the project because it includes absolute pathnames we don't want to deal with.
 

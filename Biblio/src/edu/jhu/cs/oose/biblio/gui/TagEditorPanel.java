@@ -11,7 +11,7 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  */
 public class TagEditorPanel extends JPanel {
 	
-	/** A table containg all of the tags. The user can select from here to edit
+	/** A table containing all of the tags. The user can select from here to edit
 	 * existing tags.
 	 */
 	private JTable overallTagTable;
