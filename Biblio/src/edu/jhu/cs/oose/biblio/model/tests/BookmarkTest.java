@@ -37,7 +37,7 @@ public class BookmarkTest extends TestCase {
 	 * Tests the mark method of Bookmark, I think (Paul).
 	 * See my comments on that method.
 	 */
-	public void testMark() {
+	/*public void testMark() {
 		
 		DBManager manager = new DBManager();
 		assertTrue("Bad input", bkmk.mark(file, loc));//test how to handle bad input
@@ -54,10 +54,7 @@ public class BookmarkTest extends TestCase {
 		assertSame("Inconsistancy", b.getFile(), file);
 		// TODO Paul: I have no idea what the line above does...
 		
-		// test whether allow to bookmark the same destination twice.
-		bkmk1.mark(file, loc);
-		assertSame("Duplicate bookmark", bkmk, bkmk1);
-	}
+	}*/
 	
 	/**
 	 *  Test if the bookmarked file exists.
@@ -73,10 +70,4 @@ public class BookmarkTest extends TestCase {
 		assertNotNull("File does not exist", bkmk.getLocation());
 	}
 		
-	/**
-	 *  test if data is consistent in the database.
-	 */
-	public void testGetTags() {
-		assertSame("Inconsistancy", bkmk.tags(),bkmk.tags);		
-	}
 }

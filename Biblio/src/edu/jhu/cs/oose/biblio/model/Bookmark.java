@@ -35,8 +35,9 @@ public class Bookmark {
 	*/
 	/**
 	* DO WE ALLOW MULTIPLE BOOKMARK POINT TO THE SAME FILEMETADATA??
+	* Yes
 	*/
-	@OneToOne(optional=true, fetch=FetchType.EAGER)
+	@OneToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="FMETA_ID")
 	private FileMetadata file;
 

@@ -12,7 +12,6 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
-import edu.jhu.cs.oose.biblio.model.FileTypes;
 import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -56,7 +55,7 @@ public class DatabaseTest extends TestCase{
 		pdfmeta.setLastOpened(d);
 		assertEquals(d.getTime(), pdfmeta.getLastOpened().getTime());
 		pdfmeta.setOpenedCount(11);
-		pdfmeta.setType(FileTypes.PDF);
+		
 		
 		// Bookmark
 		Bookmark b = new Bookmark();
@@ -98,7 +97,6 @@ public class DatabaseTest extends TestCase{
 		assertEquals(Calendar.getInstance().get(Calendar.DATE ), cal.get(Calendar.DATE ));
 		assertEquals(Calendar.getInstance().get(Calendar.MONTH ), cal.get(Calendar.MONTH ));
 		assertEquals(11, f.getOpenedCount());
-		assertEquals("PDF", f.getType().toString());
 		assertEquals("Pop Song", tg.getName());
 		assertEquals((float) 15.5, bm.getLocation().getPercentageOfFile());
 		assertEquals(11, bm.getFile().getOpenedCount());

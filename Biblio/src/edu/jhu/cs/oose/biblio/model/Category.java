@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,8 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table( name = "CATEGORY" )
+
 /**
 *An group of tags
 */

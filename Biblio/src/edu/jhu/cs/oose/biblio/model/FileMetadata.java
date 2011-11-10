@@ -40,7 +40,6 @@ public abstract class FileMetadata {
 	
 	@Column(name="FILE_TYPE")
 	@Enumerated(EnumType.STRING)
-	private FileTypes type;
 
 	/**
 	 * The set of tags associated with this file
@@ -103,10 +102,10 @@ public abstract class FileMetadata {
 		this.tags = fileTags;
 	}
 	
-	public FileMetadata(String pathToFile) {
+	/*public FileMetadata(String pathToFile) {
 		tags = new HashSet<Tag>();
 		this.pathToFile = pathToFile;
-	}
+	}*/
 	
 	public int getId() {
 		return id;

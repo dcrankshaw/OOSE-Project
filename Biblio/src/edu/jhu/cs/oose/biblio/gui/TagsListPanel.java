@@ -85,7 +85,7 @@ public class TagsListPanel extends JPanel {
 	public void addTag(Tag t)
 	{
 		//file.addTag(t);
-		tags.addElement(t.name);
+		tags.addElement(t.getName());
 	}
 	
 	public void setFile(FileMetadata f) {
