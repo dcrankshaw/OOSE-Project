@@ -29,11 +29,12 @@ public class SearchManager {
 	/** The UI for the user to enter a search term */
 	public SearchPanel queryInterface; //TODO add a listener to this in our constructor - Dan
 	
-	public SearchManager() {
+	public SearchManager(SearchPanel ui) {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
 		entityManagerFactory = Persistence.createEntityManagerFactory("edu.jhu.cs.oose.biblio.model.jpa");
+		queryInterface = ui;
 	}
 	
 	//Constructor just for testing purposes
@@ -66,9 +67,11 @@ public class SearchManager {
 		}
 	}
 	
-	public void filterByTags(List<Tag> tags)
+	public void filterByTags(Set<Tag> tags)
 	{
-		
+		//TODO query database
+		//selectedFiles = database results
+		fireSearchResult();
 	}
 	
 	/** Conducts a search of all of the tags */

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -12,7 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import edu.jhu.cs.oose.biblio.gui.TagTableModel.TagSelectionChangedEvent;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
  * Provides the UI to search. Encloses the text field where search terms are entered, as well as the list of possible tags
@@ -20,8 +24,15 @@ import edu.jhu.cs.oose.biblio.model.SearchManager;
  */
 public class SearchPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7701379661120997247L;
+
+
 	/** The text field for the user to enter search terms */
 	private JTextField queryField;
+	
 	
 	/** A radio button to indicate whether to search for tags */
 	private JRadioButton searchTagsButton;
@@ -39,6 +50,8 @@ public class SearchPanel extends JPanel {
 	
 	private SearchManager controller;
 	
+	private TagTableModel tagTable;
+	
 	public SearchPanel() {
 		currentSearchMode = SearchMode.TAGS;
 		
@@ -51,7 +64,19 @@ public class SearchPanel extends JPanel {
 			}
 		});
 		
-		possibleTagsTable = new JTable(new TagTableModel());
+		
+		tagTable = new TagTableModel();
+		tagTable.addTagSelectionListener(new TagSelectionChangedListener() {
+			
+			@Override
+			public void tagSelectionChanged(TagSelectionChangedEvent e) {
+				Set<Tag> selectedTags = new HashSet<Tag>(e.oldTags);
+				selectedTags.addAll(e.newTags);
+				selectedTags.removeAll(e.removedTags);
+				executeFilter(selectedTags);
+			}
+		});
+		possibleTagsTable = new JTable(tagTable);
 		
 		this.setLayout(new BorderLayout());
 		
@@ -98,6 +123,15 @@ public class SearchPanel extends JPanel {
 	 */
 	public SearchMode getSearchMode() {
 		return this.currentSearchMode;
+	}
+	
+	/**
+	 * Tells SearchManager to select all files tagged by the entire set of selectedTags
+	 * @param selectedTags All of the tags a file needs to have
+	 */
+	private void executeFilter(Set<Tag> selectedTags)
+	{
+		controller.filterByTags(selectedTags);
 	}
 	
 	private void executeSearch() {

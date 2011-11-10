@@ -16,19 +16,26 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 
 public class TagTableModel implements TableModel, SearchTagsListener {
 
-	private Set<TableModelListener> listeners;
+	private Set<TableModelListener> tableListeners;
+	private Set<TagSelectionChangedListener> tagSelectionListeners;
 	private List<Tag> tags;
 	private Set<Tag> selectedTags;
 
 	public TagTableModel() {
-		listeners = new HashSet<TableModelListener>();
+		tableListeners = new HashSet<TableModelListener>();
+		tagSelectionListeners = new HashSet<TagSelectionChangedListener>();
 		tags = new ArrayList<Tag>();
 		selectedTags = new HashSet<Tag>();
 	}
 
 	@Override
 	public void addTableModelListener(TableModelListener listener) {
-		listeners.add(listener);
+		tableListeners.add(listener);
+	}
+	
+	public void addTagSelectionListener(TagSelectionChangedListener listener)
+	{
+		tagSelectionListeners.add(listener);
 	}
 
 	@Override
@@ -85,10 +92,19 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 
 	@Override
 	public void removeTableModelListener(TableModelListener listener) {
-		listeners.remove(listener);
+		tableListeners.remove(listener);
+	}
+	
+	public void removeTagSelectionListener(TagSelectionChangedListener listener)
+	{
+		tagSelectionListeners.remove(listener);
 	}
 
 	public class TagSelectionChangedEvent extends TableModelEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		Set<Tag> oldTags;
 		Set<Tag> newTags;
 		Set<Tag> removedTags;
@@ -130,7 +146,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 			selectedTags.remove(tags.get(row));
 			rmTags = Collections.singleton(t);
 		}
-		emitEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
+		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}
 
 	public void matchedTags(Set<Tag> matches) {
@@ -139,8 +155,15 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		emitEvent(new TableModelEvent(this));
 	}
 
+	private void emitTagEvent(TagSelectionChangedEvent e) {
+		for (TagSelectionChangedListener listener : tagSelectionListeners) {
+			listener.tagSelectionChanged(e);
+		}
+	}
+	
+	
 	private void emitEvent(TableModelEvent e) {
-		for (TableModelListener listener : listeners) {
+		for (TableModelListener listener : tableListeners) {
 			listener.tableChanged(e);
 		}
 	}
