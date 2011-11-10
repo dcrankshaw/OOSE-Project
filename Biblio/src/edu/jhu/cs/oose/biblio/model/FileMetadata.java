@@ -5,39 +5,79 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * A set of information about a file
  */
 @Entity
 @Table( name = "FILEMETADATA" )
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
 public abstract class FileMetadata {
+
+	@Id
+	@GenericGenerator(name="generator", strategy="increment")
+	@GeneratedValue(generator="generator")
+    @Column(name="FMETA_ID")
+	private int id;
+	
+	@Column(name="FILE_TYPE")
+	@Enumerated(EnumType.STRING)
+	private FileTypes type;
 
 	/**
 	 * The set of tags associated with this file
 	 */
+	@ManyToMany(mappedBy="taggedFiles", fetch=FetchType.EAGER)
 	private Set<Tag> tags;
 
 	/**
 	 * The full path name of the file
 	 */
+	@Column(name="PATH_TO_FILE")
 	private String pathToFile;
 
 	/**
 	 * The date of the last time the file was opened
 	 */
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="LAST_OPENED")
+	@Temporal(TemporalType.DATE)
 	private Date lastOpened;
 
 	/**
 	 * The number of the times the file has been opened
 	 */
+	@Column(name="OPENED_COUNT")
 	private int openedCount;
 	
+	/**
+	 * Creates a new for the contents on disk with default initialization for the other fields.
+	 * @param path the path to the file contents residing on disk
+	 */
+	public FileMetadata() {
+		this.lastOpened = new Date();
+		this.openedCount = 0;
+		this.pathToFile = "";
+		this.tags = new HashSet<Tag>();
+	}
+    
 	/**
 	 * Creates a new for the contents on disk with default initialization for the other fields.
 	 * @param path the path to the file contents residing on disk
@@ -63,12 +103,18 @@ public abstract class FileMetadata {
 		this.tags = fileTags;
 	}
 	
-	/**
-	 * Get the file contents
-	 * 
-	 * @return contents The file contents
-	 */
-	public abstract FileContents getContents();
+	public FileMetadata(String pathToFile) {
+		tags = new HashSet<Tag>();
+		this.pathToFile = pathToFile;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	/**
 	 * Returns true if the two metadata objects describe the same file
@@ -85,7 +131,11 @@ public abstract class FileMetadata {
 	 * @return a copy of the set of tags applied to this file.
 	 */
 	public Set<Tag> getTags() {
-		return Collections.unmodifiableSet(tags);
+		return tags;
+	}
+	
+	public void addTags(Tag t) {
+		tags.add(t);
 	}
 
 	/**
@@ -142,7 +192,8 @@ public abstract class FileMetadata {
 	public void incrementOpenCount() {
 		this.openedCount += 1;
 	}
-	/**
+	
+    /**
 	 * Searches the associated FileContents for the given search term
 	 * @param searchTerm the text to search for
 	 * @return the number of the times the term occurs
@@ -151,4 +202,11 @@ public abstract class FileMetadata {
 	//TODO change this to a more specific exception - Dan
 	//yep, probably not throwing Exception
 	public abstract int searchText(String searchTerm) throws Exception;
+	
+	/**
+	 * Get the file contents
+	 * 
+	 * @return contents The file contents
+	 */
+	public abstract FileContents getContents();
 }
