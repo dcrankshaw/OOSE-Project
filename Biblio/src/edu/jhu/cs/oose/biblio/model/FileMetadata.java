@@ -1,6 +1,5 @@
 package edu.jhu.cs.oose.biblio.model;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,6 +29,7 @@ import org.hibernate.annotations.GenericGenerator;
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
 public abstract class FileMetadata {
 
+	/** The ID used to identify this object in the database */
 	@Id
 	@GenericGenerator(name="generator", strategy="increment")
 	@GeneratedValue(generator="generator")
@@ -64,8 +62,8 @@ public abstract class FileMetadata {
 	private int openedCount;
 	
 	/**
-	 * Creates a new for the contents on disk with default initialization for the other fields.
-	 * @param path the path to the file contents residing on disk
+	 * Creates a new empty object.  This is mostly here so that
+	 * Hibernate can fill in all the data.
 	 */
 	public FileMetadata() {
 		this.lastOpened = new Date();
@@ -99,10 +97,18 @@ public abstract class FileMetadata {
 		this.tags = fileTags;
 	}
 	
+	/**
+	 * Gets the unique ID used in the database for this object.
+	 * @return the unique ID used in the database for this object.
+	 */
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * Sets the unique ID used in the database for this object.
+	 * @param id the unique ID used in the database for this object.
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -125,7 +131,11 @@ public abstract class FileMetadata {
 		return tags;
 	}
 	
-	public void addTags(Tag t) {
+	/**
+	 * Adds the given tag to those applied to this FileMetadata
+	 * @param t the tag to apply to this file
+	 */
+	public void addTag(Tag t) {
 		tags.add(t);
 	}
 
@@ -188,12 +198,16 @@ public abstract class FileMetadata {
 	 * Searches the associated FileContents for the given search term
 	 * @param searchTerm the text to search for
 	 * @return the number of the times the term occurs
-	 * @throws Exception 
+	 * @throws Exception if there was an error reading or parsing the file
 	 */
 	//TODO change this to a more specific exception - Dan
 	//yep, probably not throwing Exception
 	public abstract int searchText(String searchTerm) throws Exception;
 	
+	/**
+	 * Returns a string identifying this file to the user.
+	 * @return a string identifying this file to the user
+	 */
 	public String getName() {
 		// TODO have this return only the last portion of the path
 		if( this.pathToFile == null ) {
@@ -204,7 +218,6 @@ public abstract class FileMetadata {
 	
 	/**
 	 * Get the file contents
-	 * 
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
