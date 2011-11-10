@@ -4,12 +4,21 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TreeSet;
 
+import junit.framework.TestCase;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
-import junit.framework.TestCase;
 
 /**
  * 
@@ -18,8 +27,10 @@ import junit.framework.TestCase;
 public class SearchManagerTest extends TestCase {
 	
 	PDFFileMetadata testFile1,testFile2,testFile3;
+	SessionFactory sessionFactory;
 	
 	protected void setUp() throws Exception {
+		
 		super.setUp();
 		String path1 = "testfiles/test1.pdf", path2 = "testfiles/test2.pdf", path3 = "testfiles/test3.pdf";
 		File f1 = new File(path1), f2 = new File(path2), f3 = new File(path3);
@@ -48,6 +59,7 @@ public class SearchManagerTest extends TestCase {
 			testFile2 = null;
 		}//TODO maybe abstract to a class -Cain
 		
+		sessionFactory = new Configuration().configure().buildSessionFactory();
 	}
 
 	public void testGetContents() {
@@ -77,8 +89,56 @@ public class SearchManagerTest extends TestCase {
 	}
 	
 	public void testSearchTags() {
-		fail("Not yet implemented");
-		//TODO need to complete searchTag()first
+		SearchManager searcher = new SearchManager();
+		
+		tagsSamePrefix(searcher);
+		
+		
+		
+	}
+	
+	private class MySearchTagsListener implements SearchTagsListener
+	{
+		String searchTerm;
+		int expectedNumResults;
+		public MySearchTagsListener(String term, int numResults)
+		{
+			searchTerm = term;
+			expectedNumResults = numResults;
+		}
+		
+		@Override
+		public void matchedTags(List<Tag> matches) {
+			assertEquals(matches.size(), expectedNumResults);
+			for(Tag t: matches)
+			{
+				assertSame(true, t.getName().contains(searchTerm));
+			}
+		}
+	}
+	
+	/**
+	 * adds some tags with the same prefix and searches for that prefix
+	 */
+	private void tagsSamePrefix(SearchManager searcher)
+	{
+		String searchTerm = "abc";
+		MySearchTagsListener myListener = new MySearchTagsListener(searchTerm, 4);
+		searcher.addTagsListener(myListener);
+		List<Tag> tags = new ArrayList<Tag>();
+		tags.add(new Tag("abc"));
+		tags.add(new Tag("abcd"));
+		tags.add(new Tag("abcdeefg"));
+		tags.add(new Tag("xyzabc"));
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		for(Tag t: tags)
+		{
+			session.save(t);
+		}
+		session.getTransaction().commit();
+		searcher.searchTags(searchTerm);
+		searcher.removeTagsListener(myListener);
 	}
 	
 }

@@ -70,6 +70,7 @@ public class Tag implements Comparable<Tag> {
 	private Set<Bookmark> taggedBookmarks;
 	
 	public Tag() {
+		name = null;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();

@@ -1,6 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
-import java.util.Set;
+import java.util.List;
+
 
 
 /**
@@ -17,5 +18,5 @@ public interface SearchTagsListener {
 	 * to display the results of the search
 	 * @param matches All of the matching tags
 	 */
-	public void matchedTags(Set<Tag> matches);
+	public void matchedTags(List<Tag> matches);
 }
