@@ -2,6 +2,8 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -9,6 +11,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import edu.jhu.cs.oose.biblio.model.SearchManager;
 
 /**
  * Provides the UI to search. Encloses the text field where search terms are entered, as well as the list of possible tags
@@ -31,9 +35,22 @@ public class SearchPanel extends JPanel {
 	/** A scroll pane to contain the table of tags.	 */
 	private JScrollPane  tagsScrollPane;
 	
+	private SearchMode currentSearchMode;
+	
+	private SearchManager controller;
+	
 	public SearchPanel() {
+		currentSearchMode = SearchMode.TAGS;
+		
 		queryField = new JTextField();
 		queryField.setColumns(20);
+		queryField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				executeSearch();
+			}
+		});
+		
 		possibleTagsTable = new JTable(new TagTableModel());
 		
 		this.setLayout(new BorderLayout());
@@ -46,8 +63,20 @@ public class SearchPanel extends JPanel {
 		ButtonGroup searchChoiceGroup = new ButtonGroup();
 		radioPanel.setLayout(new GridLayout(1, 2));
 		searchTagsButton = new JRadioButton("Search Tags");
+		searchTagsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setSearchMode(SearchMode.TAGS);
+			}
+		});
 		searchChoiceGroup.add(searchTagsButton);
 		searchTextButton = new JRadioButton("Full Text Search");
+		searchTextButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setSearchMode(SearchMode.FULLTEXT);
+			}
+		});
 		searchChoiceGroup.add(searchTextButton);
 		radioPanel.add(searchTagsButton);
 		radioPanel.add(searchTextButton);
@@ -58,13 +87,9 @@ public class SearchPanel extends JPanel {
 		tagsScrollPane = new JScrollPane(possibleTagsTable);
 		this.add(tagsScrollPane, BorderLayout.CENTER);
 	}
-	
-	/**
-	 * Gets the search term
-	 * @return the search term
-	 */
-	public String getQueryText(){
-		return null;
+		
+	public void setSearchMode(SearchMode newMode) {
+		this.currentSearchMode = newMode;
 	}
 	
 	/** 
@@ -72,6 +97,15 @@ public class SearchPanel extends JPanel {
 	 * @return the search mode
 	 */
 	public SearchMode getSearchMode() {
-		return SearchMode.TAGS;
+		return this.currentSearchMode;
+	}
+	
+	private void executeSearch() {
+		if( this.currentSearchMode == SearchMode.FULLTEXT ) {
+			controller.searchText(queryField.getText());
+		}
+		else if( this.currentSearchMode == SearchMode.TAGS ) {
+			controller.searchTags(queryField.getText());
+		}
 	}
 }
