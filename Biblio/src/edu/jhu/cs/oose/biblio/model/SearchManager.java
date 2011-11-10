@@ -6,9 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
 
@@ -22,18 +24,17 @@ public class SearchManager {
 	private Set<SearchTagsListener> tagListeners;
 	private List<FileMetadata> selectedFiles;
 	
-	EntityManagerFactory entityManagerFactory;
-	
+	SessionFactory sessionFactory;
 	
 	
 	/** The UI for the user to enter a search term */
 	public SearchPanel queryInterface; //TODO add a listener to this in our constructor - Dan
 	
 	public SearchManager(SearchPanel ui) {
+		sessionFactory = new Configuration().configure().buildSessionFactory();
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
-		entityManagerFactory = Persistence.createEntityManagerFactory("edu.jhu.cs.oose.biblio.model.jpa");
 		queryInterface = ui;
 	}
 	
@@ -77,7 +78,7 @@ public class SearchManager {
 	/** Conducts a search of all of the tags */
 	public void searchTags(String searchTerm)
 	{
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		/*EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		List<Tag> searchResults = (List<Tag>) entityManager.createQuery(
 				"select tt, distinct ft from " +
@@ -85,7 +86,20 @@ public class SearchManager {
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
 		
 		
-		entityManager.close();
+		entityManager.close();*/
+		
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		String query = "from Tag t join Tag_child c where t.name like '%" + searchTerm + "%' and c.parent_name = t.name";
+		List<Tag> searchResults = (List<Tag>) session.createQuery("select t from Tag t join Tag_Child c where" +
+				"t.name like \"%" + searchTerm);
+		
+		
+		/*Criteria crit = session.createCriteria(Tag.class)
+				.add(Restrictions.like("name", "%" + searchTerm + "%"))
+				.add(Restrictions.)*/
+		
+		
 		
 
 		
