@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +56,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 	@Override
 	public String getColumnName(int col) {
 		if (col == 0) {
-			return "s";
+			return "";
 		} else if (col == 1) {
 			return "Tag Name";
 		} else {
@@ -149,6 +148,11 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}
 
+	/**
+	 * When the user enters text, then submits it to the SearchManager,
+	 * the search manager calls this method
+	 */
+	@Override
 	public void matchedTags(Set<Tag> matches) {
 		tags = new ArrayList<Tag>(matches);
 		Collections.sort(tags);
