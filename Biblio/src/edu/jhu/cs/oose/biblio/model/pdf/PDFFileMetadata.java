@@ -144,10 +144,10 @@ public class PDFFileMetadata extends FileMetadata {
 		return num_results;
 	}
 	
-//	//TODO need to discuss how to normalize
+//	//TODO need to discuss how to normalize the 
 //	public float normalize(int freq){
 //		
-//		return normed;
+//		return density;
 //		
 //	}
 	

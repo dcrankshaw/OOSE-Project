@@ -4,69 +4,65 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
 import java.io.File;
-import java.util.Date;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
-import edu.jhu.cs.oose.biblio.model.Tag;
-import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 import junit.framework.TestCase;
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
+import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 /**
- * 
+ * Test the SearchManger class
  *
  */
 public class SearchManagerTest extends TestCase {
+	SearchManager search;
+	List<FileMetadata> testFiles = new ArrayList<FileMetadata>();
+	List<PDFFileMetadata> searchResults = new ArrayList<PDFFileMetadata>();
 	
-	PDFFileMetadata testFile1,testFile2,testFile3;
+	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		String path1 = "testfiles/test1.pdf", path2 = "testfiles/test2.pdf", path3 = "testfiles/test3.pdf";
-		File f1 = new File(path1), f2 = new File(path2), f3 = new File(path3);
-		if(f1.exists())
-		{
-			testFile1 = new PDFFileMetadata(new Date(), 0, path1, new TreeSet<Tag>());
-		}
-		else
-		{
-			testFile1 = null;
-		}
-		if(f2.exists())
-		{
-			testFile2 = new PDFFileMetadata(new Date(), 0, path2, new TreeSet<Tag>());
-		}
-		else
-		{
-			testFile2 = null;
-		}
-		if(f3.exists())
-		{
-			testFile2 = new PDFFileMetadata(new Date(), 0, path3, new TreeSet<Tag>());
-		}
-		else
-		{
-			testFile2 = null;
-		}//TODO maybe abstract to a class -Cain
+		String path1 = "testfiles/test4.pdf", path2 = "testfiles/test5.pdf", path3 = "testfiles/test6.pdf";
+		this.fileExist(path1);//2 Occurrences of searchTerm "Ignorance"
+		this.fileExist(path2);//5 Occurrences, should return on the top of the list
+		this.fileExist(path3);//1 Occurrences
+		search = new SearchManager(testFiles);
+		
 		
 	}
-
+	
 	public void testGetContents() {
 		fail("Not yet implemented");
 	}
-
+	
+	/**
+	 * Test if searchText() returns results in the correct order
+	 *
+	 */
 	public void testSearchText() {
-		String search1 = "Gildas"; //String occurs once in document
-		String search0 = "kjsdhfkjdsh"; //String occurs 0 times
-		String searchMany = "Maxwell";
-		assertFalse(testFile1 == null);
+		assertFalse(testFiles == null);
+		String searchTerm = "Ignorance"; 
+		List<PDFFileMetadata> expectedResults = new ArrayList<PDFFileMetadata>();
+		expectedResults.add(new PDFFileMetadata("testfiles/test5.pdf"));
+		expectedResults.add(new PDFFileMetadata("testfiles/test4.pdf"));
+		expectedResults.add(new PDFFileMetadata("testfiles/test6.pdf"));
+		
 		try
 		{
-			int results1 = testFile1.searchText(search1);
-			assertEquals(1, results1);
-			assertEquals(0, testFile1.searchText(search0));
-			int resultsMany = testFile1.searchText(searchMany);
-			assertTrue(resultsMany > 10);
-			System.out.println(resultsMany);
+			search.searchText(searchTerm);
+			search.addResultsListener(new TestListener());
+			for (FileMetadata f : searchResults){
+				System.out.println(f.getPathToFile());
+			}
+			for (int i = 0; i< searchResults.size(); i++)
+			{
+				assertTrue(searchResults.get(i).equals(expectedResults.get(i)));
+				
+			}
 		}
 		catch(Exception e)
 		{
@@ -81,6 +77,24 @@ public class SearchManagerTest extends TestCase {
 		//TODO need to complete searchTag()first
 	}
 	
+	public void fileExist(String path){			
+		File f = new File(path);
+		if(f.exists())
+		{
+			testFiles.add(new PDFFileMetadata(path));
+		}
+	}
+
+	public class TestListener implements SearchResultsListener{
+		@Override
+		public void displayResults(List<FileMetadata> results){
+			for (FileMetadata f : results){
+				searchResults.add((PDFFileMetadata) f);
+			}
+		}
+	}
+	
 }
+
 
 
