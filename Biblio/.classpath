@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="libraries/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="libraries/c3p0-0.9.1.2.jar"/>
+	<classpathentry kind="lib" path="libraries/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="libraries/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="libraries/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libraries/hibernate-search-3.4.1.Final.jar"/>
+	<classpathentry kind="lib" path="libraries/hibernate-validator-4.2.0.Final.jar"/>
+	<classpathentry kind="lib" path="libraries/hibernate3.jar"/>
+	<classpathentry kind="lib" path="libraries/hsqldb.jar"/>
+	<classpathentry kind="lib" path="libraries/javassist-3.12.0.GA.jar"/>
+	<classpathentry kind="lib" path="libraries/javax.persistence-2.0.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jboss-common-4.0.2.jar"/>
+	<classpathentry kind="lib" path="libraries/jpedal_lgpl.jar"/>
+	<classpathentry kind="lib" path="libraries/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="libraries/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="libraries/lucene-core-3.4.0.jar"/>
+	<classpathentry kind="lib" path="libraries/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="libraries/slf4j-simple-1.6.4.jar"/>
+	<classpathentry kind="lib" path="libraries/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
