@@ -88,13 +88,13 @@ public class SearchManagerTest extends TestCase {
 		}
 	}
 	
+	/**
+	 * Tests on searching for tags by text
+	 */
 	public void testSearchTags() {
 		SearchManager searcher = new SearchManager();
 		
 		tagsSamePrefix(searcher);
-		
-		
-		
 	}
 	
 	private class MySearchTagsListener implements SearchTagsListener
@@ -119,6 +119,7 @@ public class SearchManagerTest extends TestCase {
 	
 	/**
 	 * adds some tags with the same prefix and searches for that prefix
+	 * expected result is that all of the tags will appear in the search result
 	 */
 	private void tagsSamePrefix(SearchManager searcher)
 	{

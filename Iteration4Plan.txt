@@ -1,0 +1,20 @@
+In this iteration we accomplished the bulk of our goals. We have a database up and working, with it passing
+all of the unit tests written for it. We are using Hibernate with HSQLDB as our database solution. We have almost
+completed the GUI, with only a couple small components still needing to be written. In addition, we have implemented
+full text searching of PDF files, and searching for tags in the database based on a string search term. Both
+of these search methods have unit tests written for them that they pass. Although we didn't get quite as far with
+the GUI being connected to the model as we had hoped, we got much farther with the full-text searching than
+we expected. This turned out to be relatively easy to do, and so we hope to eventually implement some sort of
+highlighting of full-text search results.
+
+For the next iteration, we will have the full program working, with basic importing, tagging (and tag editing),
+ and reading all possible from the GUI. We will also write the method to filter by tags, which has relatively
+complicated functionality and cannot be expressed with a simple database query. We will have begun to implement
+RSS feed reading, but without the expectation that this will be fully completed by Iteration 5. We will also
+allow for bookmarking of files and adding tags to categories.
+
+By iteration 6, the full program will be functional, and the GUI will be nicely polished. RSS reading and
+automatic importing and tagging will be implemented. We plan to add support for the epub format as well, which is
+an open source xhtml based layout format. We will also add some support to remember sessions across application
+closing (so that we can e.g. reopen the last tabs that were open). We will also add support for adding notes to
+files and bookmarks.
