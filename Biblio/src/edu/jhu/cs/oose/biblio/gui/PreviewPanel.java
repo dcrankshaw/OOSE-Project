@@ -1,6 +1,11 @@
 package edu.jhu.cs.oose.biblio.gui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 
 /**
@@ -16,5 +21,18 @@ public abstract class PreviewPanel extends FileDisplayPanel {
 	 */
 	public PreviewPanel() {
 		this.setBorder(BorderFactory.createEtchedBorder());
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.add(new JMenuItem("Show Properties"));
+		this.setComponentPopupMenu(popupMenu);
+		
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if( e.getClickCount() == 2 ) {
+					FileViewManager.getViewManager().openFileView(getFile());
+				}
+			}
+		});
 	}
 }
