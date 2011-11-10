@@ -153,7 +153,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 	 * the search manager calls this method
 	 */
 	@Override
-	public void matchedTags(Set<Tag> matches) {
+	public void matchedTags(List<Tag> matches) {
 		tags = new ArrayList<Tag>(matches);
 		Collections.sort(tags);
 		emitEvent(new TableModelEvent(this));

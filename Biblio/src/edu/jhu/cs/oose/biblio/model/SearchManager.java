@@ -1,14 +1,18 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
 
@@ -22,19 +26,14 @@ public class SearchManager {
 	private Set<SearchTagsListener> tagListeners;
 	private List<FileMetadata> selectedFiles;
 	
-	EntityManagerFactory entityManagerFactory;
+	SessionFactory sessionFactory;
 	
 	
-	
-	/** The UI for the user to enter a search term */
-	public SearchPanel queryInterface; //TODO add a listener to this in our constructor - Dan
-	
-	public SearchManager(SearchPanel ui) {
+	public SearchManager() {
+		sessionFactory = new Configuration().configure().buildSessionFactory();
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
-		entityManagerFactory = Persistence.createEntityManagerFactory("edu.jhu.cs.oose.biblio.model.jpa");
-		queryInterface = ui;
 	}
 	
 	//Constructor just for testing purposes
@@ -61,23 +60,43 @@ public class SearchManager {
 	 * Fire the tag search result to each listener
 	 * @param matches 
 	 */
-	private void fireSearchTags(Set<Tag> matches){
+	private void fireSearchTags(List<Tag> matches){
 		for (SearchTagsListener t : tagListeners){
 			t.matchedTags(matches);
 		}
 	}
 	
+	/**
+	 * Select all files tagged with this entire set of tags or any child tags of these tags
+	 * @param tags the tags to filter by
+	 */
 	public void filterByTags(Set<Tag> tags)
 	{
-		//TODO query database
-		//selectedFiles = database results
+		// TODO this method is a little complicated. It will be implemented in the next iteration
+		Collection<String> tagNames = new ArrayList<String>();
+		for(Tag tag: tags)
+		{
+			tagNames.add(tag.getName());
+		}
+		 
+		
+		Session session = sessionFactory.getCurrentSession();
+		Criteria crit = session.createCriteria(Tag.class);
+		crit.add(Restrictions.in("name", tagNames));
+		crit.setFetchMode("Tag_child", FetchMode.JOIN);
+		
 		fireSearchResult();
+		/**
+		 * from tag_child c where c.parent_name in t.name
+		 */
 	}
 	
-	/** Conducts a search of all of the tags */
+	/** Conducts a search of all of the tags
+	 * @param searchTerm the phrase to search for 
+	 */
 	public void searchTags(String searchTerm)
 	{
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		/*EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		List<Tag> searchResults = (List<Tag>) entityManager.createQuery(
 				"select tt, distinct ft from " +
@@ -85,29 +104,35 @@ public class SearchManager {
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
 		
 		
-		entityManager.close();
+		entityManager.close();*/
 		
-
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
 		
 		
+		Criteria crit = session.createCriteria(Tag.class)
+				.add(Restrictions.like("name", "%" + searchTerm + "%"));
+		@SuppressWarnings("unchecked")
+		List<Tag> results = (List<Tag>) crit.list();
+		session.getTransaction().commit();
+		fireSearchTags(results);
 	}
 	
 	/**
 	 * Conducts a search of the full text of each document
+	 * @param searchTerm the phrase to search for
 	 */
 	public void searchText(String searchTerm)
 	{
-		/************************************************************************************
+		/*
 		 * We need to figure out a way (or if we even need to) normalize our search
 		 * results that doesn't automatically give higher precedence to longer documents - Dan
 		 * 
-		 * Also, eventually searching can be done in a separate thread(s)
+		 * TODO: Also, eventually searching can be done in a separate thread(s)
 		 *
 		 */
 		
-		/**
-		 * 
-		 */
+		
 		List<ResultsPair> pairs = new ArrayList<ResultsPair>();
 		for(FileMetadata file: selectedFiles)
 		{	
@@ -115,9 +140,7 @@ public class SearchManager {
 			try {
 				freq = file.searchText(searchTerm);
 			} catch (Exception e) {
-				// TODO why does it have to be wrapped with try and catch??? 
-				// Is that because the searchText method requires to throw Exception? -Cain
-				// Yes - Dan
+				
 				e.printStackTrace();
 				//TODO: maybe launch a dialog warning about a corrupted file - Dan
 			}
@@ -171,20 +194,36 @@ public class SearchManager {
 		
 	}
 	
+	/**
+	 * adds a listener that will be triggered when files are searched for
+	 * @param listener the listener to be added
+	 */
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
 		listener.displayResults(selectedFiles);
 		
 	}
 	
+	/**
+	 * removes a files listener
+	 * @param listener the listener to be removed
+	 */
 	public void removeResultsListener(SearchResultsListener listener) {
 		resultsListeners.remove(listener);
 	}
 	
+	/**
+	 * Adds a listener that will be triggered when tags are searched for
+	 * @param listener the listener to be added
+	 */
 	public void addTagsListener(SearchTagsListener listener) {
 		tagListeners.add(listener);
 	}
 	
+	/**
+	 * removes a tags listener
+	 * @param listener the listener to be removed
+	 */
 	public void removeTagsListener(SearchTagsListener listener) {
 		tagListeners.remove(listener);
 	}
