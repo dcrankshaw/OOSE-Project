@@ -17,7 +17,6 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  * Automatically recognizes tags that are entered in and converts the string to an atomic entity. If it cannot
  * find a match, it will create a new tag. Also displays all tags currently associated with this file.
  */
-
 public class TagsListPanel extends JPanel {
 	
 	/** All of the tags already added to the file */
@@ -27,17 +26,22 @@ public class TagsListPanel extends JPanel {
 	// list, so that you type into the list, and it absorbs
 	// recognized tags into atomic units.  Just my thoughts... Paul
 	
+	/** The file whose tags are displayed in this panel */
 	private FileMetadata file;
 	
 	/** The text entered into the pane by the user */
 	public String text;
 	
-	JLabel tagsLabel;
+	/** The label saying "Tags:" */
+	private JLabel tagsLabel;
 	
-	JTextField newTagField;
+	/** The text field for entering new tags */
+	private JTextField newTagField;
 	
+	/** Display of the tags that have already been applied to this file. */
 	JList addedTags;
 	
+	/** Creates a new Panel that displays the tags applied to a file. */
 	public TagsListPanel() {
 		tagsLabel = new JLabel("Tags:");
 		newTagField = new JTextField();
@@ -65,6 +69,10 @@ public class TagsListPanel extends JPanel {
 		this.add(tagsLabel, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * Creates a new panel that displays the tags applied to the file
+	 * @param fileMetadata the file whose tags should be displayed
+	 */
 	public TagsListPanel(FileMetadata fileMetadata)
 	{
 		this();
@@ -82,12 +90,20 @@ public class TagsListPanel extends JPanel {
 		addTag(new Tag(tagName));
 	}
 	
+	/**
+	 * Adds a tag to this file
+	 * @param t the tag to apply 
+	 */
 	public void addTag(Tag t)
 	{
 		//file.addTag(t);
 		tags.addElement(t.getName());
 	}
 	
+	/**
+	 * Sets the file whose tags should be displayed
+	 * @param f the file whose tags should be displayed
+	 */
 	public void setFile(FileMetadata f) {
 		this.file = f;
 		tags.clear();

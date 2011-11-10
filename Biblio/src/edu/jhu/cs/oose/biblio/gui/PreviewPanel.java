@@ -26,6 +26,10 @@ public abstract class PreviewPanel extends FileDisplayPanel {
 		this(null);
 	}
 	
+	/**
+	 * Creates a panel that displays a preview of the given panel
+	 * @param f the file to display a preview of.
+	 */
 	public PreviewPanel(FileMetadata f) {
 		super(f);
 		this.setBorder(BorderFactory.createEtchedBorder());
