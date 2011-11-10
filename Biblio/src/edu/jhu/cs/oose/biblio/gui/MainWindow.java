@@ -6,9 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
+
 public class MainWindow extends JFrame {
 
 	private JTabbedPane tabs;
+	private FullFilePanelFactory factory;
 	
 	private JPanel makeSearchPanel() {
 		JPanel largePanel = new JPanel();
@@ -28,10 +31,13 @@ public class MainWindow extends JFrame {
 	
 	public MainWindow() {
 		super();
+		this.factory = new FullFilePanelFactory();
 		tabs = new JTabbedPane();
 		JPanel searchPanel = makeSearchPanel();
 		tabs.add("Search", searchPanel);
 		this.getContentPane().add(tabs);
+		
+		FileViewManager.getViewManager().setFactory(new FileTabFactory());
 	}
 	
 	public static void main(String[] args) {
@@ -39,5 +45,29 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
+	}
+	
+	private JTabbedPane getTabbedPane() {
+		return this.tabs;
+	}
+	
+	private class FileTabFactory implements FileViewFactory {
+		@Override
+		public FileView newView(FileMetadata file) {
+			FileTab result = new FileTab(file);
+			getTabbedPane().add(file.getName(), result);
+			return result;
+		}
+	}
+	
+	private class FileTab extends JPanel implements FileView {
+		@Override
+		public void makeVisible() {
+			getTabbedPane().setSelectedComponent(this);
+		}
+		
+		public FileTab(FileMetadata data) {
+			this.add(factory.newFullFilePanel(data));
+		}
 	}
 }
