@@ -54,13 +54,4 @@ public class TagTest extends TestCase {
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

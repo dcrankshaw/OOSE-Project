@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import edu.jhu.cs.oose.biblio.gui.SearchPanel;
 
@@ -32,8 +33,7 @@ public class SearchManager {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
-		//TODO: how to instantiate an EntityManagerFactory? 
-		//entityManagerFactory = new EntityManagerFactory();
+		entityManagerFactory = Persistence.createEntityManagerFactory("edu.jhu.cs.oose.biblio.model.jpa");
 	}
 	
 	//Constructor just for testing purposes
@@ -80,6 +80,9 @@ public class SearchManager {
 				"select tt, distinct ft from " +
 				"(Select distinct t FROM Tag t join Tag_child c where t.name like \"%" + searchTerm + "%\" and c.parent_name = t.name) tt "
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
+		
+		
+		entityManager.close();
 		
 
 		
