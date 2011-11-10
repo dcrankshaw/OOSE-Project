@@ -14,16 +14,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-import edu.jhu.cs.oose.biblio.gui.SearchPanel;
-
 /**
  * Controls all of the searching logic. It gets a search term and mode from the SearchPanel
  * and actually executes the search. It then provides the results to its listeners
  */
 public class SearchManager {
 
+	/** Listeners that should be notified when a search returns files. */
 	private Set<SearchResultsListener> resultsListeners;
+	/** Listeners that should be notified when a search returns tags. */
 	private Set<SearchTagsListener> tagListeners;
+	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
 	
 	SessionFactory sessionFactory;
@@ -37,7 +38,12 @@ public class SearchManager {
 	}
 	
 	//Constructor just for testing purposes
+	/** Creates a SearchManager that will search the given files.
+	 * This is useful for our testing.
+	 * @param files the files the Manager should search
+	 */
 	public SearchManager(List<FileMetadata> files) {
+		sessionFactory = new Configuration().configure().buildSessionFactory();
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = files;
@@ -45,11 +51,7 @@ public class SearchManager {
 		//entityManagerFactory = new EntityManagerFactory();
 	}
 	
-	
-	/**
-	 * Fire the file search result to each listener
-	 * @param results
-	 */
+	/** Fire the file search result to each listener. */
 	private void fireSearchResult(){
 		for (SearchResultsListener r : resultsListeners){
 			r.displayResults(selectedFiles);
@@ -58,7 +60,7 @@ public class SearchManager {
 	
 	/**
 	 * Fire the tag search result to each listener
-	 * @param matches 
+	 * @param matches the tags that matched the original query
 	 */
 	private void fireSearchTags(List<Tag> matches){
 		for (SearchTagsListener t : tagListeners){
@@ -92,7 +94,8 @@ public class SearchManager {
 	}
 	
 	/** Conducts a search of all of the tags
-	 * @param searchTerm the phrase to search for 
+	 * for the ones that match the query string
+	 * @param searchTerm the string to match against tag names 
 	 */
 	public void searchTags(String searchTerm)
 	{
@@ -102,8 +105,7 @@ public class SearchManager {
 				"select tt, distinct ft from " +
 				"(Select distinct t FROM Tag t join Tag_child c where t.name like \"%" + searchTerm + "%\" and c.parent_name = t.name) tt "
 				+ "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file").getResultList();
-		
-		
+				
 		entityManager.close();*/
 		
 		Session session = sessionFactory.getCurrentSession();
@@ -117,22 +119,19 @@ public class SearchManager {
 		session.getTransaction().commit();
 		fireSearchTags(results);
 	}
-	
+		
 	/**
-	 * Conducts a search of the full text of each document
-	 * @param searchTerm the phrase to search for
+	 * Conducts a search of the full text of each document.
+	 * @param searchTerm the text to find in the document.
 	 */
 	public void searchText(String searchTerm)
 	{
-		/*
+		/* ***********************************************************************************
 		 * We need to figure out a way (or if we even need to) normalize our search
 		 * results that doesn't automatically give higher precedence to longer documents - Dan
 		 * 
-		 * TODO: Also, eventually searching can be done in a separate thread(s)
-		 *
+		 * Also, eventually searching can be done in a separate thread(s)
 		 */
-		
-		
 		List<ResultsPair> pairs = new ArrayList<ResultsPair>();
 		for(FileMetadata file: selectedFiles)
 		{	
@@ -166,13 +165,18 @@ public class SearchManager {
 	 * A Comparable object to store the results of each file's search. The object
 	 * allows for sorting based on the relevance of each search results, so we
 	 * can provide a list of search results ordered by relevance.
-	 *
 	 */
 	private class ResultsPair implements Comparable<ResultsPair>
 	{
+		/** The number of times this result was found in the file. */
 		private int occurrences;
+		/** The file that was searched. */
 		private FileMetadata file;
 		
+		/** Creates a new pair of the occurrences of the search term in this file
+		 * @param d the number of occurrences of the search term
+		 * @param fl the file that was searched
+		 */
 		private ResultsPair(int d, FileMetadata fl){
 			file = fl;
 			occurrences = d;			
@@ -195,8 +199,8 @@ public class SearchManager {
 	}
 	
 	/**
-	 * adds a listener that will be triggered when files are searched for
-	 * @param listener the listener to be added
+	 * Adds an object that wants to know about files that are found.
+	 * @param listener an object that wants to know about files that are found.
 	 */
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
@@ -205,24 +209,24 @@ public class SearchManager {
 	}
 	
 	/**
-	 * removes a files listener
-	 * @param listener the listener to be removed
+	 * Stops sending search results made of files to the given object.
+	 * @param listener the object that wants to stop getting notifications.
 	 */
 	public void removeResultsListener(SearchResultsListener listener) {
 		resultsListeners.remove(listener);
 	}
 	
 	/**
-	 * Adds a listener that will be triggered when tags are searched for
-	 * @param listener the listener to be added
+	 * Adds an object that wants to know about tags that are found.
+	 * @param listener an object that wants to know about tags that are found.
 	 */
 	public void addTagsListener(SearchTagsListener listener) {
 		tagListeners.add(listener);
 	}
 	
 	/**
-	 * removes a tags listener
-	 * @param listener the listener to be removed
+	 * Stops sending search results made of tags to the given object.
+	 * @param listener the object that wants to stop getting notifications.
 	 */
 	public void removeTagsListener(SearchTagsListener listener) {
 		tagListeners.remove(listener);
