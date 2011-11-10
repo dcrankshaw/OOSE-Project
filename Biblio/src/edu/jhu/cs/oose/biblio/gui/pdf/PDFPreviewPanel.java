@@ -9,6 +9,7 @@ import org.jpedal.exception.PdfException;
 
 import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileContents;
+import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 
 /**
@@ -39,10 +40,10 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 * of the given file contents
 	 * @param c the file contents to preview
 	 */
-	public PDFPreviewPanel(PDFFileContents c)
+	public PDFPreviewPanel(PDFFileMetadata c)
 	{
-		super();
-		setContents(c);
+		super(c);
+		setContents((PDFFileContents)c.getContents());
 	}
 	
 	@Override

@@ -7,7 +7,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import edu.jhu.cs.oose.biblio.gui.FileViewManager;
 import edu.jhu.cs.oose.biblio.gui.ImportDialog;
+import edu.jhu.cs.oose.biblio.gui.PropertiesWindowFactory;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -39,6 +41,7 @@ public class ImportDialogGUITest {
 			String path2 = "testfiles/test2.pdf";
 			FileMetadata file2 = new PDFFileMetadata(new Date(), 0, path2, new HashSet<Tag>());
 			files.add(file2);
+			FileViewManager.getPropertiesManager().setFactory(new PropertiesWindowFactory());
 			ImportDialog testDialog = new ImportDialog(files, frame);
 		}
 		catch(Exception e)

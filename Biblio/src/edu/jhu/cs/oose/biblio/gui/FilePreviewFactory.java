@@ -12,7 +12,7 @@ public class FilePreviewFactory {
 	{
 		// Zach says to use the visitor pattern here
 		if( file instanceof PDFFileMetadata ) {
-			return new PDFPreviewPanel((PDFFileContents)file.getContents());
+			return new PDFPreviewPanel((PDFFileMetadata)file);
 		}
 		throw new UnsupportedFiletypeException("This filetype is unsupported");
 	}

@@ -13,6 +13,10 @@ public abstract class FileDisplayPanel extends JPanel {
 	/** The file that this display panel displays */
 	private FileMetadata file;
 	
+	public FileDisplayPanel(FileMetadata f) {
+		this.file = f;
+	}
+	
 	/**
 	 *  The file that this display panel displays
 	 *	@return the file that this display panel displays  
