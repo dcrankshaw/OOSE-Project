@@ -10,6 +10,7 @@ public class FilePreviewFactory {
 
 	public static PreviewPanel createPreview(FileMetadata file) throws UnsupportedFiletypeException
 	{
+		// Zach says to use the visitor pattern here
 		if( file instanceof PDFFileMetadata ) {
 			return new PDFPreviewPanel((PDFFileContents)file.getContents());
 		}
