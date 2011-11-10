@@ -35,7 +35,6 @@ public class TagTest extends TestCase {
 	
 	public void testTagBookmarks() {
 		
-		assertTrue("Bad input", tag.tagBookmark(bkmk));
 	}
 	
 	public void testGetBookmarks() {
@@ -43,10 +42,7 @@ public class TagTest extends TestCase {
 		//tag.getBookmarks();
 	}
 	
-	public void testTagFile() {
-		
-		assertTrue("Bad input", tag.tagFile(file));
-	}
+	
 	
 	public void testGetFiles() {
 		fail("not yet implemented");

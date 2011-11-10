@@ -30,6 +30,7 @@ public class Bookmark {
 
 	/**
 	* DO WE ALLOW MULTIPLE BOOKMARK POINT TO THE SAME FILEMETADATA??
+	* Yes
 	*/
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="FMETA_ID", nullable=false)
