@@ -38,6 +38,11 @@ public class MainWindow extends JFrame {
 		this.getContentPane().add(tabs);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());
+		
+		// This is kind of where the main loop is,
+		// at least the one that I'm (Paul) writing,
+		// so I'll set this up here...
+		FileViewManager.getPropertiesManager().setFactory(new PropertiesWindowFactory());
 	}
 	
 	public static void main(String[] args) {
