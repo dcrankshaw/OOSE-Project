@@ -1,10 +1,7 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
-import java.util.Collection;
-
 import junit.framework.TestCase;
 import edu.jhu.cs.oose.biblio.model.Bookmark;
-import edu.jhu.cs.oose.biblio.model.DBManager;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Location;
 
