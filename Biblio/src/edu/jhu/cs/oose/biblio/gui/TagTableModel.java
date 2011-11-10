@@ -13,13 +13,23 @@ import javax.swing.table.TableModel;
 import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
+/**
+ * The data model of the table that displays
+ * the tags matching the current query and selects
+ * which ones should be used for filtering.
+ */
 public class TagTableModel implements TableModel, SearchTagsListener {
 
+	/** Objects that need to know when the table should be updated.	 */
 	private Set<TableModelListener> tableListeners;
+	/** Objects that need to know when the selected tags have changed. */
 	private Set<TagSelectionChangedListener> tagSelectionListeners;
+	/** The tags that should be displayed */
 	private List<Tag> tags;
+	/** The tags that have been selected for filtering */
 	private Set<Tag> selectedTags;
 
+	/** Creates a new data model for displaying found tags and filtering. */
 	public TagTableModel() {
 		tableListeners = new HashSet<TableModelListener>();
 		tagSelectionListeners = new HashSet<TagSelectionChangedListener>();
@@ -32,6 +42,11 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		tableListeners.add(listener);
 	}
 	
+	/**
+	 * Adds the given object to those that will be notified of changes
+	 * to the set of selected tags.
+	 * @param listener the object to be notified
+	 */
 	public void addTagSelectionListener(TagSelectionChangedListener listener)
 	{
 		tagSelectionListeners.add(listener);
@@ -94,22 +109,35 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		tableListeners.remove(listener);
 	}
 	
+	/**
+	 * Takes this object off the list of objects that will be notified when the
+	 * selected tags for filtering change. 
+	 * @param listener the object that doesn't want to be notified
+	 */
 	public void removeTagSelectionListener(TagSelectionChangedListener listener)
 	{
 		tagSelectionListeners.remove(listener);
 	}
 
+	/** An event describing how the selected tags have changed. */
 	public class TagSelectionChangedEvent extends TableModelEvent {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+		/** The tags that were selected before this event. */
 		Set<Tag> oldTags;
+		/** Tags that weren't selected before but are selected now. */
 		Set<Tag> newTags;
+		/** Tags that were selected before but aren't now.
+		 * These are also in oldTags. */
 		Set<Tag> removedTags;
 
 		// The event takes ownership of these things and assumes that
 		// they will not be changed later, i.e., they are already copies
+		/** Creates a new event, with the given changes in selected tags.
+		 * @param model the TableModel triggering the event
+		 * @param row the row that triggered the event
+		 * @param old the set of tags selected before this event
+		 * @param n the set of tags that are newly selected
+		 * @param gone the set of tags that are no longer selected
+		 */
 		public TagSelectionChangedEvent(TableModel model, int row,
 				Set<Tag> old, Set<Tag> n, Set<Tag> gone) {
 			super(model, row);
@@ -159,13 +187,23 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		emitEvent(new TableModelEvent(this));
 	}
 
+	/**
+	 * Sends the given tag changed event to all the listeners.
+	 * This also sends the event to the Table Listeners
+	 * @param e the event to broadcast.
+	 */
 	private void emitTagEvent(TagSelectionChangedEvent e) {
 		for (TagSelectionChangedListener listener : tagSelectionListeners) {
 			listener.tagSelectionChanged(e);
 		}
+		emitEvent(e);
 	}
 	
-	
+	/**
+	 * Sends the given event to all the listeners that need
+	 * to know something in the table changed.
+	 * @param e the event to broadcast
+	 */
 	private void emitEvent(TableModelEvent e) {
 		for (TableModelListener listener : tableListeners) {
 			listener.tableChanged(e);
