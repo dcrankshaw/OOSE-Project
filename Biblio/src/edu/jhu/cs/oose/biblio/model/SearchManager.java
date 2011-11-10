@@ -86,15 +86,11 @@ public class SearchManager {
 		
 	}
 	
-	/** Conducts a search of the full text of each document 
-	 *
+	/**
+	 * Conducts a search of the full text of each document
 	 */
 	public void searchText(String searchTerm)
 	{
-		
-		
-		
-		
 		/************************************************************************************
 		 * We need to figure out a way (or if we even need to) normalize our search
 		 * results that doesn't automatically give higher precedence to longer documents - Dan
@@ -121,7 +117,7 @@ public class SearchManager {
 			}
 			if(freq != 0){
 				//remove all files with 0 occurrences
-				pairs.add(new ResultsPair(freq, file){});	
+				pairs.add(new ResultsPair(freq, file));
 			}
 		}
 		
