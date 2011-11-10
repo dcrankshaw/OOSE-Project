@@ -1,6 +1,5 @@
 package edu.jhu.cs.oose.biblio.gui;
 
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -12,11 +11,13 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 public abstract class FileDisplayPanel extends JPanel {
 
 	/** The file that this display panel displays */
-	public FileMetadata file;
+	private FileMetadata file;
 	
-	/** A right click menu displaying actions to perform with this
-	 * file
+	/**
+	 *  The file that this display panel displays
+	 *	@return the file that this display panel displays  
 	 */
-	public JMenu rightClickMenu;
-	
+	public FileMetadata getFile() {
+		return this.file;
+	}
 }
