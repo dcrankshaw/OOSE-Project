@@ -151,4 +151,12 @@ public abstract class FileMetadata {
 	//TODO change this to a more specific exception - Dan
 	//yep, probably not throwing Exception
 	public abstract int searchText(String searchTerm) throws Exception;
+	
+	public String getName() {
+		// TODO have this return only the last portion of the path
+		if( this.pathToFile == null ) {
+			return "";
+		}
+		return this.pathToFile;
+	}
 }
