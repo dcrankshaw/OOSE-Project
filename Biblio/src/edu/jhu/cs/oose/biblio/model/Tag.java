@@ -5,49 +5,90 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
 /**
 *A label to associate a group of files and bookmarks.
 */
-public class Tag implements Comparable<Tag>
-{
-
+@Entity
+@Table( name = "TAG" )
+public class Tag implements Comparable<Tag> {
+	
+	@Id
+	@GenericGenerator(name="generator", strategy="increment")
+	@GeneratedValue(generator="generator")
+    @Column(name="TAG_ID")
+	private int id;
+	
 	/**
 	* The name of the Tag.
 	*/
-	public String name;
+	@Column(name="NAME", nullable=false)
+	private String name;
 
 	/**
 	* The tags implied by this tag.
 	*/
-	public Set<Tag> children;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="TAG_CHILD",
+		joinColumns=@JoinColumn(name="TAG_PARENT_ID", referencedColumnName="TAG_ID"),
+		inverseJoinColumns=@JoinColumn(name="TAG_CHILD_ID", referencedColumnName="TAG_ID")
+	)
+	private Set<Tag> children;
 
 	/**
 	* The set of files tagged by this Tag.
 	*/
-	public Set<FileMetadata> taggedFiles;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="TAG_FILEMETADATA",
+		joinColumns=@JoinColumn(name="TAG_ID", referencedColumnName="TAG_ID"),
+		inverseJoinColumns=@JoinColumn(name="FMETA_ID", referencedColumnName="FMETA_ID")
+	)
+	private Set<FileMetadata> taggedFiles;
 
 	/**
 	* The set of bookmarks tagged by this Tag.
 	*/
-	public Set<Bookmark> taggedBookmarks;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="TAG_BOOKMARK",
+		joinColumns=@JoinColumn(name="TAG_ID", referencedColumnName="TAG_ID"),
+		inverseJoinColumns=@JoinColumn(name="BOOKMARK_ID", referencedColumnName="BOOKMARK_ID")
+	)
+	private Set<Bookmark> taggedBookmarks;
+	
+	public Tag() {
+		children = new HashSet<Tag>();
+		taggedFiles = new HashSet<FileMetadata>();
+		taggedBookmarks = new HashSet<Bookmark>();
+	}
+	
+	public int getId() {
+		return id;
+	}
 	
 	public Tag(String tagName) {
 		name = tagName;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
+		taggedBookmarks = new HashSet<Bookmark>();
 	}
 
 	public boolean addTag(Tag tag)
 	{
 		return false;
-	}
-
-	// TODO This constructor does not copy the sets, is that desirable?  - Paul
-	public Tag(Set<Tag> c, String n, Set<Bookmark> t, Set<FileMetadata> ta) {
-		this.children = c;
-		this.name = n;
-		this.taggedBookmarks = t;
-		this.taggedFiles = ta;
 	}
 	
 	public boolean setName(String n) {
@@ -68,20 +109,20 @@ public class Tag implements Comparable<Tag>
 		return Collections.unmodifiableCollection(children);
 	}
 	
-	public boolean tagBookmark(Bookmark bkmk) {
+	public boolean addTaggedBookmark(Bookmark bkmk) {
 		return this.taggedBookmarks.add(bkmk);
 	}
 	
-	public Collection<Bookmark> getBookmarks() {
+	public Collection<Bookmark> getTaggedBookmarks() {
 		return Collections.unmodifiableCollection(taggedBookmarks);
 	}
 	
 	// does this also need to update the file's list of tags? - Paul
-	public boolean tagFile(FileMetadata file) {
+	public boolean addTaggedFiles(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
 	
-	public Collection<FileMetadata> getFiles() {
+	public Collection<FileMetadata> getTaggedFiles() {
 		return Collections.unmodifiableCollection(taggedFiles);
 	}
 	

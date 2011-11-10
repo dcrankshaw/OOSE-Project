@@ -4,6 +4,11 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.grouping.PdfGroupingAlgorithms;
@@ -15,16 +20,27 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
 /**
- * Contains PDF specific metadata on top of that stored in FileMetadata
- */
+* Contains PDF specific metadata on top of that stored in FileMetadata
+*/
+@Entity
+@Table( name = "PDF_FILEMETADATA" )
 public class PDFFileMetadata extends FileMetadata {
 	
-	/**
+	public PDFFileMetadata() {
+		super();
+	}
+	
+	public PDFFileMetadata(String pathToFile) {
+		super(pathToFile);
+	} 
+	
+    /**
 	 * The contents of this file, if they have been read
 	 */
+	@Transient
 	private PDFFileContents contents;
-	
-	/**
+
+    /**
 	 * Creates a new PDFFileMetadata, initialized with the given arguments
 	 * @param date the last time file was opened
 	 * @param timesOpened the number of times it has been opened
@@ -34,7 +50,7 @@ public class PDFFileMetadata extends FileMetadata {
 	public PDFFileMetadata(Date date, int timesOpened, String path,
 			Set<Tag> fileTags) {
 		super(date, timesOpened, path, fileTags);
-		this.contents = null;
+		//this.contents = null;
 	}
 
 	@Override
