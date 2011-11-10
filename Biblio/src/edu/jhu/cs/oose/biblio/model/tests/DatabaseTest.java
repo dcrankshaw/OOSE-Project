@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.model.tests;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -12,7 +13,6 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
-import edu.jhu.cs.oose.biblio.model.FileTypes;
 import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -56,7 +56,6 @@ public class DatabaseTest extends TestCase{
 		pdfmeta.setLastOpened(d);
 		assertEquals(d.getTime(), pdfmeta.getLastOpened().getTime());
 		pdfmeta.setOpenedCount(11);
-		pdfmeta.setType(FileTypes.PDF);
 		
 		// Bookmark
 		Bookmark b = new Bookmark();
@@ -98,14 +97,16 @@ public class DatabaseTest extends TestCase{
 		assertEquals(Calendar.getInstance().get(Calendar.DATE ), cal.get(Calendar.DATE ));
 		assertEquals(Calendar.getInstance().get(Calendar.MONTH ), cal.get(Calendar.MONTH ));
 		assertEquals(11, f.getOpenedCount());
-		assertEquals("PDF", f.getType().toString());
 		assertEquals("Pop Song", tg.getName());
 		assertEquals((float) 15.5, bm.getLocation().getPercentageOfFile());
 		assertEquals(11, bm.getFile().getOpenedCount());
 		assertEquals(1, tg.getTaggedBookmarks().size());
 		assertEquals(1, tg.getTaggedFiles().size());
 		assertEquals(1, f.getTags().size());
-		List<Tag> bList = (List<Tag>) bm.getTag();
+		List<Bookmark> bList = new LinkedList<Bookmark>();
+		bList.addAll(tg.getTaggedBookmarks());
 		assertEquals(1, bList.size());
+		assertEquals((float) 15.5, bList.get(0).getLocation().getPercentageOfFile());
+		assertEquals(11, bList.get(0).getFile().getOpenedCount());
 	}
 }

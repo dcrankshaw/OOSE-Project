@@ -37,10 +37,6 @@ public abstract class FileMetadata {
 	@GeneratedValue(generator="generator")
     @Column(name="FMETA_ID")
 	private int id;
-	
-	@Column(name="FILE_TYPE")
-	@Enumerated(EnumType.STRING)
-	private FileTypes type;
 
 	/**
 	 * The set of tags associated with this file
@@ -101,11 +97,6 @@ public abstract class FileMetadata {
 		this.openedCount = timesOpened;
 		this.pathToFile = path;
 		this.tags = fileTags;
-	}
-	
-	public FileMetadata(String pathToFile) {
-		tags = new HashSet<Tag>();
-		this.pathToFile = pathToFile;
 	}
 	
 	public int getId() {

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,18 +27,12 @@ public class Bookmark {
 	@GeneratedValue(generator="generator")
     @Column(name="BOOKMARK_ID")
 	private int id;
-	/*
-	@Column(name="FMETA_ID")
-	private int fid;
-	
-	@Column(name="LOC_ID")
-	private int lid;
-	*/
+
 	/**
 	* DO WE ALLOW MULTIPLE BOOKMARK POINT TO THE SAME FILEMETADATA??
 	*/
-	@OneToOne(optional=true, fetch=FetchType.EAGER)
-	@JoinColumn(name="FMETA_ID")
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="FMETA_ID", nullable=false)
 	private FileMetadata file;
 
 	/**
@@ -64,23 +59,7 @@ public class Bookmark {
 	public void setId(int id) {
 		this.id = id;
 	}
-	/*
-	public void setLocId(int id) {
-		this.lid = id;
-	}
-	
-	public int getLocId() {
-		return lid;
-	}
-	
-	public int getFileId() {
-		return fid;
-	}
-	
-	public void setFileId(int fid) {
-		this.fid = fid;
-	}
-	*/
+
 	public FileMetadata getFile() {
 		return this.file;
 	}

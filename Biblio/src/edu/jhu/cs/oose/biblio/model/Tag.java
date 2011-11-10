@@ -3,7 +3,6 @@ package edu.jhu.cs.oose.biblio.model;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -17,8 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.sun.tools.javac.util.List;
 
 /**
 *A label to associate a group of files and bookmarks.

@@ -4,6 +4,11 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.grouping.PdfGroupingAlgorithms;
@@ -13,9 +18,6 @@ import org.jpedal.objects.PdfPageData;
 import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
 * Contains PDF specific metadata on top of that stored in FileMetadata
@@ -24,27 +26,18 @@ import javax.persistence.Table;
 @Table( name = "PDF_FILEMETADATA" )
 public class PDFFileMetadata extends FileMetadata {
 	
-	//PDFFileContents contents;
-	@Column(name="PDF_i")
-	private int i;
-	
 	public PDFFileMetadata() {
 		super();
-		i = 1;
 	}
 	
 	public PDFFileMetadata(String pathToFile) {
 		super(pathToFile);
 	} 
 	
-	@Override
-	public FileContents getContents() {
-		return null;
-	}
-	
     /**
 	 * The contents of this file, if they have been read
 	 */
+	@Transient
 	private PDFFileContents contents;
 
     /**
@@ -57,10 +50,10 @@ public class PDFFileMetadata extends FileMetadata {
 	public PDFFileMetadata(Date date, int timesOpened, String path,
 			Set<Tag> fileTags) {
 		super(date, timesOpened, path, fileTags);
-		this.contents = null;
+		//this.contents = null;
 	}
 
-	/*@Override
+	@Override
 	public FileContents getContents() {
 		if (null == contents) {
 			try {
@@ -72,7 +65,6 @@ public class PDFFileMetadata extends FileMetadata {
 		}
 		return contents;
 	}
-	*/
 
 	/**
 	 * Some source taken from:
