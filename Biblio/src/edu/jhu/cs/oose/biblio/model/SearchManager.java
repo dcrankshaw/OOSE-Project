@@ -221,6 +221,7 @@ public class SearchManager {
 	 * 
 	 * @param tagName
 	 */
+	@SuppressWarnings("unchecked")
 	public void searchBookmark(String tagName) {
 
 		Collection<Bookmark> bkmarks = new ArrayList<Bookmark>();
@@ -240,36 +241,40 @@ public class SearchManager {
 		fireSearchResult();
 	}
 	
-	//Probably not correct, since I didn't use a Category object.
+	
 	/**
 	 * Search tags of based on Category
 	 * @param term
 	 */
+	@SuppressWarnings("unchecked")
 	public void searchCategory(String term) {
 		String[] temp;
-		//Category cat = null;
 		String catName = null;
 		String tagName = null;
+		List<Category> cats = new ArrayList<Category>();
+		List<Tag> selectedTags = new ArrayList<Tag>();
 		List<Tag> results = new ArrayList<Tag>();
 		
 		for (int i = 0; i < term.length(); i++)
 			if (term.charAt(i) == ':') {
 				temp = term.split(":");
-				//cat.name = temp[0];
+				catName = temp[0];
 				tagName = temp[1];
 			}
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 
-		Criteria crit = session.createCriteria(Tag.class).add(
-				Restrictions.like("Category", "%" + catName + "%"));
-		//TODO Jackie, in our database schema is Category an attribute of Tag?
-		@SuppressWarnings("unchecked")
-		List<Tag> tags = (List<Tag>) crit.list();
+		Criteria crit = session.createCriteria(Category.class).add(
+				Restrictions.like("name", "%" + catName + "%"));
+		cats = (List<Category>)crit.list();
+		for (Category c : cats){
+			selectedTags.addAll(c.getTag());
+		}
+		 
 		session.getTransaction().commit();		
 		
-		for (Tag t : tags){
+		for (Tag t : selectedTags){
 			if ( t.getName() == tagName){
 				results.add(t);
 			}
