@@ -4,8 +4,14 @@ import java.util.Set;
 
 public class EditorManager {
 	
-	public Set<Tag> getAllTags(){}
+	public Set<Tag> getAllTags()
+	{
+		return null;
+	}
 	
-	public Set<Category> getAllCategories(){}
+	public Set<Category> getAllCategories()
+	{
+		return null;
+	}
 
 }
