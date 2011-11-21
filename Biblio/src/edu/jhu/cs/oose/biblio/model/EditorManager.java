@@ -13,5 +13,14 @@ public class EditorManager {
 	{
 		return null;
 	}
+	
+	public Tag newTag() {
+		// TODO insert this into the database
+		return new Tag();
+	}
+	
+	public void deleteTag(Tag toRemove) {
+		// TODO remove the tag from the database
+	}
 
 }
