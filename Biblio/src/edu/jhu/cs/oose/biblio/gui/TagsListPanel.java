@@ -111,4 +111,8 @@ public class TagsListPanel extends JPanel {
 			tags.addElement(t);
 		}
 	}
+	
+	public void setTitle(String title) {
+		this.tagsLabel.setText(title);
+	}
 }
