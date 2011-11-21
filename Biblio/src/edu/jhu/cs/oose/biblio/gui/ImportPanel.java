@@ -254,6 +254,8 @@ public class ImportPanel extends JPanel {
 	 * to the model
 	 */
 	public void cancelImport() {
+		// TODO rollback
+		owner.setVisible(false);
 	}
 
 }
