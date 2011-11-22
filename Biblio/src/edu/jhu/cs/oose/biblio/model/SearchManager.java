@@ -259,7 +259,7 @@ public class SearchManager {
 			if (term.charAt(i) == ':') {
 				temp = term.split(":");
 				catName = temp[0];
-				tagName = temp[1];
+				tagName = temp[1];break;
 			}
 		
 		Session session = sessionFactory.getCurrentSession();
@@ -279,8 +279,12 @@ public class SearchManager {
 				results.add(t);
 			}
 		}
-		
-		fireSearchTags(results);
+		if (results.isEmpty()){
+			System.out.println("No Match Found.");
+		}
+		else{
+			fireSearchTags(results);
+		}
 		
 	}
 
