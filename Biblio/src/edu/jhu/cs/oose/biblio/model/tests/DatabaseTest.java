@@ -109,4 +109,33 @@ public class DatabaseTest extends TestCase{
 		assertEquals((float) 15.5, bList.get(0).getLocation().getPercentageOfFile());
 		assertEquals(11, bList.get(0).getFile().getOpenedCount());
 	}
+
+	@Test
+	public void testRollback() {
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.getCurrentSession();
+		// Commit *****************************************************************************************
+		session.getTransaction().begin();
+		Tag t = new Tag();
+		t.setName("Pop Song");
+		session.save(t);
+		session.getTransaction().commit();
+		
+		// Rollback ***************************************************************************************
+		session = sessionFactory.getCurrentSession();
+		session.getTransaction().begin();
+		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
+		Tag tg = tagResult.get(0);
+		int id = tg.getId();
+		tg.setName("Rap");
+		session.update(tg);
+		session.getTransaction().rollback();
+		
+		// Check ******************************************************************************************
+		session = sessionFactory.getCurrentSession();
+		session.getTransaction().begin();
+		Tag tt = (Tag) session.get(Tag.class, id);
+		assertEquals(tt.getName(), "Pop Song");
+		session.getTransaction().commit();
+	}
 }

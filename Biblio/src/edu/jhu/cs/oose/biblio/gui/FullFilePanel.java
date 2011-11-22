@@ -28,7 +28,10 @@ public abstract class FullFilePanel extends JPanel implements ChangeListener, Sc
 	 */
 	@Override
 	public final void paint(Graphics g) {
-		paint(g, viewport.getViewRect());
+		if( null != viewport ) {
+			// this was throwing a NullPointerException...
+			paint(g, viewport.getViewRect());
+		}
 	}
 	
 	/**

@@ -1,8 +1,13 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -57,6 +62,34 @@ public class MainWindow extends JFrame {
 		// at least the one that I'm (Paul) writing,
 		// so I'll set this up here...
 		FileViewManager.getPropertiesManager().setFactory(new PropertiesWindowFactory());
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("File");
+		menuBar.add(menu);
+		JMenuItem item = new JMenuItem("Import files...");
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ImportManager().startImportProcess(MainWindow.this);
+			}
+		});
+		menu.add(item);
+		
+		item = new JMenuItem("Manage Tags");
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO there should only really be one of these...
+				TagEditorPanel panel = new TagEditorPanel();
+				JFrame tagFrame = new JFrame();
+				tagFrame.add(panel);
+				tagFrame.pack();
+				tagFrame.setTitle("Manage Tags");
+				tagFrame.setVisible(true);
+			}
+		});
+		menu.add(item);
+		this.setJMenuBar(menuBar);
 	}
 	
 	/**
