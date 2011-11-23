@@ -2,7 +2,6 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,6 @@ import edu.jhu.cs.oose.biblio.model.EditorManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
 public class TagEditorListModel implements ListModel {
-	
 	private EditorManager manager;
 	private List<Tag> tags;
 	private Set<ListDataListener> listeners;
@@ -23,16 +21,16 @@ public class TagEditorListModel implements ListModel {
 	public TagEditorListModel(EditorManager m) {
 		this.manager = m;
 		tags = new ArrayList<Tag>();
-		tags.addAll(this.manager.getAllTags());
 		listeners = new HashSet<ListDataListener>();
+		tags.addAll(this.manager.getAllTags());
 		Collections.sort(tags);
 	}
 	
 	@Override
-	public Object getElementAt(int index) {
-		return tags.get(index);
+	public String getElementAt(int index) {
+		return tags.get(index).getName();
 	}
-
+	
 	@Override
 	public void addListDataListener(ListDataListener l) {
 		listeners.add(l);
@@ -48,22 +46,35 @@ public class TagEditorListModel implements ListModel {
 		listeners.remove(l);
 	}
 	
-	public void newTag() {
-		Tag newTag = manager.newTag();
-		tags.add(newTag);
-		Collections.sort(tags);
-		int index = tags.indexOf(newTag);
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index, index);
+	public void fireIntervalAddedEvent(ListDataEvent event) {
 		for( ListDataListener listener : listeners ) {
 			listener.intervalAdded(event);
 		}
 	}
 	
-	public void deleteTag(int index) {
-		tags.remove(index);
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index);
+	public void fireIntervalRemovedEvent(ListDataEvent event) {
 		for( ListDataListener listener : listeners ) {
-			listener.intervalRemoved(event);
-		}		
+			listener.intervalAdded(event);
+		}
+	}
+	
+	public Tag getTag(int idx) {
+		return this.tags.get(idx);
+	}
+	
+	public void newTag() {
+		Tag newTag = this.manager.newTag();
+		newTag.setName("Hello");
+		this.tags.add(newTag);
+		Collections.sort(this.tags);
+		int index = this.tags.indexOf(newTag);
+		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index, index);
+		this.fireIntervalAddedEvent(event);
+	}
+	
+	public void deleteTag(int index) {
+		this.tags.remove(index);
+		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index);
+		this.fireIntervalRemovedEvent(event);
 	}
 }
