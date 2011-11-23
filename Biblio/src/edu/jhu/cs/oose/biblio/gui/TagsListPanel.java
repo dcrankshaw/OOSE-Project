@@ -3,6 +3,7 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -20,17 +21,18 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 public class TagsListPanel extends JPanel {
 	
 	/** All of the tags already added to the file */
-	public DefaultListModel tags;
+	private DefaultListModel tagsListModel;
 	// TODO migrate this to a List<Tag> extends ListModel (for the JList)
 	// or, combine the text field in the bottom with the
 	// list, so that you type into the list, and it absorbs
 	// recognized tags into atomic units.  Just my thoughts... Paul
+	private Set<Tag> tagSet;
 	
 	/** The file whose tags are displayed in this panel */
-	private FileMetadata file;
+	//private FileMetadata file;
 	
 	/** The text entered into the pane by the user */
-	public String text;
+	private String text;
 	
 	/** The label saying "Tags:" */
 	private JLabel tagsLabel;
@@ -39,7 +41,7 @@ public class TagsListPanel extends JPanel {
 	private JTextField newTagField;
 	
 	/** Display of the tags that have already been applied to this file. */
-	JList addedTags;
+	private JList addedTags;
 	
 	/** Creates a new Panel that displays the tags applied to a file. */
 	public TagsListPanel() {
@@ -59,8 +61,9 @@ public class TagsListPanel extends JPanel {
 			}
 		});
 
-		tags = new DefaultListModel();
-		addedTags = new JList(tags);
+		tagsListModel = new DefaultListModel();
+		tagSet = null;
+		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		addedTags.setVisibleRowCount(-1);
 		this.setLayout(new BorderLayout());
@@ -97,7 +100,8 @@ public class TagsListPanel extends JPanel {
 	public void addTag(Tag t)
 	{
 		//file.addTag(t);
-		tags.addElement(t.getName());
+		tagsListModel.addElement(t.getName());
+		tagSet.add(t);
 	}
 	
 	/**
@@ -105,10 +109,14 @@ public class TagsListPanel extends JPanel {
 	 * @param f the file whose tags should be displayed
 	 */
 	public void setFile(FileMetadata f) {
-		this.file = f;
-		tags.clear();
-		for( Tag t : file.getTags() ) {
-			tags.addElement(t);
+		setTagsList(f.getTags());
+	}
+	
+	public void setTagsList(Set<Tag> newTags) {
+		tagSet = newTags;
+		tagsListModel.clear();
+		for( Tag t : newTags ) {
+			tagsListModel.addElement(t);
 		}
 	}
 	
