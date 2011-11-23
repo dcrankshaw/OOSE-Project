@@ -22,7 +22,9 @@ public class TagEditorListModel implements ListModel {
 		this.manager = m;
 		tags = new ArrayList<Tag>();
 		listeners = new HashSet<ListDataListener>();
-		tags.addAll(this.manager.getAllTags());
+		if( this.manager.getAllTags() != null ) {
+			tags.addAll(this.manager.getAllTags());
+		}
 		Collections.sort(tags);
 	}
 	
