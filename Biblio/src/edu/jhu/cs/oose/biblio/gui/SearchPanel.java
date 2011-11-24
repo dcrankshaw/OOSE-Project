@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -35,6 +37,7 @@ public class SearchPanel extends JPanel {
 	
 	/** A table listing all of the tags matching the search term */
 	private JTable possibleTagsTable;
+	private JList selectedTagsList;
 	
 	/** A scroll pane to contain the table of tags.	 */
 	private JScrollPane  tagsScrollPane;
@@ -114,6 +117,31 @@ public class SearchPanel extends JPanel {
 		this.add(upperPanel, BorderLayout.NORTH);
 		tagsScrollPane = new JScrollPane(possibleTagsTable);
 		this.add(tagsScrollPane, BorderLayout.CENTER);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(new JLabel("Selected Tags:"), BorderLayout.SOUTH);
+		SortedListModel<String> selectedModel = new SortedListModel<String>();
+		selectedTagsList = new JList(selectedModel);
+		panel.add(selectedTagsList, BorderLayout.CENTER);
+		this.add(panel, BorderLayout.SOUTH);
+		tagTable.addTagSelectionListener(new SelectionListener(selectedModel));
+	}
+	
+	private class SelectionListener implements TagSelectionChangedListener {
+		SortedListModel<String> model;
+		SelectionListener( SortedListModel<String> m) {
+			model = m;
+		}
+		@Override
+		public void tagSelectionChanged(TagSelectionChangedEvent e) {
+			for( Tag t : e.oldTags ) {
+				model.remove(t.getName());
+			}
+			for( Tag t: e.newTags ) {
+				model.add(t.getName());
+			}
+		}
 	}
 	
 	/**
