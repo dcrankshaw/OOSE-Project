@@ -29,10 +29,14 @@ public class SearchManager {
 	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
 	// TODO global??
-	SessionFactory sessionFactory;
+	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
+	// TODO this should probably not be the source of this...
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
 	public SearchManager() {
-		sessionFactory = new Configuration().configure().buildSessionFactory();
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
