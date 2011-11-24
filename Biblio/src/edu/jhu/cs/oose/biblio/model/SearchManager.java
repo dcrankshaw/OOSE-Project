@@ -214,8 +214,7 @@ public class SearchManager {
 
 	}
 	
-	//Accidentally did this...
-	//TODO not sure if the interaction with database is correct. Please complete the testing if you decide to use it.
+	//TODO
 	/**
 	 * Search bookmarks tagged by the same tag. 
 	 * 
@@ -243,7 +242,7 @@ public class SearchManager {
 	
 	
 	/**
-	 * Search tags of based on Category
+	 * Search tags based on Category
 	 * @param term
 	 */
 	@SuppressWarnings("unchecked")
@@ -255,12 +254,12 @@ public class SearchManager {
 		List<Tag> selectedTags = new ArrayList<Tag>();
 		List<Tag> results = new ArrayList<Tag>();
 		
-		for (int i = 0; i < term.length(); i++)
-			if (term.charAt(i) == ':') {
-				temp = term.split(":");
-				catName = temp[0];
-				tagName = temp[1];break;
-			}
+		temp = term.split(":");
+		catName = temp[0];
+		tagName = temp[1];
+		System.out.println(catName);
+		System.out.println(tagName);
+		
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
@@ -275,7 +274,7 @@ public class SearchManager {
 		session.getTransaction().commit();		
 		
 		for (Tag t : selectedTags){
-			if ( t.getName() == tagName){
+			if ( t.getName().contains(tagName)){
 				results.add(t);
 			}
 		}

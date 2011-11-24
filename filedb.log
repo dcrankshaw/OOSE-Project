@@ -133,8 +133,8 @@ INSERT INTO TAG VALUES(3,'Franz Kafka')
 INSERT INTO TAG VALUES(4,'Max Planck')
 INSERT INTO CATEGORY VALUES(1,'British Author')
 INSERT INTO CATEGORY VALUES(2,'German Author')
-INSERT INTO CATEGORY_TAG VALUES(1,2)
 INSERT INTO CATEGORY_TAG VALUES(1,1)
+INSERT INTO CATEGORY_TAG VALUES(1,2)
 INSERT INTO CATEGORY_TAG VALUES(2,3)
 INSERT INTO CATEGORY_TAG VALUES(2,4)
 COMMIT
@@ -439,40 +439,3 @@ alter table TAG_CHILD add constraint FK58699FF78C14A56E foreign key (TAG_CHILD_I
 alter table TAG_CHILD add constraint FK58699FF7FB6C61B6 foreign key (TAG_PARENT_ID) references TAG
 alter table TAG_FILEMETADATA add constraint FK1B923950740502A9 foreign key (FMETA_ID) references FILEMETADATA
 alter table TAG_FILEMETADATA add constraint FK1B923950BE8B832B foreign key (TAG_ID) references TAG
-/*C23*/SET SCHEMA PUBLIC
-alter table BOOKMARK drop constraint FKA62D9536740502A9
-alter table BOOKMARK drop constraint FKA62D95363ECC5D1E
-alter table CATEGORY_TAG drop constraint FKA39A70B9C0664E11
-alter table CATEGORY_TAG drop constraint FKA39A70B9BE8B832B
-alter table PDF_FILEMETADATA drop constraint FKC0FF36F8740502A9
-alter table TAG_BOOKMARK drop constraint FKC04CCC5B58A294E9
-alter table TAG_BOOKMARK drop constraint FKC04CCC5BBE8B832B
-alter table TAG_CHILD drop constraint FK58699FF78C14A56E
-alter table TAG_CHILD drop constraint FK58699FF7FB6C61B6
-alter table TAG_FILEMETADATA drop constraint FK1B923950740502A9
-alter table TAG_FILEMETADATA drop constraint FK1B923950BE8B832B
-drop table BOOKMARK if exists
-drop table CATEGORY if exists
-drop table CATEGORY_TAG if exists
-drop table FILEMETADATA if exists
-drop table LOCATION if exists
-drop table PDF_FILEMETADATA if exists
-drop table TAG if exists
-drop table TAG_BOOKMARK if exists
-drop table TAG_CHILD if exists
-drop table TAG_FILEMETADATA if exists
-create table BOOKMARK (BOOKMARK_ID integer not null, FMETA_ID integer not null, LOC_ID integer not null, primary key (BOOKMARK_ID), unique (LOC_ID))
-create table CATEGORY (CAT_ID integer not null, NAME varchar(255), primary key (CAT_ID))
-create table CATEGORY_TAG (CAT_ID integer not null, TAG_ID integer not null, primary key (CAT_ID, TAG_ID))
-create table FILEMETADATA (FMETA_ID integer not null, LAST_OPENED date, OPENED_COUNT integer, PATH_TO_FILE varchar(255), primary key (FMETA_ID))
-create table LOCATION (LOC_ID integer not null, PERCENTAGE_OF_FILE float, primary key (LOC_ID))
-create table PDF_FILEMETADATA (FMETA_ID integer not null, primary key (FMETA_ID))
-create table TAG (TAG_ID integer not null, NAME varchar(255) not null, primary key (TAG_ID))
-create table TAG_BOOKMARK (TAG_ID integer not null, BOOKMARK_ID integer not null, primary key (TAG_ID, BOOKMARK_ID))
-create table TAG_CHILD (TAG_PARENT_ID integer not null, TAG_CHILD_ID integer not null, primary key (TAG_PARENT_ID, TAG_CHILD_ID))
-create table TAG_FILEMETADATA (TAG_ID integer not null, FMETA_ID integer not null, primary key (TAG_ID, FMETA_ID))
-alter table BOOKMARK add constraint FKA62D9536740502A9 foreign key (FMETA_ID) references FILEMETADATA
-alter table BOOKMARK add constraint FKA62D95363ECC5D1E foreign key (LOC_ID) references LOCATION
-alter table CATEGORY_TAG add constraint FKA39A70B9C0664E11 foreign key (CAT_ID) references CATEGORY
-alter table CATEGORY_TAG add constraint FKA39A70B9BE8B832B foreign key (TAG_ID) references TAG
-alter table PDF_FILEMETADATA add constraint FKC0FF36F8740502A9 foreign key (FMETA_ID) references FILEMETADATA
