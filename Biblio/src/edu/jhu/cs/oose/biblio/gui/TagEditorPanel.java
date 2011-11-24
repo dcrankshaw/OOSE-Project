@@ -10,7 +10,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import edu.jhu.cs.oose.biblio.gui.CategoryTableModel.CategorySelectionChangedEvent;
+import edu.jhu.cs.oose.biblio.model.Category;
 import edu.jhu.cs.oose.biblio.model.EditorManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -52,6 +56,7 @@ public class TagEditorPanel extends JPanel {
 	
 	/** The presentation of the list of tags to the JList */
 	private TagEditorListModel tagListModel;
+	private CategoryTableModel categoryModel;
 	
 	public TagEditorPanel() {
 		super();
@@ -65,6 +70,11 @@ public class TagEditorPanel extends JPanel {
 		subpanel.setLayout(new BorderLayout());
 		this.overallTagTable = new JList(tagListModel);
 		JScrollPane scrollPane = new JScrollPane(this.overallTagTable);
+		this.overallTagTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				setSelectedTag(e.getFirstIndex());
+			}
+		});
 		subpanel.add(scrollPane, BorderLayout.CENTER);
 		subpanel.add(new JLabel("Tags:"), BorderLayout.NORTH);
 		
@@ -110,7 +120,19 @@ public class TagEditorPanel extends JPanel {
 		subpanel.setLayout(new BorderLayout());
 		subpanel.add(new JLabel("Categories:"), BorderLayout.NORTH);
 		
-		this.categoryTable = new JTable();
+		categoryModel = new CategoryTableModel(manager);
+		categoryModel.addCategorySelectionListener(new CategorySelectionListener() {
+			@Override
+			public void categorySelectionChanged(CategorySelectionChangedEvent e) {
+				for( Category cat : e.oldTags ) {
+					cat.getTags().remove(getSelectedTag());
+				}
+				for( Category cat : e.newTags ) {
+					cat.getTags().add(getSelectedTag());
+				}
+			}
+		});
+		this.categoryTable = new JTable(this.categoryModel);
 		scrollPane = new JScrollPane(this.categoryTable);
 		subpanel.add(scrollPane, BorderLayout.CENTER);
 		
@@ -151,14 +173,23 @@ public class TagEditorPanel extends JPanel {
 	
 	/** Add a new category */
 	public void newCategory() {
-		
+		categoryModel.newCategory();
 	}
 	
 	/** Delete all of the currently selected categories */
 	public void deleteCategory() {
-		
+		int idx = categoryTable.getSelectedRow();
+		categoryModel.removeCategory(idx);
 	}
 	
+	public void setSelectedTag(int selectedIndex) {
+		this.selectedTag = this.tagListModel.getTag(selectedIndex);
+		nameLabel.setText(selectedTag.getName());
+		this.associatedTagPanel.setTagsList(selectedTag.getChildren());
+		this.categoryModel.setTag(selectedTag);
+	}
 	
-
+	public Tag getSelectedTag() {
+		return this.selectedTag;
+	}
 }
