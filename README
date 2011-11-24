@@ -1,5 +1,11 @@
 This is the repository for OOSE group 7's Biblio project.
 
+To run the program, use the main method on MainWindow.
+This should be accessible from the Eclipse project.
+
+The Import Dialog and Tag Editor windows are accessible from
+the menu bar of the main window.
+
 
 Algorithm explanations:
 
