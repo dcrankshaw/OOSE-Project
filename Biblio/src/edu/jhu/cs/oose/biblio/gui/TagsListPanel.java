@@ -3,6 +3,7 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -26,7 +27,7 @@ public class TagsListPanel extends JPanel {
 	// or, combine the text field in the bottom with the
 	// list, so that you type into the list, and it absorbs
 	// recognized tags into atomic units.  Just my thoughts... Paul
-	private Set<Tag> tagSet;
+	private Collection<Tag> tagSet;
 	
 	/** The file whose tags are displayed in this panel */
 	//private FileMetadata file;
@@ -99,9 +100,8 @@ public class TagsListPanel extends JPanel {
 	 */
 	public void addTag(Tag t)
 	{
-		//file.addTag(t);
 		tagsListModel.addElement(t.getName());
-		tagSet.add(t);
+		tagSet.add(t); // TODO sync with DB
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class TagsListPanel extends JPanel {
 		setTagsList(f.getTags());
 	}
 	
-	public void setTagsList(Set<Tag> newTags) {
+	public void setTagsList(Collection<Tag> newTags) {
 		tagSet = newTags;
 		tagsListModel.clear();
 		for( Tag t : newTags ) {
