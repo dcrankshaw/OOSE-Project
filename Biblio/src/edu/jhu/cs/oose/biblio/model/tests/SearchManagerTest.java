@@ -73,6 +73,10 @@ public class SearchManagerTest extends TestCase {
 		sessionFactory = new Configuration().configure().buildSessionFactory();
 	}
 	
+	/**
+	 * setup helper function to add testfiles to the database
+	 * @param path
+	 */
 	public void fileExist(String path){			
 		File f = new File(path);
 		if(f.exists())
@@ -99,7 +103,6 @@ public class SearchManagerTest extends TestCase {
 
 	/**
 	 * Test if searchText() returns results in the correct order
-	 * 
 	 */
 	public void testSearchText() {
 
@@ -135,7 +138,9 @@ public class SearchManagerTest extends TestCase {
 		}
 	}
 
-	
+	/**
+	 * Test to ensure that the results pair compareTo gives the correct order
+	 */
 	public void testResultsPairClass() {
 		SearchManager searcher = new SearchManager();
 		SearchManager.ResultsPair moreFrequent = searcher.new ResultsPair(10, testFile1);
@@ -146,7 +151,7 @@ public class SearchManagerTest extends TestCase {
 	
 
 	/**
-	 * Tests on searching for tags by text
+	 * Tests searching for tags based on their name
 	 */
 	public void testSearchTags() {
 		
@@ -154,7 +159,10 @@ public class SearchManagerTest extends TestCase {
 		tagsSamePrefix();
 	}
 	
-	
+	/**
+	 * searches for tags matching a search term belonging to a given category.
+	 * searchterm is of the form "category: term"
+	 */
 	public void testSearchCategory()
 	{
 		SearchManager searcher = new SearchManager();
@@ -233,6 +241,10 @@ public class SearchManagerTest extends TestCase {
 		
 	}
 	
+	/**
+	 * helper method to set the results of a tag search
+	 * @param matches the results of the search (given to a listener)
+	 */
 	private void setSearchCategoryResults(List<Tag> matches)
 	{
 		tagSearchResults.clear();
@@ -248,7 +260,6 @@ public class SearchManagerTest extends TestCase {
 	 * adds some tags with the same prefix and searches for that prefix expected
 	 * result is that all of the tags will appear in the search result
 	 */
-
 	private void tagsSamePrefix()
 	{
 		
@@ -295,7 +306,9 @@ public class SearchManagerTest extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Test the filterByTags function
+	 */
 	
 	public void testFilterByTags() {
 		SearchManager search = new SearchManager(originalFiles);
@@ -387,6 +400,10 @@ public class SearchManagerTest extends TestCase {
 		
 	}
 	
+	/**
+	 * helper method to update the searchResults after a 
+	 * @param newResults
+	 */
 	private void updateSearchResults(List<FileMetadata> newResults)
 	{
 		searchResults = newResults;

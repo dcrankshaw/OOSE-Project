@@ -16,16 +16,27 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 @Table( name = "EPUB_FILEMETADATA" )
 public class EpubFileMetadata extends FileMetadata {
 	
+	
+	/**
+	 * Creates a new instance of the FileMetadata
+	 */
 	public EpubFileMetadata()
 	{
 		super();
 	}
 	
+	/**
+	 * Creates a new instance of the FileMetadata at the given path
+	 * @param path the path to the file
+	 */
 	public EpubFileMetadata(String path)
 	{
 		super(path);
 	}
 	
+	/**
+	 * The contents of the file
+	 */
 	@Transient
 	private EpubFileContents contents;
 	

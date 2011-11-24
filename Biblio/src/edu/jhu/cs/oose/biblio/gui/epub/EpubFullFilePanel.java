@@ -9,8 +9,15 @@ import edu.jhu.cs.oose.biblio.model.epub.EpubFileContents;
 
 public class EpubFullFilePanel extends FullFilePanel {
 
+	/**
+	 * The contents of the file
+	 */
 	private EpubFileContents contents;
 	
+	/**
+	 * Creates a new FullFilePanel with the given contents
+	 * @param c
+	 */
 	public EpubFullFilePanel(EpubFileContents c)
 	{
 		contents = c;

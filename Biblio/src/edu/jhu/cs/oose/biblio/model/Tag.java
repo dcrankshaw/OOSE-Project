@@ -108,7 +108,6 @@ public class Tag implements Comparable<Tag> {
 		return Collections.unmodifiableCollection(taggedBookmarks);
 	}
 
-	// does this also need to update the file's list of tags? - Paul
 	public boolean addTaggedFiles(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
@@ -117,11 +116,18 @@ public class Tag implements Comparable<Tag> {
 		return Collections.unmodifiableCollection(taggedFiles);
 	}
 
+	/**
+	 * Compares tags based on a string comparison of their names
+	 */
 	@Override
 	public int compareTo(Tag other) {
 		return getName().compareTo(other.getName());
 	}
 
+	/**
+	 * get all tags that are imply this tag. Basically executes a breadth first search of all this tags children.
+	 * @return The set of all tags found
+	 */
 	public Set<Tag> getAllDescendants() {
 		Set<Tag> descendants = new HashSet<Tag>();
 		Queue<Tag> q = new LinkedList<Tag>();

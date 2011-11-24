@@ -2,6 +2,11 @@ package edu.jhu.cs.oose.biblio.model;
 
 import java.util.Set;
 
+/**
+ * Allows the GUI to edit objects and relationships by abstracting
+ * out the database interactions
+ *
+ */
 public class EditorManager {
 	
 	public Set<Tag> getAllTags()

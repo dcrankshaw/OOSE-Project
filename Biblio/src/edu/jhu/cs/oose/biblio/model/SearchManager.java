@@ -262,7 +262,6 @@ public class SearchManager {
 	 * 
 	 * @param term
 	 */
-	
 	private void searchCategory(String term) {
 		List<Tag> results = null;
 
