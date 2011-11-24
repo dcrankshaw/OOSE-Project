@@ -293,8 +293,6 @@ public class SearchManager {
 				potentialTags.addAll(c.getTags());
 			}
 
-			
-
 			for (Tag t : potentialTags) {
 				if (t.getName().contains(tagName)) {
 					results.add(t);
