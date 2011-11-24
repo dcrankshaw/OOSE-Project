@@ -21,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 */
 @Entity
 @Table( name = "CATEGORY" )
-public class Category {
+public class Category implements Comparable<Category> {
 	
 	@Id
 	@GenericGenerator(name="generator", strategy="increment")
@@ -82,5 +82,10 @@ public class Category {
 	public Category(String n) {
 		this.name = n;
 		this.tags = new HashSet<Tag>();
+	}
+	
+	@Override
+	public int compareTo(Category other) {
+		return getName().compareTo(other.getName());
 	}
 }
