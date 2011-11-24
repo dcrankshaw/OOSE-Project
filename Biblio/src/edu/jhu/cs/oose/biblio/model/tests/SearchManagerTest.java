@@ -26,9 +26,10 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 /**
  * Test the SearchManger class
- *
+ * 
  */
 public class SearchManagerTest extends TestCase {
+
 	//SearchManager search;
 	List<FileMetadata> testFiles;
 	List<FileMetadata> originalFiles;
@@ -38,10 +39,11 @@ public class SearchManagerTest extends TestCase {
 	
 
 	PDFFileMetadata testFile1,testFile2,testFile3;
+
 	SessionFactory sessionFactory;
-	
+
 	protected void setUp() throws Exception {
-		
+
 		super.setUp();
 		originalFiles = new ArrayList<FileMetadata>();
 		testFiles = new ArrayList<FileMetadata>();
@@ -94,20 +96,22 @@ public class SearchManagerTest extends TestCase {
 	}
 	
 	
+
 	/**
 	 * Test if searchText() returns results in the correct order
-	 *
+	 * 
 	 */
 	public void testSearchText() {
-		/*if(1 > 0)
-			return;*/
+
 		assertFalse(originalFiles == null);
 		SearchManager search = new SearchManager(originalFiles);
 		String searchTerm = "Ignorance"; 
+
 		List<PDFFileMetadata> expectedResults = new ArrayList<PDFFileMetadata>();
 		expectedResults.add(new PDFFileMetadata("testfiles/test5.pdf"));
 		expectedResults.add(new PDFFileMetadata("testfiles/test4.pdf"));
 		expectedResults.add(new PDFFileMetadata("testfiles/test6.pdf"));
+
 		
 		try
 		{
@@ -117,21 +121,20 @@ public class SearchManagerTest extends TestCase {
 			System.out.println("\n\n\n\n\n\n\nSearch text");
 			
 			for (FileMetadata f : searchResults){
+
 				System.out.println(f.getPathToFile());
 			}
-			for (int i = 0; i< searchResults.size(); i++)
-			{
+			for (int i = 0; i < searchResults.size(); i++) {
 				assertTrue(searchResults.get(i).equals(expectedResults.get(i)));
-				
+
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();//
 			fail("Threw unexpected exception");
 		}
 	}
+
 	
 	public void testResultsPairClass() {
 		SearchManager searcher = new SearchManager();
@@ -141,6 +144,7 @@ public class SearchManagerTest extends TestCase {
 		
 	}
 	
+
 	/**
 	 * Tests on searching for tags by text
 	 */
@@ -239,16 +243,19 @@ public class SearchManagerTest extends TestCase {
 	
 	
 	
+
 	/**
-	 * adds some tags with the same prefix and searches for that prefix
-	 * expected result is that all of the tags will appear in the search result
+	 * adds some tags with the same prefix and searches for that prefix expected
+	 * result is that all of the tags will appear in the search result
 	 */
+
 	private void tagsSamePrefix()
 	{
 		
 		SearchManager searcher = new SearchManager();
 		String searchTerm = "abc";
 		TagsSamePrefixSearchTagsListener myListener = new TagsSamePrefixSearchTagsListener(searchTerm, 4);
+
 		searcher.addTagsListener(myListener);
 		List<Tag> tags = new ArrayList<Tag>();
 		tags.add(new Tag("abc"));
@@ -257,13 +264,13 @@ public class SearchManagerTest extends TestCase {
 		tags.add(new Tag("xyzabc"));
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		for(Tag t: tags)
-		{
+		for (Tag t : tags) {
 			session.save(t);
 		}
 		session.getTransaction().commit();
 		searcher.searchTags(searchTerm);
 	}
+
 	
 	private class TagsSamePrefixSearchTagsListener implements SearchTagsListener
 	{
@@ -282,6 +289,7 @@ public class SearchManagerTest extends TestCase {
 			{
 				assertSame(true, t.getName().contains(searchTerm));
 			}
+
 		}
 	}
 	
@@ -345,24 +353,6 @@ public class SearchManagerTest extends TestCase {
 		b.addTaggedFiles(originalFiles.get(3));
 		c.addTaggedFiles(originalFiles.get(3));
 		
-		/*Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		session.save(math);
-		session.save(english);
-		session.save(school);
-		session.save(numbers);
-		session.save(integer);
-		session.save(one);
-		session.save(two);
-		session.save(decimal);
-		session.save(onePointFive);
-		session.save(twoPointFive);
-		session.save(letters);
-		session.save(a);
-		session.save(b);
-		session.save(c);
-		session.getTransaction().commit();*/
-		
 		Set<Tag> filterBy = new HashSet<Tag>();
 		filterBy.add(letters);
 		filterBy.add(numbers);
@@ -403,6 +393,4 @@ public class SearchManagerTest extends TestCase {
 	}
 	
 }
-
-
 

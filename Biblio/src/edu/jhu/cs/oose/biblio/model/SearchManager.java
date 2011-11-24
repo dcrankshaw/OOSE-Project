@@ -229,9 +229,7 @@ public class SearchManager {
 
 	}
 
-	// Accidentally did this...
-	// TODO not sure if the interaction with database is correct. Please
-	// complete the testing if you decide to use it.
+	//TODO write tests
 	/**
 	 * Search bookmarks tagged by the same tag.
 	 * 
@@ -305,6 +303,7 @@ public class SearchManager {
 		}
 
 		fireSearchTags(results);
+
 
 	}
 
