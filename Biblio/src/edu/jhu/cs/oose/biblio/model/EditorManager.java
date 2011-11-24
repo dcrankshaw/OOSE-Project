@@ -13,6 +13,10 @@ public class EditorManager {
 	
 	SessionFactory sessionFactory;//TODO private???
 	
+	/**
+	 * Get all the tags in the database.
+	 * @return tags A set of all tags currently in the database.
+	 */
 	@SuppressWarnings("unchecked")
 	public Set<Tag> getAllTags()
 	{	
@@ -22,6 +26,10 @@ public class EditorManager {
 		return tags;
 	}
 	
+	/**
+	 * Get all the categories in the database.
+	 * @return categories A set of all categories currently in the database.
+	 */
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
 	{	
@@ -29,20 +37,32 @@ public class EditorManager {
 		categories = (HashSet<Category>) session.createQuery("from Category").list();
 		return categories;
 	}
-	
-	// Can we do these with reflection or something? - Paul
+	/**
+	 * Insert a new tag into the database.
+	 * @param tagName The name of the new tag.
+	 * @return the new tag as an object.
+	 */
+	// Can we do these with TODO reflection or something? - Paul
 	public Tag newTag(String tagName) {
-		// TODO insert this into the database
 		Tag t = new Tag(tagName);
 		Session session = sessionFactory.getCurrentSession();
 		session.save(t);
-		return new Tag();//not sure what this new tag obj. is doing here.
+		return new Tag();//TODO not sure what this new tag obj. is doing here.
 	}
 	
+	/**
+	 * Remove the tag from the database.
+	 * @param toRemove The name of the tag to remove.
+	 */
 	public void deleteTag(Tag toRemove) {
 		// TODO remove the tag from the database
 	}
 	
+	/**
+	 * Insert a new category into the database.
+	 * @param catName The name of the new category.
+	 * @return the new category as an object.
+	 */
 	public Category newCategory(String catName) {
 		// TODO insert this into the database
 		Category c = new Category(catName);
@@ -51,6 +71,10 @@ public class EditorManager {
 		return new Category();
 	}
 	
+	/**
+	 * Remove this from the database.
+	 * @param toRemove The name of the category to remove.
+	 */
 	public void deleteCategory(Category toRemove) {
 		// TODO remove this from the database
 	}
