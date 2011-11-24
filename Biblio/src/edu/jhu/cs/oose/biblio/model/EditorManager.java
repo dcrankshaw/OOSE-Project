@@ -14,6 +14,7 @@ public class EditorManager {
 		return null;
 	}
 	
+	// Can we do these with reflection or something? - Paul
 	public Tag newTag() {
 		// TODO insert this into the database
 		return new Tag();
@@ -21,6 +22,15 @@ public class EditorManager {
 	
 	public void deleteTag(Tag toRemove) {
 		// TODO remove the tag from the database
+	}
+	
+	public Category newCategory() {
+		// TODO insert this into the database
+		return new Category();
+	}
+	
+	public void deleteCategory(Category toRemove) {
+		// TODO remove this from the database
 	}
 
 }
