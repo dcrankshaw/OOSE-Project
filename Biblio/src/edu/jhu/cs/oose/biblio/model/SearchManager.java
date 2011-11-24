@@ -3,12 +3,13 @@ package edu.jhu.cs.oose.biblio.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -46,12 +47,8 @@ public class SearchManager {
 	 *            the files the Manager should search
 	 */
 	public SearchManager(List<FileMetadata> files) {
-		sessionFactory = new Configuration().configure().buildSessionFactory();
-		resultsListeners = new HashSet<SearchResultsListener>();
-		tagListeners = new HashSet<SearchTagsListener>();
-		selectedFiles = files;
-		// TODO: how to instantiate an EntityManagerFactory?
-		// entityManagerFactory = new EntityManagerFactory();
+		this();
+		selectedFiles.addAll(files);
 	}
 
 	/** Fire the file search result to each listener. */
@@ -81,22 +78,37 @@ public class SearchManager {
 	 *            the tags to filter by
 	 */
 	public void filterByTags(Set<Tag> tags) {
-		// TODO this method is a little complicated. It will be implemented in
-		// the next iteration
-		Collection<String> tagNames = new ArrayList<String>();
-		for (Tag tag : tags) {
-			tagNames.add(tag.getName());
+
+		selectedFiles.clear();
+		if (tags != null && !tags.isEmpty()) {
+			List<Set<FileMetadata>> taggedFiles = new ArrayList<Set<FileMetadata>>();
+			Set<FileMetadata> filteredFiles = new HashSet<FileMetadata>();
+			for (Tag currentTag : tags) {
+
+				Set<Tag> currentChildren = currentTag.getAllDescendants();
+				Set<FileMetadata> currentTaggedFiles = new HashSet<FileMetadata>();
+				currentTaggedFiles.addAll(currentTag.getTaggedFiles());
+				for (Tag currentChild : currentChildren) {
+					currentTaggedFiles.addAll(currentChild.getTaggedFiles());
+				}
+				taggedFiles.add(currentTaggedFiles);
+			}
+			// get the list of files matching the first tag or its descendants
+			filteredFiles.addAll(taggedFiles.get(0));
+			// take the intersection of those files with the files matching the
+			// rest of the tags
+			for (int i = 1; i < taggedFiles.size(); i++) {
+				filteredFiles.retainAll(taggedFiles.get(i));
+			}
+			selectedFiles.addAll(filteredFiles);
+			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
+				@Override
+				public int compare(FileMetadata a, FileMetadata b) {
+					return a.getName().compareToIgnoreCase(b.getName());
+				}
+			});
 		}
-
-		Session session = sessionFactory.getCurrentSession();
-		Criteria crit = session.createCriteria(Tag.class);
-		crit.add(Restrictions.in("name", tagNames));
-		crit.setFetchMode("Tag_child", FetchMode.JOIN);
-
 		fireSearchResult();
-		/**
-		 * from tag_child c where c.parent_name in t.name
-		 */
 	}
 
 	/**
@@ -120,16 +132,20 @@ public class SearchManager {
 		 * 
 		 * entityManager.close();
 		 */
+		if (searchTerm.contains(":"))
+			searchCategory(searchTerm);
+		else {
+			Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
 
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-
-		Criteria crit = session.createCriteria(Tag.class).add(
-				Restrictions.like("name", "%" + searchTerm + "%"));
-		@SuppressWarnings("unchecked")
-		List<Tag> results = (List<Tag>) crit.list();
-		session.getTransaction().commit();
-		fireSearchTags(results);
+			//TODO cleanse the input, using sql parameters instead of string concatenation
+			Criteria crit = session.createCriteria(Tag.class).add(
+					Restrictions.like("name", "%" + searchTerm + "%"));
+			@SuppressWarnings("unchecked")
+			List<Tag> results = (List<Tag>) crit.list();
+			session.getTransaction().commit();
+			fireSearchTags(results);
+		}
 	}
 
 	/**
@@ -179,7 +195,9 @@ public class SearchManager {
 	 * object allows for sorting based on the relevance of each search results,
 	 * so we can provide a list of search results ordered by relevance.
 	 */
-	private class ResultsPair implements Comparable<ResultsPair> {
+	// TODO: changed this to a public class to test, it should be changed back
+	// though
+	public class ResultsPair implements Comparable<ResultsPair> {
 		/** The number of times this result was found in the file. */
 		private int occurrences;
 		/** The file that was searched. */
@@ -193,7 +211,7 @@ public class SearchManager {
 		 * @param fl
 		 *            the file that was searched
 		 */
-		private ResultsPair(int d, FileMetadata fl) {
+		public ResultsPair(int d, FileMetadata fl) {
 			file = fl;
 			occurrences = d;
 		}
@@ -201,9 +219,6 @@ public class SearchManager {
 		@Override
 		public int compareTo(ResultsPair temp) {
 
-			// TODO: the more occurrences a pair has, the closer to the front of
-			// the list (and therefore the "smaller")
-			// it should be, double check that this does that - Dan
 			if (this.occurrences > temp.occurrences) {
 				return -1;
 			} else if (this.occurrences == temp.occurrences) {
@@ -213,11 +228,12 @@ public class SearchManager {
 		}
 
 	}
-	
-	//Accidentally did this...
-	//TODO not sure if the interaction with database is correct. Please complete the testing if you decide to use it.
+
+	// Accidentally did this...
+	// TODO not sure if the interaction with database is correct. Please
+	// complete the testing if you decide to use it.
 	/**
-	 * Search bookmarks tagged by the same tag. 
+	 * Search bookmarks tagged by the same tag.
 	 * 
 	 * @param tagName
 	 */
@@ -226,7 +242,8 @@ public class SearchManager {
 
 		Collection<Bookmark> bkmarks = new ArrayList<Bookmark>();
 		Session session = sessionFactory.getCurrentSession();
-		bkmarks = (ArrayList<Bookmark>) session.createQuery("from Bookmark").list();
+		bkmarks = (ArrayList<Bookmark>) session.createQuery("from Bookmark")
+				.list();
 		boolean match = false;
 		for (Bookmark bk : bkmarks) {
 			for (Tag bkTag : bk.getTags()) {
@@ -240,48 +257,55 @@ public class SearchManager {
 		}
 		fireSearchResult();
 	}
-	
-	
+
 	/**
-	 * Search tags of based on Category
+	 * Search for tags matching the given search term in the given category
+	 * provides a null result set on a malformed input (more than one colon on the search string)
+	 * 
 	 * @param term
 	 */
-	@SuppressWarnings("unchecked")
-	public void searchCategory(String term) {
-		String[] temp;
-		String catName = null;
-		String tagName = null;
-		List<Category> cats = new ArrayList<Category>();
-		List<Tag> selectedTags = new ArrayList<Tag>();
-		List<Tag> results = new ArrayList<Tag>();
-		
-		for (int i = 0; i < term.length(); i++)
-			if (term.charAt(i) == ':') {
-				temp = term.split(":");
-				catName = temp[0];
-				tagName = temp[1];
-			}
-		
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+	
+	private void searchCategory(String term) {
+		List<Tag> results = null;
 
-		Criteria crit = session.createCriteria(Category.class).add(
-				Restrictions.like("name", "%" + catName + "%"));
-		cats = (List<Category>)crit.list();
-		for (Category c : cats){
-			selectedTags.addAll(c.getTag());
-		}
-		 
-		session.getTransaction().commit();		
-		
-		for (Tag t : selectedTags){
-			if ( t.getName() == tagName){
-				results.add(t);
+		// only search if colon appears exactly once in searchterm
+		if (term.indexOf(":") == term.lastIndexOf(":")) {
+			
+			Set<Tag> potentialTags = new TreeSet<Tag>();
+			results = new ArrayList<Tag>();
+
+			String[] split = term.split(":");
+			//we have already verified that a colon appears exactly once in the searchTerm, so we
+			//know that String[] split will have exactly two items in it
+			String category = split[0].trim();
+			String tagName = split[1].trim();
+
+			Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+
+			
+			
+			
+			Criteria crit = session.createCriteria(Category.class).add(
+					Restrictions.like("name", category + "%"));
+			@SuppressWarnings("unchecked")
+			List<Category> cats = (List<Category>) crit.list();
+			session.getTransaction().commit();
+			for (Category c : cats) {
+				potentialTags.addAll(c.getTags());
+			}
+
+			
+
+			for (Tag t : potentialTags) {
+				if (t.getName().contains(tagName)) {
+					results.add(t);
+				}
 			}
 		}
-		
+
 		fireSearchTags(results);
-		
+
 	}
 
 	/**

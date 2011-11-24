@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +48,7 @@ public class Category {
 	
 	public Category() {
 		super();
+		tags = new TreeSet<Tag>();
 	}
 	
 	public int getId() {
@@ -69,7 +71,7 @@ public class Category {
 		return "Category -  ID:" + id + " NAME:" + name + "\n";
 	}
 	
-	public Set<Tag> getTag() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 	

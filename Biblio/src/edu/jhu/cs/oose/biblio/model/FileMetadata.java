@@ -27,7 +27,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table( name = "FILEMETADATA" )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
-public abstract class FileMetadata {
+public abstract class FileMetadata{
 
 	/** The ID used to identify this object in the database */
 	@Id
