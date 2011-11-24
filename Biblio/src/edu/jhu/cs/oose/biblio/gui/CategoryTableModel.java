@@ -38,6 +38,8 @@ public class CategoryTableModel implements TableModel {
 		manager = m;
 		tableListeners = new HashSet<TableModelListener>();
 		categories = new ArrayList<Category>();
+		categories.addAll(manager.getAllCategories());
+		Collections.sort(categories);
 		selectedCategories = new HashSet<Category>();
 		categorySelectionListeners = new HashSet<CategorySelectionListener>();
 	}
