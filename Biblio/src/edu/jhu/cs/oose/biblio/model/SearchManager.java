@@ -123,19 +123,7 @@ public class SearchManager {
 	 *            the string to match against tag names
 	 */
 	public void searchTags(String searchTerm) {
-		/*
-		 * EntityManager entityManager =
-		 * entityManagerFactory.createEntityManager();
-		 * entityManager.getTransaction().begin(); List<Tag> searchResults =
-		 * (List<Tag>) entityManager.createQuery( "select tt, distinct ft from "
-		 * +
-		 * "(Select distinct t FROM Tag t join Tag_child c where t.name like \"%"
-		 * + searchTerm + "%\" and c.parent_name = t.name) tt " +
-		 * "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file"
-		 * ).getResultList();
-		 * 
-		 * entityManager.close();
-		 */
+		
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
@@ -172,7 +160,6 @@ public class SearchManager {
 			try {
 				freq = file.searchText(searchTerm);
 			} catch (Exception e) {
-
 				e.printStackTrace();
 				// TODO: maybe launch a dialog warning about a corrupted file -
 				// Dan
@@ -182,10 +169,8 @@ public class SearchManager {
 				pairs.add(new ResultsPair(freq, file));
 			}
 		}
-
 		Collections.sort(pairs);
 		List<FileMetadata> matchedFiles = new ArrayList<FileMetadata>();
-
 		for (ResultsPair pair : pairs) {
 			matchedFiles.add(pair.file);
 		}
@@ -268,7 +253,6 @@ public class SearchManager {
 	 */
 	private void searchCategory(String term) {
 		List<Tag> results = null;
-
 		// only search if colon appears exactly once in searchterm
 		if (term.indexOf(":") == term.lastIndexOf(":")) {
 			
@@ -279,14 +263,13 @@ public class SearchManager {
 			//we have already verified that a colon appears exactly once in the searchTerm, so we
 			//know that String[] split will have exactly two items in it
 			String category = split[0].trim();
-			String tagName = split[1].trim();
+			String tagName = "";
+			if(split.length > 1) {
+				tagName = split[1].trim();
+			}
 
 			Session session = sessionFactory.getCurrentSession();
-			session.beginTransaction();
-
-			
-			
-			
+			session.beginTransaction();	
 			Criteria crit = session.createCriteria(Category.class).add(
 					Restrictions.like("name", category + "%"));
 			@SuppressWarnings("unchecked")
@@ -295,17 +278,13 @@ public class SearchManager {
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
 			}
-
 			for (Tag t : potentialTags) {
 				if (t.getName().contains(tagName)) {
 					results.add(t);
 				}
 			}
 		}
-
 		fireSearchTags(results);
-
-
 	}
 
 	/**
