@@ -77,8 +77,12 @@ public class SearchPanel extends JPanel {
 			@Override
 			public void tagSelectionChanged(TagSelectionChangedEvent e) {
 				Set<Tag> selectedTags = new HashSet<Tag>(e.oldTags);
-				selectedTags.addAll(e.newTags);
-				selectedTags.removeAll(e.removedTags);
+				if( e.newTags != null && e.newTags.size() > 0 ) {
+					selectedTags.addAll(e.newTags);
+				}
+				if( e.removedTags != null && e.removedTags.size() > 0 ) {
+					selectedTags.removeAll(e.removedTags);
+				}
 				executeFilter(selectedTags);
 			}
 		});
@@ -120,7 +124,7 @@ public class SearchPanel extends JPanel {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		panel.add(new JLabel("Selected Tags:"), BorderLayout.SOUTH);
+		panel.add(new JLabel("Selected Tags:"), BorderLayout.NORTH);
 		SortedListModel<String> selectedModel = new SortedListModel<String>();
 		selectedTagsList = new JList(selectedModel);
 		panel.add(selectedTagsList, BorderLayout.CENTER);
@@ -135,12 +139,26 @@ public class SearchPanel extends JPanel {
 		}
 		@Override
 		public void tagSelectionChanged(TagSelectionChangedEvent e) {
-			for( Tag t : e.oldTags ) {
-				model.remove(t.getName());
+			if( e.oldTags != null  ) {
+				for( Tag t : e.oldTags ) {
+					model.remove(t.getName());
+				}
 			}
-			for( Tag t: e.newTags ) {
-				model.add(t.getName());
+			if( e.newTags != null ) {
+				for( Tag t: e.newTags ) {
+					model.add(t.getName());
+				}
 			}
+		}
+	}
+	
+	public void setSearchController(SearchManager m) {
+		if( controller != null ) {
+			controller.removeTagsListener(tagTable);
+		}
+		controller = m;
+		if( controller != null ) {
+			controller.addTagsListener(tagTable);
 		}
 	}
 	
@@ -176,6 +194,9 @@ public class SearchPanel extends JPanel {
 			controller.searchText(queryField.getText());
 		}
 		else if( this.currentSearchMode == SearchMode.TAGS ) {
+			System.out.println("query field = " + queryField);
+			System.out.println("query text = " + queryField.getText());
+			System.out.flush();
 			controller.searchTags(queryField.getText());
 		}
 	}

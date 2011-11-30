@@ -61,6 +61,11 @@ public class PropertiesWindowFactory implements FileViewFactory {
 		public void makeVisible() {
 			this.toFront();
 		}
+		
+		@Override
+		public void revalidate() {
+			this.pack();
+		}
 	}
 	
 	@Override

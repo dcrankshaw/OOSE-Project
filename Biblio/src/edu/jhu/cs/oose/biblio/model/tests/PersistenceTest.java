@@ -3,12 +3,13 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
 	private static void write() {
@@ -16,10 +17,42 @@ public class PersistenceTest {
 		Session session = sessionFactory.getCurrentSession();
 		
 		session.getTransaction().begin();
-		Tag t = new Tag("FirstTag");
-		session.save(t);
-		t = new Tag("SecondTag");
-		session.save(t);
+		Tag mag = new Tag("Magnetism");
+		Tag electric = new Tag("Electricity");
+		mag.addChildren(electric);
+		session.save(electric);
+		session.save(mag);
+
+		FileMetadata em = new PDFFileMetadata("testfiles/em.pdf");
+		em.addTag(electric);
+		electric.addTaggedFiles(em);
+		session.save(em);
+		
+		Tag supercomputing = new Tag("Supercomputing");
+		
+		FileMetadata testFile = new PDFFileMetadata("testfiles/test1.pdf");
+		testFile.addTag(supercomputing);
+		supercomputing.addTaggedFiles(testFile);
+		session.save(testFile);
+		session.save(supercomputing);
+		
+		FileMetadata anotherFile = new PDFFileMetadata("testfiles/101_analysis_stories.pdf");
+		
+		Tag light = new Tag("Light Reading");
+		light.addTaggedFiles(anotherFile);
+		anotherFile.addTag(light);
+		session.save(light);
+		light = new Tag("Analysis");
+		light.addTaggedFiles(anotherFile);
+		anotherFile.addTag(light);
+		session.save(light);
+		light = new Tag("Stories");
+		light.addTaggedFiles(anotherFile);
+		anotherFile.addTag(light);
+		session.save(light);
+		
+		session.save(anotherFile);
+		
 		session.getTransaction().commit();
 	}
 	
@@ -39,7 +72,7 @@ public class PersistenceTest {
 	}
 	
 	public static void main(String[] args) {
-		//write();
-		read();
+		write();
+		//read();
 	}
 }

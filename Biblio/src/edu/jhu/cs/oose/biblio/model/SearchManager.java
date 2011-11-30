@@ -40,6 +40,8 @@ public class SearchManager {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
+		searchTags("");
+		filterByTags(null);
 	}
 
 	// Constructor just for testing purposes
@@ -112,9 +114,24 @@ public class SearchManager {
 				}
 			});
 		}
+		// if no tags are specified, then match everything
+		else {
+			Session session = getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(FileMetadata.class);
+			selectedFiles = (List<FileMetadata>)crit.list();
+			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
+				@Override
+				public int compare(FileMetadata a, FileMetadata b) {
+					return a.getName().compareToIgnoreCase(b.getName());
+				}
+			});
+		}
 		fireSearchResult();
 	}
-
+	
+	private List<Tag> tagResults;
+	
 	/**
 	 * Conducts a search of all of the tags for the ones that match the query
 	 * string
@@ -145,10 +162,10 @@ public class SearchManager {
 			//TODO cleanse the input, using sql parameters instead of string concatenation
 			Criteria crit = session.createCriteria(Tag.class).add(
 					Restrictions.like("name", "%" + searchTerm + "%"));
-			@SuppressWarnings("unchecked")
-			List<Tag> results = (List<Tag>) crit.list();
+			//@SuppressWarnings("unchecked")
+			tagResults = (List<Tag>) crit.list();
 			session.getTransaction().commit();
-			fireSearchTags(results);
+			fireSearchTags(tagResults);
 		}
 	}
 
@@ -317,7 +334,6 @@ public class SearchManager {
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
 		listener.displayResults(selectedFiles);
-
 	}
 
 	/**
@@ -338,6 +354,7 @@ public class SearchManager {
 	 */
 	public void addTagsListener(SearchTagsListener listener) {
 		tagListeners.add(listener);
+		this.fireSearchTags(tagResults);
 	}
 
 	/**

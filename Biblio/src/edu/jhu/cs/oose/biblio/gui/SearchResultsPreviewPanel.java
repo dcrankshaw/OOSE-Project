@@ -1,6 +1,7 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -32,7 +33,9 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	
 	/** Creates a new Panel that displays previews of search results. */
 	public SearchResultsPreviewPanel() {
+		columnCount = 2;
 		newLayout(1);
+		matchingFiles = new ArrayList<PreviewPanel>();
 	}
 	
 	/**
@@ -75,6 +78,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	
 	@Override
 	public void displayResults(List<FileMetadata> results) {
+		System.out.println("Displaying results!");
 		for( int i = 0; i < matchingFiles.size(); i++ ) {
 			this.remove(matchingFiles.get(i));
 		}
@@ -89,10 +93,17 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 			}
 		}
 		
-		int rows = results.size() / columnCount;
-		if (results.size() % columnCount > 0) {
-			rows += 1;
+		int rows;
+		if( columnCount > 0 ) {
+			rows = results.size() / columnCount;
+			if (results.size() % columnCount > 0) {
+				rows += 1;
+			}
 		}
+		else {
+			rows = 1;
+		}
+
 		this.newLayout(rows);
 		
 		// put all the cells back in, ensuring that they are in the correct order

@@ -158,7 +158,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		}
 		
 		// grab a copy of the tags right now, for the event
-		Set<Tag> oldTags = Collections.unmodifiableSet(this.selectedTags);
+		Set<Tag> oldTags = new HashSet<Tag>(this.selectedTags);
 		Set<Tag> newTags = null;
 		Set<Tag> rmTags = null;
 		// this cast will always succeed because we do the
@@ -172,6 +172,10 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		else {
 			selectedTags.remove(tags.get(row));
 			rmTags = Collections.singleton(t);
+		}
+		System.out.println("oldTags.size = " + Integer.toString(oldTags.size()));
+		for( Tag tg : oldTags ) {
+			System.out.println("oldTags has " + tg.getName());
 		}
 		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}

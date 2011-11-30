@@ -17,15 +17,21 @@ public class EditorManager {
 	public Set<Tag> getAllTags()
 	{
 		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		Criteria crit = session.createCriteria(Tag.class);
-		return new HashSet<Tag>((List<Tag>)crit.list());
+		Set<Tag> result = new HashSet<Tag>((List<Tag>)crit.list());
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	public Set<Category> getAllCategories()
 	{
 		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		Criteria crit = session.createCriteria(Category.class);
-		return new HashSet<Category>((List<Category>)crit.list());
+		Set<Category> result = new HashSet<Category>((List<Category>)crit.list());
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	// Can we do these with reflection or something? - Paul
