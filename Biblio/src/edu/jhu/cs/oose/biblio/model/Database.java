@@ -17,7 +17,7 @@ import org.hibernate.Criteria;
  * 
  * @param <T> the type that should be returned by the query
  */
-public class Database<T> {
+public class Database<T extends Keyed> {
 	
 	/**
 	 * A map from a class to the Database object that

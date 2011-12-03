@@ -24,7 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "TAG")
-public class Tag implements Comparable<Tag> {
+public class Tag implements Comparable<Tag>, Keyed {
 
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
@@ -164,5 +164,10 @@ public class Tag implements Comparable<Tag> {
 	@Override
 	public String toString() {
 		return getName();
+	}
+	
+	@Override
+	public int getKey() {
+		return id;
 	}
 }
