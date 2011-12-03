@@ -8,6 +8,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class ImportManager {
@@ -36,6 +37,9 @@ public class ImportManager {
 			// TODO use the MIME type library...
 			if( f.getName().endsWith(".pdf")) {
 				result.add(new PDFFileMetadata(f.getAbsolutePath()));
+			}
+			else if(f.getName().endsWith(".epub")) {
+				result.add(new EpubFileMetadata(f.getAbsolutePath()));
 			}
 			else {
 				// TODO read other kinds of files or give errors

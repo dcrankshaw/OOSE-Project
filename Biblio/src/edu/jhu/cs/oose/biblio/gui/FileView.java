@@ -14,4 +14,6 @@ public interface FileView {
 	 * or making the window the one on top.
 	 */
 	public void makeVisible();
+	
+	public void revalidate();
 }

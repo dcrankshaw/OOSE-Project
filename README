@@ -1,5 +1,26 @@
 This is the repository for OOSE group 7's Biblio project.
 
+To run the program, use the main method on MainWindow.
+This should be accessible from the Eclipse project.
+
+The Import Dialog and Tag Editor windows are accessible from
+the menu bar of the main window.
+
+
+Algorithm explanations:
+
+Filter by tags:
+When filtering by tags, the user selects a set of tags to filter by. They then select the filter option. The application then creates a set of descendant tags associated with each top level tag the user selected. It then takes the intersection of the files tagged with any of descendants of each of the top level tags. For example, say the user selects tags: WHALES, ACOUSTICS, PSYCHOLOGY. The database will create three sets of tags. The first contains WHALES and all of its descendant tags (e.g. BLUE WHALES, WHALE SONGS), the second contains ACOUSTICS and all of its descendant tags (e.g. MUSIC, GUITARS, ECHOS), and the third PSYCHOLOGY and all of its descendants. The application then creates a list of all of the tags that are tagged by any in the WHALE SET. Then it takes the intersection of that list of files with all of the files tagged by any in the ACOUSTICS set. And then takes the intersection of this resultant set again with the files tagged by any the PSYCHOLOGY set. Finally, we end up with a set of files about using whale songs to treat post-traumatic stress disorder, exactly what we were looking for.
+
+
+3rd party libraries being used:
+Hibernate (http://www.hibernate.org/) for our Object-Relational Mapper
+HSQLDB (http://hsqldb.org/) for our database
+Epublib (http://www.siegmann.nl/epublib) to read epub files
+JPedal (http://www.jpedal.org/open_source_pdf_viewer_download.php) to read PDF files.
+
+
+
 Iteration 4:
 The Eclipse project is in the Biblio Directory.
 

@@ -158,7 +158,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		}
 		
 		// grab a copy of the tags right now, for the event
-		Set<Tag> oldTags = Collections.unmodifiableSet(this.selectedTags);
+		Set<Tag> oldTags = new HashSet<Tag>(this.selectedTags);
 		Set<Tag> newTags = null;
 		Set<Tag> rmTags = null;
 		// this cast will always succeed because we do the

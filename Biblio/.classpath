@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="libraries/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="lib" path="libraries/slf4j-simple-1.6.4.jar"/>
 	<classpathentry kind="lib" path="libraries/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="lib" path="libraries/epublib-core-3.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

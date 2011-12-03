@@ -5,6 +5,8 @@
 Biblio/*
 !Biblio/src/
 !Biblio/doc/
+!Biblio/libraries/
+!Biblio/testfiles/
 !Biblio/.classpath
 !Biblio/.project
 .metadata

@@ -74,7 +74,6 @@ public class PDFFileMetadata extends FileMetadata {
 	 * @param searchTerm The string to search for
 	 * @return the number of times the string occurs
 	 */
-	
 	@Override 
 	//TODO Zach suggested not to throw Exception
 	public int searchText(String searchTerm) throws Exception {
@@ -94,7 +93,7 @@ public class PDFFileMetadata extends FileMetadata {
 			// Log error somewhere
 			throw new Exception("Error decoding PDF");
 		}
-
+		/*checks whether the PDF is encrypted */
 		if ((decodePdf.isEncrypted() && (!decodePdf.isPasswordSupplied()))
 				&& (!decodePdf.isExtractionAllowed())) {
 			throw new PdfException("Encrypted PDF");
@@ -103,12 +102,15 @@ public class PDFFileMetadata extends FileMetadata {
 			int start = 1;
 			int end = decodePdf.getPageCount();
 			try {
+				/*Iterate through all pages, searching each page for the search term*/
 				for(int page = start; page <= end; page++)
 				{
 					decodePdf.decodePage(page);
 					PdfGroupingAlgorithms grouping = decodePdf.getGroupingObject();
 					if(grouping != null)
 					{
+						/* search entire page (rectangle covering entire page) for the search term
+						 * This bases the search geographically on the page instead of on position in the file*/
 						PdfPageData currentPageData = decodePdf.getPdfPageData();
 						int x1 = currentPageData.getMediaBoxX(page);
 						int x2 = currentPageData.getMediaBoxWidth(page) + x1;
@@ -118,6 +120,7 @@ public class PDFFileMetadata extends FileMetadata {
 			            float[] results = null;
 			            try
 			            {
+			            	/*Allow for search term to span multiple lines */
 			            	results = grouping.findText(
 			            			new Rectangle(x1, y2, x2-x1, y1-y2), 
 			            			page, new String[] {searchTerm},
@@ -131,6 +134,8 @@ public class PDFFileMetadata extends FileMetadata {
 			            
 			            if(results != null)
 			            {
+			            	/* Divide by 5 because the results are 4 coordinates for each search match
+			            	   taken from example code */
 			            	num_results += results.length / 5;
 			            }		
 					}

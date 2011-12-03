@@ -1,11 +1,18 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+/**
+ * Allows the GUI to edit objects and relationships by abstracting
+ * out the database interactions
+ *
+ */
 public class EditorManager {
 	
 	private Set<Tag> tags = new HashSet<Tag>();
@@ -19,11 +26,14 @@ public class EditorManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<Tag> getAllTags()
-	{	
-		
-		Session session = sessionFactory.getCurrentSession();
-		tags = (HashSet<Tag>) session.createQuery("from Tag").list();
-		return tags;
+
+	{
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Criteria crit = session.createCriteria(Tag.class);
+		Set<Tag> result = new HashSet<Tag>((List<Tag>)crit.list());
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	/**
@@ -32,22 +42,24 @@ public class EditorManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
-	{	
-		Session session = sessionFactory.getCurrentSession();
-		categories = (HashSet<Category>) session.createQuery("from Category").list();
-		return categories;
+
+	{
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Criteria crit = session.createCriteria(Category.class);
+		Set<Category> result = new HashSet<Category>((List<Category>)crit.list());
+		session.getTransaction().commit();
+		return result;
 	}
-	/**
-	 * Insert a new tag into the database.
-	 * @param tagName The name of the new tag.
-	 * @return the new tag as an object.
-	 */
-	// Can we do these with TODO reflection or something? - Paul
-	public Tag newTag(String tagName) {
-		Tag t = new Tag(tagName);
-		Session session = sessionFactory.getCurrentSession();
+	
+	// Can we do these with reflection or something? - Paul
+	public Tag newTag() {
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Tag t = new Tag();
 		session.save(t);
-		return new Tag();//TODO not sure what this new tag obj. is doing here.
+		session.getTransaction().commit();
+		return t;
 	}
 	
 	/**
@@ -55,7 +67,10 @@ public class EditorManager {
 	 * @param toRemove The name of the tag to remove.
 	 */
 	public void deleteTag(Tag toRemove) {
-		// TODO remove the tag from the database
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.delete(toRemove);
+		session.getTransaction().commit();
 	}
 	
 	/**
@@ -63,12 +78,14 @@ public class EditorManager {
 	 * @param catName The name of the new category.
 	 * @return the new category as an object.
 	 */
-	public Category newCategory(String catName) {
-		// TODO insert this into the database
-		Category c = new Category(catName);
-		Session session = sessionFactory.getCurrentSession();
+
+	public Category newCategory() {
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Category c = new Category();
 		session.save(c);
-		return new Category();
+		session.getTransaction().commit();
+		return c;
 	}
 	
 	/**
@@ -76,7 +93,10 @@ public class EditorManager {
 	 * @param toRemove The name of the category to remove.
 	 */
 	public void deleteCategory(Category toRemove) {
-		// TODO remove this from the database
+		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.delete(toRemove);
+		session.getTransaction().commit();
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Watcher;
+import edu.jhu.cs.oose.biblio.model.SearchManager;
 
 /**
  * The main window that contains the interface to Biblio 
@@ -30,14 +31,16 @@ public class MainWindow extends JFrame {
 	 * Creates the Searching tab of the interface.
 	 * @return the searching panel
 	 */
-	private JPanel makeSearchPanel() {
+	private JPanel makeSearchPanel(SearchManager manager) {
 		JPanel largePanel = new JPanel();
 		
 		largePanel.setLayout(new BorderLayout());
 		SearchPanel searchPanel = new SearchPanel();
+		searchPanel.setSearchController(manager);
 		largePanel.add(searchPanel, BorderLayout.WEST);
 		
 		SearchResultsPreviewPanel previews = new SearchResultsPreviewPanel();
+		previews.setSearchController(manager);
 		largePanel.add(previews, BorderLayout.CENTER);
 		
 		// connect the preview panel to the search panel
@@ -53,7 +56,8 @@ public class MainWindow extends JFrame {
 		super();
 		this.factory = new FullFilePanelFactory();
 		tabs = new JTabbedPane();
-		JPanel searchPanel = makeSearchPanel();
+		SearchManager sManager = new SearchManager();
+		JPanel searchPanel = makeSearchPanel(sManager);
 		tabs.add("Search", searchPanel);
 		this.getContentPane().add(tabs);
 		
@@ -91,6 +95,7 @@ public class MainWindow extends JFrame {
 		});
 		menu.add(item);
 		this.setJMenuBar(menuBar);
+		
 	}
 	
 	/**

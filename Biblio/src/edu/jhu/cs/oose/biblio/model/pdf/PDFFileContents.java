@@ -58,14 +58,6 @@ public class PDFFileContents implements FileContents {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int search(String searchTerm) {
-		// TODO implement this method
-		return 0;
-	}
 	
 	/**
 	 * Read a page of the PDF file from disk
@@ -138,6 +130,12 @@ public class PDFFileContents implements FileContents {
 		else {
 			return pages.size();
 		}
+	}
+
+	@Override
+	public int search(String searchTerm) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

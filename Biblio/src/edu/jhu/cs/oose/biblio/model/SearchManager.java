@@ -29,13 +29,19 @@ public class SearchManager {
 	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
 	// TODO global??
-	SessionFactory sessionFactory;
+	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
+	// TODO this should probably not be the source of this...
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
 	public SearchManager() {
-		sessionFactory = new Configuration().configure().buildSessionFactory();
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
+		searchTags("");
+		filterByTags(null);
 	}
 
 	// Constructor just for testing purposes
@@ -108,9 +114,24 @@ public class SearchManager {
 				}
 			});
 		}
+		// if no tags are specified, then match everything
+		else {
+			Session session = getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(FileMetadata.class);
+			selectedFiles = (List<FileMetadata>)crit.list();
+			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
+				@Override
+				public int compare(FileMetadata a, FileMetadata b) {
+					return a.getName().compareToIgnoreCase(b.getName());
+				}
+			});
+		}
 		fireSearchResult();
 	}
-
+	
+	private List<Tag> tagResults;
+	
 	/**
 	 * Conducts a search of all of the tags for the ones that match the query
 	 * string
@@ -119,19 +140,7 @@ public class SearchManager {
 	 *            the string to match against tag names
 	 */
 	public void searchTags(String searchTerm) {
-		/*
-		 * EntityManager entityManager =
-		 * entityManagerFactory.createEntityManager();
-		 * entityManager.getTransaction().begin(); List<Tag> searchResults =
-		 * (List<Tag>) entityManager.createQuery( "select tt, distinct ft from "
-		 * +
-		 * "(Select distinct t FROM Tag t join Tag_child c where t.name like \"%"
-		 * + searchTerm + "%\" and c.parent_name = t.name) tt " +
-		 * "JOIN tag_file f ON f.tag = tt.tag JOIN file_table ft ON ft.name = f.file"
-		 * ).getResultList();
-		 * 
-		 * entityManager.close();
-		 */
+		
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
@@ -141,10 +150,10 @@ public class SearchManager {
 			//TODO cleanse the input, using sql parameters instead of string concatenation
 			Criteria crit = session.createCriteria(Tag.class).add(
 					Restrictions.like("name", "%" + searchTerm + "%"));
-			@SuppressWarnings("unchecked")
-			List<Tag> results = (List<Tag>) crit.list();
+			//@SuppressWarnings("unchecked")
+			tagResults = (List<Tag>) crit.list();
 			session.getTransaction().commit();
-			fireSearchTags(results);
+			fireSearchTags(tagResults);
 		}
 	}
 
@@ -168,7 +177,6 @@ public class SearchManager {
 			try {
 				freq = file.searchText(searchTerm);
 			} catch (Exception e) {
-
 				e.printStackTrace();
 				// TODO: maybe launch a dialog warning about a corrupted file -
 				// Dan
@@ -178,10 +186,8 @@ public class SearchManager {
 				pairs.add(new ResultsPair(freq, file));
 			}
 		}
-
 		Collections.sort(pairs);
 		List<FileMetadata> matchedFiles = new ArrayList<FileMetadata>();
-
 		for (ResultsPair pair : pairs) {
 			matchedFiles.add(pair.file);
 		}
@@ -262,10 +268,8 @@ public class SearchManager {
 	 * 
 	 * @param term
 	 */
-	
 	private void searchCategory(String term) {
 		List<Tag> results = null;
-
 		// only search if colon appears exactly once in searchterm
 		if (term.indexOf(":") == term.lastIndexOf(":")) {
 			
@@ -276,14 +280,13 @@ public class SearchManager {
 			//we have already verified that a colon appears exactly once in the searchTerm, so we
 			//know that String[] split will have exactly two items in it
 			String category = split[0].trim();
-			String tagName = split[1].trim();
+			String tagName = "";
+			if(split.length > 1) {
+				tagName = split[1].trim();
+			}
 
 			Session session = sessionFactory.getCurrentSession();
-			session.beginTransaction();
-
-			
-			
-			
+			session.beginTransaction();	
 			Criteria crit = session.createCriteria(Category.class).add(
 					Restrictions.like("name", category + "%"));
 			@SuppressWarnings("unchecked")
@@ -292,17 +295,13 @@ public class SearchManager {
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
 			}
-
 			for (Tag t : potentialTags) {
 				if (t.getName().contains(tagName)) {
 					results.add(t);
 				}
 			}
 		}
-
 		fireSearchTags(results);
-
-
 	}
 
 	/**
@@ -314,7 +313,6 @@ public class SearchManager {
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
 		listener.displayResults(selectedFiles);
-
 	}
 
 	/**
@@ -335,6 +333,7 @@ public class SearchManager {
 	 */
 	public void addTagsListener(SearchTagsListener listener) {
 		tagListeners.add(listener);
+		this.fireSearchTags(tagResults);
 	}
 
 	/**
