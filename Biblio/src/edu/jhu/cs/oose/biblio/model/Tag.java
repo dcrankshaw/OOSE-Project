@@ -160,4 +160,9 @@ public class Tag implements Comparable<Tag> {
 	public static void update(Tag t) {
 		
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 }
