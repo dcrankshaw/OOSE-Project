@@ -117,9 +117,30 @@ public class FileImportCell extends JPanel
 	 * Adds a tag to the FileMetadata for the file this cell is previewing
 	 * @param tag The tag the user wants to add to the FileMetadata
 	 */
-	public void addTag(Tag tag)
-	{
+	public void addTag(Tag tag) {
 		this.tagsPanel.addTag(tag);
+	}
+	
+	/**
+	 * Adds a new tag to the FileMetadata for the file this cell is previewing
+	 * @param tag new
+	 */
+	public void addNewTag(String tagName) {
+		this.tagsPanel.createTag(tagName);
+	}
+	
+	/**
+	 * Rollback to where this cell is before
+	 */
+	public void rollback() {
+		this.tagsPanel.rollback();
+	}
+	
+	/**
+	 * Commit all the changes in this cell to database
+	 */
+	public void commit() {
+		this.tagsPanel.commit();
 	}
 	
 	/**
@@ -156,6 +177,11 @@ public class FileImportCell extends JPanel
 	 */
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+		if (isSelected == true) {
+			// TODO change the appearance so that user know this cell has been selected
+		} else {
+			// TODO change the appearance so that user know this cell is no long selected
+		}
 	}
 
 	/**

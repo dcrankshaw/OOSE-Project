@@ -167,10 +167,8 @@ public class ImportPanel extends JPanel {
 	 */
 	public void applyTagToMany(Tag tag) {
 		for (FileImportCell cell : fileCellArray) {
-			if(cell.isSelected())
-			{
-				// add tag to file
-				// cell.getFileMetadata().addTag();
+			if(cell.isSelected()) {
+				cell.addNewTag(tag.getName());
 			}	
 		}
 	}
@@ -229,8 +227,7 @@ public class ImportPanel extends JPanel {
 	 */
 	public void unselectAllCells()
 	{
-		for(FileImportCell file: fileCellArray)
-		{
+		for(FileImportCell file: fileCellArray) {
 			file.setSelected(false);
 		}
 	}
@@ -240,12 +237,8 @@ public class ImportPanel extends JPanel {
 	 * to close the import window
 	 */
 	public void finishImport() {
-		for (FileImportCell file : fileCellArray) {
-			// add to model
-
-		}
-		for (Tag tag : newTags) {
-			// add to model
+		for (FileImportCell cell : fileCellArray) {
+			cell.commit();
 		}
 	}
 
@@ -254,8 +247,10 @@ public class ImportPanel extends JPanel {
 	 * to the model
 	 */
 	public void cancelImport() {
-		// TODO rollback
 		owner.setVisible(false);
+		for (FileImportCell cell : fileCellArray) {
+			cell.rollback();
+		}
 	}
 
 }

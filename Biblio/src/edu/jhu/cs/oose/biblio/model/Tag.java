@@ -131,8 +131,7 @@ public class Tag implements Comparable<Tag> {
 	public Set<Tag> getAllDescendants() {
 		Set<Tag> descendants = new HashSet<Tag>();
 		Queue<Tag> q = new LinkedList<Tag>();
-		for(Tag child: this.children)
-		{
+		for(Tag child: this.children) {
 			q.add(child);
 		}
 		while(!q.isEmpty())
@@ -146,5 +145,19 @@ public class Tag implements Comparable<Tag> {
 			}
 		}
 		return descendants;
+	}
+	
+	public static void delete(String tagName) {
+		// TODO delete tag from db with name equals tagName
+		
+	}
+	
+	public static Tag get(String tagName) {
+		// TODO get tag from db with name equals tagName, return null if not found
+		return null;
+	}
+	
+	public static void update(Tag t) {
+		
 	}
 }
