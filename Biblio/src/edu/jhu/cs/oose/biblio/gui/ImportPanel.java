@@ -89,12 +89,9 @@ public class ImportPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				String tagName = tagEntryField.getText();
 				tagEntryField.setText("");
-				/*
-				 * If model doesn't contains tag: Tag current = new Tag(tagName);
-				 * newTags.add(current);
-				 * 
-				 * applyTagToMany(current);
-				 */
+				Tag current = new Tag(tagName);
+				newTags.add(current);
+				applyTagToMany(current);
 			}
 		});
 		cancelButton = new JButton("Cancel");

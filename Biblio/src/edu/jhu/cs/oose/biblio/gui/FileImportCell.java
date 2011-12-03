@@ -56,7 +56,7 @@ public class FileImportCell extends JPanel
 	{
 		this.file = fileMetadata;
 		copyStatus = DEFAULT_COPY_STATUS;
-		isSelected = false;
+		isSelected = true;
 		tagsPanel = new TagsListPanel(file);
 		try
 		{
