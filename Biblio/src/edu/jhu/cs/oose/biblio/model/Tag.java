@@ -147,4 +147,9 @@ public class Tag implements Comparable<Tag> {
 		}
 		return descendants;
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 }
