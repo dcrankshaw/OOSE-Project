@@ -1,9 +1,12 @@
 package edu.jhu.cs.oose.biblio.model.epub;
 
 import java.awt.Image;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.epub.EpubReader;
 import edu.jhu.cs.oose.biblio.model.FileContents;
 
 public class EpubFileContents implements FileContents {
@@ -19,6 +22,8 @@ public class EpubFileContents implements FileContents {
 	 */
 	private Image preview;
 	
+	Book book;
+	
 	/**
 	 * Creates a new instance of the file at the provided path
 	 * @param path the path to the file
@@ -28,18 +33,15 @@ public class EpubFileContents implements FileContents {
 	{
 		pages = new HashMap<Integer, Image>();
 		preview = null;
+		
+		book = (new EpubReader()).readEpub(new FileInputStream(path));
 	}
 	
-	/**
-	 * Reads the specified page from this Epub book
-	 * @param pageNum the number of the page to read
-	 * @return the page as an Image
-	 * @throws Exception If there is an error reading the page
-	 */
-	private Image readPage(int pageNum) throws Exception
+	public Book getBook()
 	{
-		return null;
+		return book;
 	}
+	
 	
 	@Override
 	public int search(String searchTerm) {
