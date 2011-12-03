@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 /**
  * When we execute a query, Hibernate will create new objects for the records in
@@ -18,6 +20,20 @@ import org.hibernate.Criteria;
  * @param <T> the type that should be returned by the query
  */
 public class Database<T extends Keyed> {
+	/**
+	 * A factory for sessions for interacting with the Database.
+	 * This is probably the best place for this.
+	 * Can we put a decorator on here that redirects criteria to this class?
+	 */
+	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+	/**
+	 * Returns the session factory for connecting to the database.
+	 * @return the session factory for connecting to the database.
+	 */
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
 	
 	/**
 	 * A map from a class to the Database object that

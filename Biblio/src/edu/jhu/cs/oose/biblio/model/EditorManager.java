@@ -28,7 +28,7 @@ public class EditorManager {
 	public Set<Tag> getAllTags()
 
 	{
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Criteria crit = session.createCriteria(Tag.class);
 		Set<Tag> result = new HashSet<Tag>((List<Tag>)crit.list());
@@ -44,7 +44,7 @@ public class EditorManager {
 	public Set<Category> getAllCategories()
 
 	{
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Criteria crit = session.createCriteria(Category.class);
 		Set<Category> result = new HashSet<Category>((List<Category>)crit.list());
@@ -54,7 +54,7 @@ public class EditorManager {
 	
 	// Can we do these with reflection or something? - Paul
 	public Tag newTag() {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Tag t = new Tag();
 		session.save(t);
@@ -67,7 +67,7 @@ public class EditorManager {
 	 * @param toRemove The name of the tag to remove.
 	 */
 	public void deleteTag(Tag toRemove) {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.delete(toRemove);
 		session.getTransaction().commit();
@@ -80,7 +80,7 @@ public class EditorManager {
 	 */
 
 	public Category newCategory() {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Category c = new Category();
 		session.save(c);
@@ -93,7 +93,7 @@ public class EditorManager {
 	 * @param toRemove The name of the category to remove.
 	 */
 	public void deleteCategory(Category toRemove) {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.delete(toRemove);
 		session.getTransaction().commit();
