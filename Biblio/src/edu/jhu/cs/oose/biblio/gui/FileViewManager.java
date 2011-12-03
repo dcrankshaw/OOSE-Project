@@ -58,6 +58,7 @@ public class FileViewManager {
 		else {
 			FileView view = this.factory.newView(file);
 			dataToView.put(file, view);
+			view.revalidate();
 			view.makeVisible();
 		}
 	}
