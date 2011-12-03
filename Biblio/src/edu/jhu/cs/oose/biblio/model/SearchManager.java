@@ -112,7 +112,7 @@ public class SearchManager {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			Criteria crit = session.createCriteria(FileMetadata.class);
-			selectedFiles = (List<FileMetadata>)crit.list();
+			selectedFiles = ((Database<FileMetadata>)Database.get(FileMetadata.class)).executeCriteria(crit);
 			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
 				@Override
 				public int compare(FileMetadata a, FileMetadata b) {
@@ -143,8 +143,7 @@ public class SearchManager {
 			//TODO cleanse the input, using sql parameters instead of string concatenation
 			Criteria crit = session.createCriteria(Tag.class).add(
 					Restrictions.like("name", "%" + searchTerm + "%"));
-			//@SuppressWarnings("unchecked")
-			tagResults = (List<Tag>) crit.list();
+			tagResults = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 			session.getTransaction().commit();
 			fireSearchTags(tagResults);
 		}
@@ -283,7 +282,7 @@ public class SearchManager {
 			Criteria crit = session.createCriteria(Category.class).add(
 					Restrictions.like("name", category + "%"));
 			@SuppressWarnings("unchecked")
-			List<Category> cats = (List<Category>) crit.list();
+			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeCriteria(crit);
 			session.getTransaction().commit();
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
