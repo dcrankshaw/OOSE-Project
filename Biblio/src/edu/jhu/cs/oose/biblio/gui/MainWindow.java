@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.Watcher;
 
 /**
  * The main window that contains the interface to Biblio 
@@ -101,6 +102,9 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
+		String dir = "";
+		Thread watch =  new Thread (new Watcher(dir));
+		watch.start();
 	}
 	
 	/** The tabs displayed in the interface
