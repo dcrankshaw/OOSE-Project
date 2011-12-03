@@ -78,6 +78,29 @@ public class Database<T extends Keyed> {
 	 * @return the results, using currently existing objects
 	 */
 	public List<T> executeCriteria(Criteria c) {
-		return null;
+		// first, execute the query.  This can't possibly be entirely
+		// typesafe, but we must continue anyway, so the warning is suppressed.
+		@SuppressWarnings("unchecked")
+		List<T> results = (List<T>)c.list();
+		
+		// for each object in the list, see if there is already an
+		// object with that primary key.  If there is, then
+		// use the already existing one instead.
+		// Note that set is an optional operation on Lists, so this might not
+		// work, but then we're probably screwed, so here goes!
+		for( int i = 0; i < results.size(); i++ ) {
+			T newObj = results.get(i);
+			int key = newObj.getKey();
+			T oldObj = this.objectCache.get(key);
+			
+			// If there is already an object, use that
+			if( null != oldObj ) {
+				results.set(i, oldObj);
+			}
+			else {
+				this.objectCache.put(key, newObj);
+			}
+		}
+		return results;
 	}
 }
