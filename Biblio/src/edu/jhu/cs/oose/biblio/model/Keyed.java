@@ -10,5 +10,5 @@ public interface Keyed {
 	 * Returns the primary key of this object.
 	 * @return the primary key of this object.
 	 */
-	public int getKey();
+	public int getId();
 }

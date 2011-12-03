@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * Allows the GUI to edit objects and relationships by abstracting
@@ -47,7 +46,6 @@ public class EditorManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
-
 	{
 		return (Set<Category>)this.getAll(Category.class);
 	}

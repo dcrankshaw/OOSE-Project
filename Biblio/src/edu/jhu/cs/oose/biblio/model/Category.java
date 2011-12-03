@@ -88,9 +88,4 @@ public class Category implements Comparable<Category>, Keyed {
 	public int compareTo(Category other) {
 		return getName().compareTo(other.getName());
 	}
-	
-	@Override
-	public int getKey() {
-		return id;
-	}
 }

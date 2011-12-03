@@ -221,9 +221,4 @@ public abstract class FileMetadata implements Keyed {
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
-	
-	@Override
-	public int getKey() {
-		return id;
-	}
 }

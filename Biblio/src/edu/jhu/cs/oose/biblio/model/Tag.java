@@ -165,9 +165,4 @@ public class Tag implements Comparable<Tag>, Keyed {
 	public String toString() {
 		return getName();
 	}
-	
-	@Override
-	public int getKey() {
-		return id;
-	}
 }

@@ -106,7 +106,7 @@ public class Database<T extends Keyed> {
 		// work, but then we're probably screwed, so here goes!
 		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
-			int key = newObj.getKey();
+			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
 			
 			// If there is already an object, use that

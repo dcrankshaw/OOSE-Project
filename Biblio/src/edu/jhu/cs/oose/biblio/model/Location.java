@@ -48,9 +48,4 @@ public class Location implements Keyed {
 	public float getPercentageOfFile() {
 		return percentageOfFile;
 	}
-	
-	@Override
-	public int getKey() {
-		return id;
-	}
 }

@@ -28,6 +28,8 @@ public class TagsListPanel extends JPanel {
 	// or, combine the text field in the bottom with the
 	// list, so that you type into the list, and it absorbs
 	// recognized tags into atomic units.  Just my thoughts... Paul
+	
+	/** The set of tags that are displayed / managed by this panel */
 	private Collection<Tag> tagSet;
 	
 	/** The file whose tags are displayed in this panel */

@@ -120,9 +120,4 @@ public class Bookmark implements Keyed {
 	public Set<Tag> getTags() {
 		return this.tags;
 	}
-
-	@Override
-	public int getKey() {
-		return id;
-	}
 }
