@@ -78,7 +78,6 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	
 	@Override
 	public void displayResults(List<FileMetadata> results) {
-		System.out.println("Displaying results!");
 		for( int i = 0; i < matchingFiles.size(); i++ ) {
 			this.remove(matchingFiles.get(i));
 		}

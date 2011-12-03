@@ -173,10 +173,6 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 			selectedTags.remove(tags.get(row));
 			rmTags = Collections.singleton(t);
 		}
-		System.out.println("oldTags.size = " + Integer.toString(oldTags.size()));
-		for( Tag tg : oldTags ) {
-			System.out.println("oldTags has " + tg.getName());
-		}
 		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}
 

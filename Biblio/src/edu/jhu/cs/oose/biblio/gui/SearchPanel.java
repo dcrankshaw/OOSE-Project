@@ -194,9 +194,6 @@ public class SearchPanel extends JPanel {
 			controller.searchText(queryField.getText());
 		}
 		else if( this.currentSearchMode == SearchMode.TAGS ) {
-			System.out.println("query field = " + queryField);
-			System.out.println("query text = " + queryField.getText());
-			System.out.flush();
 			controller.searchTags(queryField.getText());
 		}
 	}
