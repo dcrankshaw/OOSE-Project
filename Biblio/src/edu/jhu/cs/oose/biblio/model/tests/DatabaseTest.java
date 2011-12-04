@@ -51,8 +51,7 @@ public class DatabaseTest extends TestCase{
 		loc.setPercentageOfFile((float) 15.5);
 		
 		// PDFFileMetadata
-		PDFFileMetadata pdfmeta = new PDFFileMetadata();
-		pdfmeta.setPathToFile("Back to Back");
+		PDFFileMetadata pdfmeta = new PDFFileMetadata("Back to Back");
 		Date d = Calendar.getInstance().getTime();
 		pdfmeta.setLastOpened(d);
 		assertEquals(d.getTime(), pdfmeta.getLastOpened().getTime());

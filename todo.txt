@@ -17,3 +17,4 @@
 - actually copy files into a repository
 - DatabaseTests fails with Hibernate errors (exciting!)
 	- Update DatabaseTests to use our DB interface
+- Full File views don't show up
