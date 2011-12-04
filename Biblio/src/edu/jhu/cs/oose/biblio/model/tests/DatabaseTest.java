@@ -58,9 +58,7 @@ public class DatabaseTest extends TestCase{
 		pdfmeta.setOpenedCount(11);
 		
 		// Bookmark
-		Bookmark b = new Bookmark();
-		b.setFile(pdfmeta);
-		b.setLocation(loc);
+		Bookmark b = new Bookmark(pdfmeta, loc);
 		
 		// Tag
 		Tag t = new Tag("Pop Song");

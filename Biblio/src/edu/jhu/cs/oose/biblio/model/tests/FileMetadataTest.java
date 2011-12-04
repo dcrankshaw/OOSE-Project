@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 import org.hibernate.Session;
 
 import edu.jhu.cs.oose.biblio.model.Database;
-import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -17,22 +16,6 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  * @author Cain Lu
  */
 public class FileMetadataTest extends TestCase {
-	
-	/**
-	 * An empty implementation of FileMetadata so that we
-	 * can actually test something.
-	 */
-	private class TestMetadata extends FileMetadata {
-		@Override
-		public int searchText(String searchTerm) throws Exception {
-			return 0;
-		}
-
-		@Override
-		public FileContents getContents() {
-			return null;
-		}
-	}
 	
 	/**
 	 * The FileMetadata object to test
@@ -118,7 +101,7 @@ public class FileMetadataTest extends TestCase {
 	 */
 	// TODO Paul:I don't think this test works...
 	public void testAddTags(){
-		assertTrue("Bad input", tag.addChildren(tag1));
+		assertTrue("Bad input", tag.addChild(tag1));
 	}
 	
 	/**

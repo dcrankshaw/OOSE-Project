@@ -50,10 +50,32 @@ public class Bookmark implements Keyed {
 	@ManyToMany(mappedBy="taggedBookmarks", fetch=FetchType.EAGER)
 	private Set<Tag> tags;
 
-	/** Creates a new, blank bookmark */
-	public Bookmark() {
-		super();
+	/**
+	 * Creates a new, blank bookmark.
+	 * This is only used by Hibernate.
+	 * Use the other constructor instead.
+	 */
+	@SuppressWarnings("unused")
+	private Bookmark() {
 		tags = new HashSet<Tag>();
+	}
+	
+	/**
+	 * Creates a new Bookmark that points to the given location
+	 * in the specified file.  This gets a primary key for the
+	 * Bookmark, so there must be an open transaction.
+	 * @param file the file the Bookmark is in
+	 * @param loc the position in the file
+	 */
+	public Bookmark(FileMetadata file, Location loc) {
+		this.file = file;
+		this.location = loc;
+		this.tags = new HashSet<Tag>();
+		
+		Database.getSessionFactory().getCurrentSession().save(this);
+		@SuppressWarnings("unchecked")
+		Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
+		db.add(this);
 	}
 	
 	/**
