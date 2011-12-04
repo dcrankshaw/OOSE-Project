@@ -21,13 +21,13 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * A set of information about a file
+ * A set of information about a file.
  */
 @Entity
 @Table( name = "FILEMETADATA" )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
-public abstract class FileMetadata{
+public abstract class FileMetadata implements Keyed {
 
 	/** The ID used to identify this object in the database */
 	@Id
@@ -221,4 +221,9 @@ public abstract class FileMetadata{
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
+	
+	@Override
+	public int getKey() {
+		return id;
+	}
 }

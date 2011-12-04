@@ -21,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table( name = "BOOKMARK" )
-public class Bookmark {
+public class Bookmark implements Keyed {
 
 	/** The unique ID used in the database to identify this Bookmark */
 	@Id
@@ -119,5 +119,10 @@ public class Bookmark {
 	 */
 	public Set<Tag> getTags() {
 		return this.tags;
+	}
+
+	@Override
+	public int getKey() {
+		return id;
 	}
 }

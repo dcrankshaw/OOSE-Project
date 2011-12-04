@@ -1,9 +1,10 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -30,7 +31,10 @@ public class TagsListPanel extends JPanel {
 	private Collection<Tag> tagSet;
 	
 	/** The file whose tags are displayed in this panel */
-	//private FileMetadata file;
+	private FileMetadata file;
+	
+	/** The Primary key array of all the tag that was created in this panel so far */
+	private Set<String> newTags;
 	
 	/** The text entered into the pane by the user */
 	private String text;
@@ -49,21 +53,18 @@ public class TagsListPanel extends JPanel {
 		tagsLabel = new JLabel("Tags:");
 		newTagField = new JTextField();
 		newTagField.setColumns(10);
-		// TODO Paul: Can we do this with an ActionListener instead?
-		// That's probably "the right way" to do what we want.
-		newTagField.addKeyListener(new KeyAdapter() {
-			
+		newTagField.addActionListener(new ActionListener() {
 			@Override
-			public void keyTyped(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER)
-				{
-					createTag();
-				}
+			public void actionPerformed(ActionEvent e) {
+				String tagName = newTagField.getText();
+				newTagField.setText("");
+				createTag(tagName);
 			}
 		});
-
+		
 		tagsListModel = new DefaultListModel();
 		tagSet = null;
+		newTags = new HashSet<String>();
 		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		addedTags.setVisibleRowCount(-1);
@@ -86,12 +87,33 @@ public class TagsListPanel extends JPanel {
 	/** Parses the text the user has entered and attempts to find the matching tag */
 	public void parseString() {}
 	
-	/** creates a new tag from user entered text and adds it to the list of tags associated with this file */
-	private void createTag()
-	{
-		String tagName = newTagField.getText();
-		newTagField.setText(null);
-		addTag(new Tag(tagName));
+	/** creates a new tag and adds it to the list of tags associated with this file
+	 * @param tagName the tag name of the new tag
+	 *  */
+	public void createTag(String tagName) {
+		Tag t = Tag.get(tagName);
+		if (t == null) {
+			t = new Tag(tagName);
+			
+		}
+		addTag(t);
+	}
+	
+	/** delete those new created tag */
+	public void rollback() {
+		for (String n : newTags) {
+			Tag.delete(n);
+		}
+		newTags.clear();
+	}
+	
+	/** store the fileMetaData into db and tag them with tags in addedTags */
+	public void commit() {
+		for (String n : newTags) {
+			Tag t = Tag.get(n);
+			t.addTaggedFiles(file);
+		}
+		newTags.clear();
 	}
 	
 	/**
@@ -101,7 +123,7 @@ public class TagsListPanel extends JPanel {
 	public void addTag(Tag t)
 	{
 		tagsListModel.addElement(t.getName());
-		tagSet.add(t); // TODO sync with DB
+		tagSet.add(t);
 	}
 	
 	/**
