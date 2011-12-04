@@ -82,7 +82,7 @@ public class EditorManager {
 	public Category newCategory() {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Category c = new Category();
+		Category c = new Category("Untitled Category");
 		session.save(c);
 		session.getTransaction().commit();
 		return c;
