@@ -157,8 +157,8 @@ public class Tag implements Comparable<Tag> {
 		return null;
 	}
 	
-	public static void update(Tag t) {
-		
+	public void update() {
+		// TODO update the tag to database
 	}
 	
 	@Override

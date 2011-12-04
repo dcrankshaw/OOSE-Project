@@ -6,8 +6,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -39,6 +42,10 @@ public class FileImportCell extends JPanel
 	/** The button that tells us to reference the existing file.
 	 * There will not be a copy in our repository. */
 	private JRadioButton leaveStatusButton;
+	/** the ButtonGroup that wrap the selectButton */
+	ButtonGroup selectButtonGroup;
+	/** The button that tells us if this FileImportCell has been selected. */
+	private JToggleButton selectButton;
 	/** The string telling the user that the file will be moved into the repository. */
 	private static final String MOVE_STRING = "Move";
 	/** The string telling the user that the file will be left along and not copied to the repository. */
@@ -56,7 +63,7 @@ public class FileImportCell extends JPanel
 	{
 		this.file = fileMetadata;
 		copyStatus = DEFAULT_COPY_STATUS;
-		isSelected = true;
+		isSelected = false;
 		tagsPanel = new TagsListPanel(file);
 		try
 		{
@@ -94,17 +101,21 @@ public class FileImportCell extends JPanel
 				FileImportCell.this.setCopyStatus(CopyStatus.LEAVEINPLACE);
 			}
 		});
+		this.selectButton = new JToggleButton("Select");
+		
 		ButtonGroup copyButtonGroup = new ButtonGroup();
 		copyButtonGroup.add(copyStatusButton);
 		copyButtonGroup.add(moveStatusButton);
 		copyButtonGroup.add(leaveStatusButton);
 		
+		selectButtonGroup = new ButtonGroup();
 		
 		this.setLayout(new BorderLayout());
 		JPanel copyButtonsPanel = new JPanel(new GridLayout(1, CopyStatus.values().length));
 		copyButtonsPanel.add(moveStatusButton);
 		copyButtonsPanel.add(copyStatusButton);
 		copyButtonsPanel.add(leaveStatusButton);
+		copyButtonsPanel.add(selectButton);
 		this.add(copyButtonsPanel, BorderLayout.SOUTH);
 		if(preview != null) {
 			this.add(preview, BorderLayout.CENTER);
@@ -166,7 +177,7 @@ public class FileImportCell extends JPanel
 	 * @return true if the cell is selected, false otherwise
 	 */
 	public boolean isSelected() {
-		return isSelected;
+		return selectButton.isSelected();
 	}
 
 	/**
@@ -176,12 +187,7 @@ public class FileImportCell extends JPanel
 	 * @param isSelected the selection state of the cell
 	 */
 	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-		if (isSelected == true) {
-			// TODO change the appearance so that user know this cell has been selected
-		} else {
-			// TODO change the appearance so that user know this cell is no long selected
-		}
+		this.isSelected = isSelected();
 	}
 
 	/**

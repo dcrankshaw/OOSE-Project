@@ -94,7 +94,6 @@ public class TagsListPanel extends JPanel {
 		Tag t = Tag.get(tagName);
 		if (t == null) {
 			t = new Tag(tagName);
-			
 		}
 		addTag(t);
 	}
@@ -112,6 +111,7 @@ public class TagsListPanel extends JPanel {
 		for (String n : newTags) {
 			Tag t = Tag.get(n);
 			t.addTaggedFiles(file);
+			t.update();
 		}
 		newTags.clear();
 	}
