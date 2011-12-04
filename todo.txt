@@ -12,3 +12,4 @@
 -move search from PDFFileMetadata to PDFFileContents
 -add highlighting to selected items (especially in importing)
 - case insensitive search
+- visitor pattern for factories
