@@ -107,9 +107,9 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
-		String dir = "";
-		Thread watch =  new Thread (new Watcher(dir));
-		watch.start();
+		String dir = "testfiles";
+		//Thread watch =  new Thread (new Watcher(dir));
+		//watch.start();
 	}
 	
 	/** The tabs displayed in the interface

@@ -59,7 +59,7 @@ public class EpubFileMetadata extends FileMetadata {
 	}
 
 	@Override
-	public FileContents getContents() {
+	public EpubFileContents getContents() {
 		if(contents == null)
 		{
 			try {

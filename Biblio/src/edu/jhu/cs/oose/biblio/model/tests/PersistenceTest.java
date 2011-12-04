@@ -9,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
@@ -37,6 +38,12 @@ public class PersistenceTest {
 		session.save(supercomputing);
 		
 		FileMetadata anotherFile = new PDFFileMetadata("testfiles/101_analysis_stories.pdf");
+		FileMetadata again = new EpubFileMetadata("testfiles/sherlockholmes.epub");
+		Tag fiction = new Tag("Fiction");
+		again.addTag(fiction);
+		fiction.addTaggedFiles(again);
+		session.save(again);
+		session.save(fiction);
 		
 		Tag light = new Tag("Light Reading");
 		light.addTaggedFiles(anotherFile);
@@ -72,7 +79,7 @@ public class PersistenceTest {
 	}
 	
 	public static void main(String[] args) {
-		write();
-		//read();
+		//write();
+		read();
 	}
 }
