@@ -3,26 +3,30 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import edu.jhu.cs.oose.biblio.model.Bookmark;
-import edu.jhu.cs.oose.biblio.model.FileMetadata;
+
+import org.hibernate.Session;
+
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
-// TODO This class needs to check the results of the methods
+/** Tests nontrivial operations on the Tag class */
 public class TagTest extends TestCase {
 	
-	Tag tag, tag1;
-	Bookmark bkmk;
-	FileMetadata file;
-	
+	/** Tests to make sure that setName enforces proper syntax. */
 	public void testSetName() {
-		tag = new Tag();
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Tag tag = new Tag("");
 		assertFalse(tag.setName("has a :"));
 		assertTrue(tag.setName("no colon"));
+		session.getTransaction().rollback();
 	}
 	
-	
+	/** Tests to make sure that getAllDescendents finds all descendents */
 	public void testGetAllDescendants()
 	{
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		Tag math = new Tag("math");
 		Tag numbers = new Tag("numbers");
 		Tag one = new Tag("one");
@@ -37,21 +41,21 @@ public class TagTest extends TestCase {
 		Tag b = new Tag("b");
 		Tag c = new Tag("c");
 		Tag school = new Tag("school");
-		school.addChildren(math);
-		school.addChildren(english);
-		math.addChildren(numbers);
-		math.addChildren(one);
-		numbers.addChildren(onePointFive);
-		numbers.addChildren(decimal);
-		numbers.addChildren(integer);
-		integer.addChildren(one);
-		integer.addChildren(two);
-		decimal.addChildren(onePointFive);
-		decimal.addChildren(twoPointFive);
-		english.addChildren(letters);
-		letters.addChildren(a);
-		letters.addChildren(b);
-		letters.addChildren(c);
+		school.addChild(math);
+		school.addChild(english);
+		math.addChild(numbers);
+		math.addChild(one);
+		numbers.addChild(onePointFive);
+		numbers.addChild(decimal);
+		numbers.addChild(integer);
+		integer.addChild(one);
+		integer.addChild(two);
+		decimal.addChild(onePointFive);
+		decimal.addChild(twoPointFive);
+		english.addChild(letters);
+		letters.addChild(a);
+		letters.addChild(b);
+		letters.addChild(c);
 		
 		Set<Tag> descendants = math.getAllDescendants();
 		assertTrue(descendants.contains(numbers));
@@ -62,10 +66,6 @@ public class TagTest extends TestCase {
 		assertTrue(descendants.contains(onePointFive));
 		assertTrue(descendants.contains(twoPointFive));
 		
-		
-		
+		session.getTransaction().rollback();
 	}
-	
-
-	
 }

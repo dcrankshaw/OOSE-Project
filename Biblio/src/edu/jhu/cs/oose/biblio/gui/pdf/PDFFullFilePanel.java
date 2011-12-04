@@ -22,6 +22,7 @@ public class PDFFullFilePanel extends FullFilePanel {
 	 */
 	private PDFFileContents contents;
 	
+	/** The height, in pixels, of one page of the PDF */
 	private int pageHeight;
 	
 	/**
@@ -140,6 +141,12 @@ public class PDFFullFilePanel extends FullFilePanel {
 		return 1;
 	}
 
+	/**
+	 * Draws one page of a PDF file into the given context.
+	 * It is drawn at the vertical location.
+	 * @param g the context in which to draw
+	 * @param page the page to draw
+	 */
 	private void drawPage(Graphics g, int page) {
 		try {
 			Image pic = contents.getPage(page);

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
@@ -14,13 +15,13 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
 	private static void write() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
 		session.getTransaction().begin();
 		Tag mag = new Tag("Magnetism");
 		Tag electric = new Tag("Electricity");
-		mag.addChildren(electric);
+		mag.addChild(electric);
 		session.save(electric);
 		session.save(mag);
 
@@ -64,7 +65,7 @@ public class PersistenceTest {
 	}
 	
 	private static void read() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.getTransaction().begin();
 		Criteria crit = session.createCriteria(Tag.class);
@@ -79,7 +80,7 @@ public class PersistenceTest {
 	}
 	
 	public static void main(String[] args) {
-		//write();
-		read();
+		write();
+		//read();
 	}
 }

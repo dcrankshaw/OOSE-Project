@@ -1,7 +1,11 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
 import junit.framework.TestCase;
+
+import org.hibernate.Session;
+
 import edu.jhu.cs.oose.biblio.model.Bookmark;
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Location;
 
@@ -16,11 +20,6 @@ public class BookmarkTest extends TestCase {
 	private Bookmark bkmk;
 	
 	/**
-	 * Bookmarks to use during testing
-	 */
-	private Bookmark bkmk1;
-	
-	/**
 	 * File data to use during testing.
 	 */
 	private FileMetadata file;
@@ -30,28 +29,18 @@ public class BookmarkTest extends TestCase {
 	 */
 	Location loc;
 	
-	/**
-	 * Tests the mark method of Bookmark, I think (Paul).
-	 * See my comments on that method.
-	 */
-	/*public void testMark() {
+	public void setUp() {
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		
-		DBManager manager = new DBManager();
-		assertTrue("Bad input", bkmk.mark(file, loc));//test how to handle bad input
-		manager.store(bkmk);
-
+		file = new TestMetadata();
+		loc = new Location(5);
+		session.save(loc);
+		session.save(file);
 		
-		// see DBManager.get(query) for why this has a warning
-		Collection<Bookmark> l = (Collection<Bookmark>)manager.get("from BOOKMARK");
-		
-		// grab an element from the collection
-		Bookmark b = l.iterator().next();
-		
-		// test if the data stored in database is consistent with the object data
-		assertSame("Inconsistancy", b.getFile(), file);
-		// TODO Paul: I have no idea what the line above does...
-		
-	}*/
+		bkmk = new Bookmark(file, loc);
+		session.getTransaction().commit();
+	}
 	
 	/**
 	 *  Test if the bookmarked file exists.

@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -26,12 +25,23 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 @Table( name = "PDF_FILEMETADATA" )
 public class PDFFileMetadata extends FileMetadata {
 	
-	public PDFFileMetadata() {
+	/**
+	 * Creates a new empty object.  This is here so that
+	 * Hibernate can fill in all the data.
+	 * Use the other constructor instead
+	 */
+	@SuppressWarnings("unused")
+	private PDFFileMetadata() {
 		super();
 	}
 	
-	public PDFFileMetadata(String pathToFile) {
-		super(pathToFile);
+	/**
+	 * Creates a new for the contents on disk with default initialization for the other fields.
+	 * This gets a primary key for this object, so there should be an open transaction
+	 * @param path the path to the file contents residing on disk
+	 */
+	public PDFFileMetadata(String path) {
+		super(path);
 	} 
 	
     /**
@@ -85,7 +95,7 @@ public class PDFFileMetadata extends FileMetadata {
 		try {
 			decodePdf = new PdfDecoder(false);
 			decodePdf.setExtractionMode(PdfDecoder.TEXT);
-			decodePdf.init(true);
+			PdfDecoder.init(true);
 
 			decodePdf.openPdfFile(this.getPathToFile());
 		}
