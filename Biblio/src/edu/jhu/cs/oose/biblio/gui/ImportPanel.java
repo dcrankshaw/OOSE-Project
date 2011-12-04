@@ -85,19 +85,18 @@ public class ImportPanel extends JPanel {
 
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
-		applyButton.addMouseListener(new MouseAdapter() {
-
+		applyButton.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				applyTagToMany(tagEntryField.getText());
 				tagEntryField.setText("");
 			}
 		});
 		cancelButton = new JButton("Cancel");
-		cancelButton.addMouseListener(new MouseAdapter() {
+		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
 				int result = JOptionPane
 						.showConfirmDialog(ImportPanel.this.owner,
@@ -113,10 +112,9 @@ public class ImportPanel extends JPanel {
 		});
 		
 		finishButton = new JButton("Finish Import");
-		finishButton.addMouseListener(new MouseAdapter() {
-
+		finishButton.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				finishImport();
 			}
 		});
