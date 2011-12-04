@@ -107,7 +107,7 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
-		String dirPath = "testfiles";
+		String dirPath = "testfiles";//TODO
 		Thread watch =  new Thread (new Watcher(dirPath));
 		watch.start();
 	}

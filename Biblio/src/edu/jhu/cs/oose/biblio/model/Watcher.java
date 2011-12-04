@@ -56,7 +56,7 @@ public class Watcher implements Runnable {
 	}
 	
 	/**
-	 * Get all files with proper extension.
+	 * Get all files with proper extension from the folder.
 	 */
 	public void getFiles() {
 		String files;
@@ -74,7 +74,7 @@ public class Watcher implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * Get all the imported files in the library from database.
 	 */
 	public void getImported() {
 		Session session = sessionFactory.getCurrentSession();
@@ -84,12 +84,18 @@ public class Watcher implements Runnable {
 		session.getTransaction().commit();
 	}
 
+	/**
+	 * Add an object that wants to be notified when new import is needed.
+	 * @param w
+	 */
 	public void addDirListener(WatchDirListener w) {
 		dirListeners.add(w);
 		this.fireToImport();
 
 	}
-
+	/**
+	 * Notify all relevant objects that new import is needed.
+	 */
 	public void fireToImport() {
 		for (WatchDirListener w : dirListeners) {
 			w.toImport(unImported);
