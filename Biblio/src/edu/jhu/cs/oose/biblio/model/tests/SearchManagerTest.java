@@ -14,9 +14,9 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import edu.jhu.cs.oose.biblio.model.Category;
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
@@ -70,7 +70,7 @@ public class SearchManagerTest extends TestCase {
 		//search = new SearchManager(testFiles);
 		
 		
-		sessionFactory = new Configuration().configure().buildSessionFactory();
+		sessionFactory = Database.getSessionFactory();
 	}
 	
 	/**
@@ -177,10 +177,8 @@ public class SearchManagerTest extends TestCase {
 		});
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		Category matches = new Category();
-		matches.setName("matches");
-		Category noMatch = new Category();
-		noMatch.setName("hello");
+		Category matches = new Category("matches");
+		Category noMatch = new Category("hello");
 		
 		Tag aa = new Tag("aa");
 		Tag aabb = new Tag("aabb");
@@ -322,19 +320,19 @@ public class SearchManagerTest extends TestCase {
 		Tag b = new Tag("b");
 		Tag c = new Tag("c");
 		Tag school = new Tag("school");
-		school.addChildren(math);
-		school.addChildren(english);
-		math.addChildren(numbers);
-		numbers.addChildren(decimal);
-		numbers.addChildren(integer);
-		integer.addChildren(one);
-		integer.addChildren(two);
-		decimal.addChildren(onePointFive);
-		decimal.addChildren(twoPointFive);
-		english.addChildren(letters);
-		letters.addChildren(a);
-		letters.addChildren(b);
-		letters.addChildren(c);
+		school.addChild(math);
+		school.addChild(english);
+		math.addChild(numbers);
+		numbers.addChild(decimal);
+		numbers.addChild(integer);
+		integer.addChild(one);
+		integer.addChild(two);
+		decimal.addChild(onePointFive);
+		decimal.addChild(twoPointFive);
+		english.addChild(letters);
+		letters.addChild(a);
+		letters.addChild(b);
+		letters.addChild(c);
 		
 		/*-------------------------------------------------
 		 * file0: letters, numbers, integer, onePointFive
