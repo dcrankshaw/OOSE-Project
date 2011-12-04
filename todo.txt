@@ -18,3 +18,4 @@
 - DatabaseTests fails with Hibernate errors (exciting!)
 	- Update DatabaseTests to use our DB interface
 - Full File views don't show up
+- Take a look at searchBookmark

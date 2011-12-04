@@ -11,8 +11,6 @@ import java.util.TreeSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -28,7 +26,10 @@ public class SearchManager {
 	private Set<SearchTagsListener> tagListeners;
 	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
+	/** The tags that will be used for filtering */
+	private List<Tag> tagResults;
 
+	/** Creates a new SearchManager for searching the database */
 	public SearchManager() {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
@@ -112,7 +113,9 @@ public class SearchManager {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			Criteria crit = session.createCriteria(FileMetadata.class);
-			selectedFiles = ((Database<FileMetadata>)Database.get(FileMetadata.class)).executeCriteria(crit);
+			@SuppressWarnings("unchecked")
+			Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
+			selectedFiles = db.executeCriteria(crit);
 			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
 				@Override
 				public int compare(FileMetadata a, FileMetadata b) {
@@ -122,8 +125,6 @@ public class SearchManager {
 		}
 		fireSearchResult();
 	}
-	
-	private List<Tag> tagResults;
 	
 	/**
 	 * Conducts a search of all of the tags for the ones that match the query
@@ -143,7 +144,9 @@ public class SearchManager {
 			//TODO cleanse the input, using sql parameters instead of string concatenation
 			Criteria crit = session.createCriteria(Tag.class).add(
 					Restrictions.like("name", "%" + searchTerm + "%"));
-			tagResults = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
+			@SuppressWarnings("unchecked")
+			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
+			tagResults = db.executeCriteria(crit);
 			session.getTransaction().commit();
 			fireSearchTags(tagResults);
 		}
@@ -227,11 +230,11 @@ public class SearchManager {
 
 	}
 
-	//TODO write tests
+	//TODO write tests, use Database interface
 	/**
 	 * Search bookmarks tagged by the same tag.
 	 * 
-	 * @param tagName
+	 * @param tagName the text that should be part of the tags on this Bookmark
 	 */
 	@SuppressWarnings("unchecked")
 	public void searchBookmark(String tagName) {
@@ -258,7 +261,7 @@ public class SearchManager {
 	 * Search for tags matching the given search term in the given category
 	 * provides a null result set on a malformed input (more than one colon on the search string)
 	 * 
-	 * @param term
+	 * @param term the search query string
 	 */
 	private void searchCategory(String term) {
 		List<Tag> results = null;
