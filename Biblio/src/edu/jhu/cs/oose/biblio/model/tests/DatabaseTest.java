@@ -26,13 +26,14 @@ public class DatabaseTest extends TestCase{
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		
-		Location loc = new Location();
+		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
 		session.save(loc);
 		session.getTransaction().commit();
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
 		session.getTransaction().commit();
 		Location l = result.get(0);
@@ -47,7 +48,7 @@ public class DatabaseTest extends TestCase{
 		session.beginTransaction();
 		
 		// location
-		Location loc = new Location();
+		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
 		
 		// PDFFileMetadata
@@ -74,9 +75,13 @@ public class DatabaseTest extends TestCase{
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Location> locResult = (List<Location>) session.createQuery("from Location").list();
+		@SuppressWarnings("unchecked")
 		List<PDFFileMetadata> fileResult = (List<PDFFileMetadata>) session.createQuery("from PDFFileMetadata").list();
+		@SuppressWarnings("unchecked")
 		List<Bookmark> bmResult = (List<Bookmark>) session.createQuery("from Bookmark").list();
+		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		
 		session.getTransaction().commit();
@@ -120,6 +125,7 @@ public class DatabaseTest extends TestCase{
 		// Rollback ***************************************************************************************
 		session = sessionFactory.getCurrentSession();
 		session.getTransaction().begin();
+		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		Tag tg = tagResult.get(0);
 		int id = tg.getId();

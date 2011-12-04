@@ -30,7 +30,7 @@ public class Location implements Keyed {
 	
 	/**
 	 * Creates a new, blank Location.
-	 * This has protected visibility; use the other constructor instead.
+	 * This is only used by Hibernate.  Use the other constructor instead
 	 * Hibernate uses this, so it's not actually unused.
 	 */
 	@SuppressWarnings("unused")
