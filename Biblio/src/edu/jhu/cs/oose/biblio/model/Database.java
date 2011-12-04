@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * When we execute a query, Hibernate will create new objects for the records in
@@ -106,7 +108,7 @@ public class Database<T extends Keyed> {
 		// work, but then we're probably screwed, so here goes!
 		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
-			int key = newObj.getKey();
+			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
 			
 			// If there is already an object, use that
@@ -114,9 +116,34 @@ public class Database<T extends Keyed> {
 				results.set(i, oldObj);
 			}
 			else {
-				this.objectCache.put(key, newObj);
+				this.add(newObj);
 			}
 		}
 		return results;
+	}
+	
+	void add(T newObj) {
+		this.objectCache.put(newObj.getId(), newObj);
+	}
+
+	public static Tag getTag(String name) {
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		//TODO cleanse the input, using sql parameters instead of string concatenation
+		Criteria crit = session.createCriteria(Tag.class).add(
+				Restrictions.eq("name", "%" + name + "%"));
+		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
+		session.getTransaction().commit();
+		
+		if( result.size() <= 0 ) {
+			return null;
+		}
+		else if( result.size() == 1 ) {
+			return result.get(0);
+		}
+		else {
+			System.err.println("Searching for tags named " + name + " yielded multiple results.  Picking the first one.");
+			return result.get(0);
+		}
 	}
 }

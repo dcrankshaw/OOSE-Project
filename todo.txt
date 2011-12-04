@@ -1,13 +1,21 @@
--init and teardown functions?
-      -includes setting up directory watching
-      -either write a config file or add a config table to DB
-      	      -could be a singleton config object? probably not
--finish importing
--epub support
--rss reading
--note taking?
--bookmarking
--load rest of pdf in separate thread
--tags with pdf and epub metadata - should be pretty easy to do
--move search from PDFFileMetadata to PDFFileContents
--add highlighting to selected items (especially in importing)
+- init and teardown functions?
+      - includes setting up directory watching
+      - either write a config file or add a config table to DB
+      	      - could be a singleton config object? probably not
+- finish importing
+- epub support
+- rss reading
+- note taking?
+- bookmarking
+- load rest of pdf in separate thread
+- tags with pdf and epub metadata - should be pretty easy to do
+- move search from PDFFileMetadata to PDFFileContents
+- add highlighting to selected items (especially in importing)
+- case insensitive search
+- visitor pattern for factories
+- unit tests
+- actually copy files into a repository
+- DatabaseTests fails with Hibernate errors (exciting!)
+	- Update DatabaseTests to use our DB interface
+- Full File views don't show up
+- Take a look at searchBookmark

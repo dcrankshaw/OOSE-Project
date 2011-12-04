@@ -131,18 +131,8 @@ public class FileImportCell extends JPanel
 	public void addTag(Tag tag) {
 		this.tagsPanel.addTag(tag);
 	}
-	
-	/**
-	 * Adds a new tag to the FileMetadata for the file this cell is previewing
-	 * @param tag new
-	 */
-	public void addNewTag(String tagName) {
-		this.tagsPanel.createTag(tagName);
-	}
-	
-	/**
-	 * Rollback to where this cell is before
-	 */
+		
+	/** Rollback to the setting for this cell before the import started. */
 	public void rollback() {
 		this.tagsPanel.rollback();
 	}

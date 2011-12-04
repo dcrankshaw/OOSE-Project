@@ -15,8 +15,6 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 /**
  * Subclass of a PreviewPanel containing the functionality to view a preview of a PDF file
  */
-
-
 public class PDFPreviewPanel extends PreviewPanel {
 	
 	/**
@@ -64,9 +62,14 @@ public class PDFPreviewPanel extends PreviewPanel {
 	
 	@Override
 	public void paint(Graphics g) {
+		// Make sure that we get a clean background behind us
+		g.setColor(this.getBackground());
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		try {
+			// Get the picture from the file
 			Image thumbnail = contents.getPage(1);
-			// scale the image appropriately
+			// find the limiting dimension and the best aspect ratio
 			double widthRatio = this.getSize().getWidth() /  (double)thumbnail.getWidth(null);
 			double heightRatio = this.getSize().getHeight() /  (double)thumbnail.getHeight(null);
 			double ratio = 1;
@@ -78,12 +81,15 @@ public class PDFPreviewPanel extends PreviewPanel {
 			}
 			ratio = Math.min(ratio, 1.0);
 			
+			// Find the actual size of the image based on that
 			int width = (int)(thumbnail.getWidth(null)*ratio);
 			int height = (int)(thumbnail.getHeight(null) * ratio);
 			
+			// center the image
 			int leftEdge = (this.getSize().width - width) / 2;
 			int bottomEdge = (this.getSize().height - height) / 2;
 			
+			// draw it
 			g.drawImage(thumbnail, leftEdge, bottomEdge, leftEdge + width, bottomEdge + height,
 					0, 0, thumbnail.getWidth(null), thumbnail.getHeight(null), null);
 		}

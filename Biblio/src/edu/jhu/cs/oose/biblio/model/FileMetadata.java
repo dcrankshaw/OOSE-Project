@@ -62,10 +62,11 @@ public abstract class FileMetadata implements Keyed {
 	private int openedCount;
 	
 	/**
-	 * Creates a new empty object.  This is mostly here so that
+	 * Creates a new empty object.  This is here so that
 	 * Hibernate can fill in all the data.
+	 * Use the other constructor instead.
 	 */
-	public FileMetadata() {
+	protected FileMetadata() {
 		this.lastOpened = new Date();
 		this.openedCount = 0;
 		this.pathToFile = "";
@@ -74,6 +75,7 @@ public abstract class FileMetadata implements Keyed {
     
 	/**
 	 * Creates a new for the contents on disk with default initialization for the other fields.
+	 * This gets a primary key for this object, so there should be an open transaction
 	 * @param path the path to the file contents residing on disk
 	 */
 	public FileMetadata(String path) {
@@ -81,6 +83,11 @@ public abstract class FileMetadata implements Keyed {
 		this.openedCount = 0;
 		this.pathToFile = path;
 		this.tags = new HashSet<Tag>();
+		
+		Database.getSessionFactory().getCurrentSession().save(this);
+		@SuppressWarnings("unchecked")
+		Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
+		db.add(this);
 	}
 	
 	/**
@@ -221,9 +228,4 @@ public abstract class FileMetadata implements Keyed {
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
-	
-	@Override
-	public int getKey() {
-		return id;
-	}
 }
