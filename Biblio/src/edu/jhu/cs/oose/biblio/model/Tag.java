@@ -160,11 +160,6 @@ public class Tag implements Comparable<Tag>, Keyed {
 		
 	}
 	
-	public static Tag get(String tagName) {
-		// TODO get tag from db with name equals tagName, return null if not found
-		return null;
-	}
-	
 	public void update() {
 		// TODO update the tag to database
 	}
