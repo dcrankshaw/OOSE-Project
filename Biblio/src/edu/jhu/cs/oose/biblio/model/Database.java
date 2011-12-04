@@ -114,9 +114,13 @@ public class Database<T extends Keyed> {
 				results.set(i, oldObj);
 			}
 			else {
-				this.objectCache.put(key, newObj);
+				this.add(newObj);
 			}
 		}
 		return results;
+	}
+	
+	void add(T newObj) {
+		this.objectCache.put(newObj.getId(), newObj);
 	}
 }
