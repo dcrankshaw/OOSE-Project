@@ -99,7 +99,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	/**
-	 * Creates a new window and displays it onscreen.
+	 * Creates a new window and displays it on screen.
 	 * @param args  Command line arguments - they get ignored.
 	 */
 	public static void main(String[] args) {
@@ -107,9 +107,9 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
-		String dir = "testfiles";
-		//Thread watch =  new Thread (new Watcher(dir));
-		//watch.start();
+		String dirPath = "testfiles";
+		Thread watch =  new Thread (new Watcher(dirPath));
+		watch.start();
 	}
 	
 	/** The tabs displayed in the interface
