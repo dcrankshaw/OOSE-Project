@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -161,16 +162,21 @@ public class ImportPanel extends JPanel {
 	}
 
 	/**
-	 * Applies the supplied tag to all of the files that have been selected by
+	 * Applies the tag with the given name to all of the files that have been selected by
 	 * the user.
 	 * 
-	 * @param tag The tag to apply to all of the selected files
+	 * @param tagName The name of the tag to apply to all of the selected files
 	 */
 	public void applyTagToMany(String tagName) {
+		Tag tag = Database.getTag(tagName);
+		if( null == tag ) {
+			tag = new Tag(tagName);
+			newTags.add(tag);
+		}
 		for (FileImportCell cell : fileCellArray) {
 			if(cell.isSelected()) {
-				cell.addNewTag(tagName);
-			}	
+				cell.addTag(tag);
+			}
 		}
 	}
 
