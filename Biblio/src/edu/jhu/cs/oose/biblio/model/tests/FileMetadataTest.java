@@ -4,6 +4,11 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.Date;
 
 import junit.framework.TestCase;
+
+import org.hibernate.Session;
+
+import edu.jhu.cs.oose.biblio.model.Database;
+import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -12,6 +17,22 @@ import edu.jhu.cs.oose.biblio.model.Tag;
  * @author Cain Lu
  */
 public class FileMetadataTest extends TestCase {
+	
+	/**
+	 * An empty implementation of FileMetadata so that we
+	 * can actually test something.
+	 */
+	private class TestMetadata extends FileMetadata {
+		@Override
+		public int searchText(String searchTerm) throws Exception {
+			return 0;
+		}
+
+		@Override
+		public FileContents getContents() {
+			return null;
+		}
+	}
 	
 	/**
 	 * The FileMetadata object to test
@@ -26,12 +47,22 @@ public class FileMetadataTest extends TestCase {
 	 */
 	Tag tag1;
 	
+	public void setUp() {
+		file = new TestMetadata();
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		tag = new Tag("Tag");
+		tag1 = new Tag("Tag1");
+		session.getTransaction().commit();
+	}
+	
 	/**
 	 * Tests FileMetdata.getContents().
+	 * This is an abstract method on FileMetadata, so this is not a good test. 
 	 */
-	public void testGetContents() {
+	/*public void testGetContents() {
 		assertTrue("Get contents does not return any contents.", file.getContents() != null ); 
-	}
+	}*/
 	
 	/**
 	 * Tests FileMetadata.updateLastOpened().
