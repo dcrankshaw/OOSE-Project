@@ -20,5 +20,6 @@
     <mapping class="edu.jhu.cs.oose.biblio.model.Tag"/>
     <mapping class="edu.jhu.cs.oose.biblio.model.Location"/>
     <mapping class="edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata"/>
+    <mapping class="edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata"/>
   </session-factory>
 </hibernate-configuration>
