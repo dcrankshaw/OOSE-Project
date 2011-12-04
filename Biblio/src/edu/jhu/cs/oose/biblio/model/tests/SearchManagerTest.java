@@ -182,17 +182,12 @@ public class SearchManagerTest extends TestCase {
 		Category noMatch = new Category();
 		noMatch.setName("hello");
 		
-		Tag aa = new Tag();
-		aa.setName("aa");
-		Tag aabb = new Tag();
-		aabb.setName("aabb");
-		Tag noA = new Tag();
-		noA.setName("hhhhh");
+		Tag aa = new Tag("aa");
+		Tag aabb = new Tag("aabb");
+		Tag noA = new Tag("hhhh");
 		
-		Tag otherCatAA = new Tag();
-		otherCatAA.setName("aa Other Cat");
-		Tag otherCatAABB = new Tag();
-		otherCatAABB.setName("aabb Other Cat");
+		Tag otherCatAA = new Tag("aa Other Cat");
+		Tag otherCatAABB = new Tag("aabb Other Cat");
 		
 		matches.addTag(aa);
 		matches.addTag(aabb);

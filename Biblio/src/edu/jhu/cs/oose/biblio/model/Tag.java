@@ -26,58 +26,66 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "TAG")
 public class Tag implements Comparable<Tag>, Keyed {
 
+	/** The database's primary key for this Tag */
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	@Column(name = "TAG_ID")
 	private int id;
 
-	/**
-	 * The name of the Tag.
-	 */
+	/** The name of the Tag. */
 	@Column(name = "NAME", nullable = false)
 	private String name;
 
-	/**
-	 * The tags implied by this tag.
-	 */
+	/** The tags implied by this tag. */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TAG_CHILD", joinColumns = @JoinColumn(name = "TAG_PARENT_ID", referencedColumnName = "TAG_ID"), inverseJoinColumns = @JoinColumn(name = "TAG_CHILD_ID", referencedColumnName = "TAG_ID"))
 	private Set<Tag> children;
 
-	/**
-	 * The set of files tagged by this Tag.
-	 */
+	/** The set of files tagged by this Tag. */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TAG_FILEMETADATA", joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "TAG_ID"), inverseJoinColumns = @JoinColumn(name = "FMETA_ID", referencedColumnName = "FMETA_ID"))
 	private Set<FileMetadata> taggedFiles;
 
-	/**
-	 * The set of bookmarks tagged by this Tag.
-	 */
+	/** The set of bookmarks tagged by this Tag. */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TAG_BOOKMARK", joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "TAG_ID"), inverseJoinColumns = @JoinColumn(name = "BOOKMARK_ID", referencedColumnName = "BOOKMARK_ID"))
 	private Set<Bookmark> taggedBookmarks;
 
-	public Tag() {
+	/**
+	 * Creates a new, blank Tag.
+	 * This should only ever be used by Hibernate.
+	 * DO NOT call this yourself
+	 */
+	private Tag() {
 		name = null;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
 	}
 
-	public int getId() {
-		return id;
-	}
-
+	/**
+	 * Creates a new Tag with the given name.
+	 * This adds the Tag to our in memory cache, so you need to have
+	 * an open transaction when this constructor runs.
+	 * If you need an object, use this constructor;
+	 * DO NOT use the default constructor.
+	 * @param tagName the name of the new Tag.
+	 */
 	public Tag(String tagName) {
 		name = tagName;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
+		
+		Database.getSessionFactory().getCurrentSession().save(this);
+		((Database<Tag>)Database.get(Tag.class)).add(this);
 	}
-
-
+	
+	public int getId() {
+		return id;
+	}
+	
 	public boolean setName(String n) {
 		if(n.contains(":"))
 			return false;
@@ -125,7 +133,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 	}
 
 	/**
-	 * get all tags that are imply this tag. Basically executes a breadth first search of all this tags children.
+	 * Get all tags that imply this tag. Basically executes a breadth first search of all this tag's children.
 	 * @return The set of all tags found
 	 */
 	public Set<Tag> getAllDescendants() {

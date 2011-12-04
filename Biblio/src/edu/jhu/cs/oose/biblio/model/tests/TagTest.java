@@ -3,7 +3,11 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.Set;
 
 import junit.framework.TestCase;
+
+import org.hibernate.Session;
+
 import edu.jhu.cs.oose.biblio.model.Bookmark;
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -15,14 +19,18 @@ public class TagTest extends TestCase {
 	FileMetadata file;
 	
 	public void testSetName() {
-		tag = new Tag();
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		tag = new Tag("");
 		assertFalse(tag.setName("has a :"));
 		assertTrue(tag.setName("no colon"));
+		session.getTransaction().rollback();
 	}
-	
 	
 	public void testGetAllDescendants()
 	{
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		Tag math = new Tag("math");
 		Tag numbers = new Tag("numbers");
 		Tag one = new Tag("one");
@@ -62,10 +70,6 @@ public class TagTest extends TestCase {
 		assertTrue(descendants.contains(onePointFive));
 		assertTrue(descendants.contains(twoPointFive));
 		
-		
-		
+		session.getTransaction().rollback();
 	}
-	
-
-	
 }

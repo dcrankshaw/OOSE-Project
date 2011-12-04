@@ -58,7 +58,7 @@ public class EditorManager {
 	public Tag newTag() {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Tag t = new Tag();
+		Tag t = new Tag("Untitled Tag");
 		session.save(t);
 		session.getTransaction().commit();
 		return t;

@@ -63,8 +63,7 @@ public class DatabaseTest extends TestCase{
 		b.setLocation(loc);
 		
 		// Tag
-		Tag t = new Tag();
-		t.setName("Pop Song");
+		Tag t = new Tag("Pop Song");
 		t.addTaggedFiles(pdfmeta);
 		t.addTaggedBookmark(b);
 		
@@ -116,8 +115,7 @@ public class DatabaseTest extends TestCase{
 		Session session = sessionFactory.getCurrentSession();
 		// Commit *****************************************************************************************
 		session.getTransaction().begin();
-		Tag t = new Tag();
-		t.setName("Pop Song");
+		Tag t = new Tag("Pop Song");
 		session.save(t);
 		session.getTransaction().commit();
 		
