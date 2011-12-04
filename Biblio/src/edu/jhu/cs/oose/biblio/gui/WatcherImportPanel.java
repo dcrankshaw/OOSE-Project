@@ -1,6 +1,8 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -40,6 +41,9 @@ public class WatcherImportPanel extends JPanel {
 	/** A button to close the current dialog */
 	private JButton cancelButton;
 	
+	/** A panel that contains all the check box */
+	JPanel checkBoxPanel;
+	
 	/**
 	 * The parent dialog box containing this watcher import panel.
 	 */
@@ -54,6 +58,7 @@ public class WatcherImportPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				getSelectedFiles();
 				ImportDialog importer = new ImportDialog(getMetadataForFiles(), (JFrame) owner.getParent());
 				cancelImport();
 			}
@@ -70,11 +75,19 @@ public class WatcherImportPanel extends JPanel {
 		
 		
 		// TODO add checkbox array and listener - add file into selectedFile
+		checkBoxPanel = new JPanel();
 		JPanel globalOptionsPanel = new JPanel();
+		
+		checkBoxPanel.setLayout(new GridLayout(files.size(), 1));
 		globalOptionsPanel.setLayout(new GridLayout());
+		this.add(checkBoxPanel, BorderLayout.CENTER);
 		this.add(globalOptionsPanel, BorderLayout.SOUTH);
 		globalOptionsPanel.add(cancelButton);
 		globalOptionsPanel.add(importButton);
+		globalOptionsPanel.setPreferredSize(new Dimension(200, 50));
+		for (File f : files) {
+			checkBoxPanel.add(new JCheckBox(f.toString()));
+		}
 	}
 	
 	/**
@@ -99,5 +112,19 @@ public class WatcherImportPanel extends JPanel {
 			}
 		}
 		return result;
+	}
+	
+	private void getSelectedFiles() {
+		Component[] components = checkBoxPanel.getComponents();
+		for (Component c : components) {
+			if (c instanceof JCheckBox) {
+				JCheckBox cb = (JCheckBox) c;
+				for (File f : files) {
+					if (f.toString().compareTo(cb.getText()) == 0) {
+						selectedFiles.add(f);
+					}
+				}
+			}
+		}
 	}
 }
