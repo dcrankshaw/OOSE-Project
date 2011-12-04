@@ -1,8 +1,10 @@
 package edu.jhu.cs.oose.biblio.gui;
 
+import edu.jhu.cs.oose.biblio.gui.epub.EpubPreviewPanel;
 import edu.jhu.cs.oose.biblio.gui.pdf.PDFPreviewPanel;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
+import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 /**
@@ -23,6 +25,9 @@ public class FilePreviewFactory {
 		// Zach says to use the visitor pattern here
 		if( file instanceof PDFFileMetadata ) {
 			return new PDFPreviewPanel((PDFFileMetadata)file);
+		}
+		else if(file instanceof EpubFileMetadata) {
+			return new EpubPreviewPanel((EpubFileMetadata) file);
 		}
 		throw new UnsupportedFiletypeException("This filetype is unsupported");
 	}

@@ -1,7 +1,6 @@
-package edu.jhu.cs.oose.biblio.model;
+	package edu.jhu.cs.oose.biblio.model;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
@@ -15,46 +14,51 @@ import org.hibernate.SessionFactory;
  */
 public class EditorManager {
 	
-	private Set<Tag> tags = new HashSet<Tag>();
-	private Set<Category> categories = new HashSet<Category>();
-	
-	SessionFactory sessionFactory;//TODO private???
-	
 	/**
-	 * Get all the tags in the database.
-	 * @return tags A set of all tags currently in the database.
+	 * Gets all the instances of a particular class in the DB.
+	 * @param cl the class to get all of
+	 * @return a set of all the instances of a particular class in the DB.
 	 */
-	@SuppressWarnings("unchecked")
-	public Set<Tag> getAllTags()
-
-	{
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+	private Set<?> getAll(Class<?> cl) {
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Criteria crit = session.createCriteria(Tag.class);
-		Set<Tag> result = new HashSet<Tag>((List<Tag>)crit.list());
+		Criteria crit = session.createCriteria(cl);
+		
+		// Getting a database isn't type safe, but I promise it works
+		Set<?> result = new HashSet<Keyed>(((Database<?>)Database.get(cl)).executeCriteria(crit));
+		
 		session.getTransaction().commit();
 		return result;
 	}
 	
 	/**
-	 * Get all the categories in the database.
-	 * @return categories A set of all categories currently in the database.
+	 * Returns a set of all the Tags in the database.
+	 * @return a set of all the Tags in the database.
+	 */
+	@SuppressWarnings("unchecked")
+	public Set<Tag> getAllTags()
+	{
+		return (Set<Tag>)this.getAll(Tag.class);
+	}
+	
+	/**
+	 * Returns a set of all the Categories in the database.
+	 * @return a set of all the Categories in the database.
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
 
 	{
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Criteria crit = session.createCriteria(Category.class);
-		Set<Category> result = new HashSet<Category>((List<Category>)crit.list());
-		session.getTransaction().commit();
-		return result;
+		return (Set<Category>)this.getAll(Category.class);
 	}
 	
 	// Can we do these with reflection or something? - Paul
+	/**
+	 * Insert a new Tag into the database.
+	 * @return the new Tag as an object.
+	 */
 	public Tag newTag() {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Tag t = new Tag();
 		session.save(t);
@@ -67,20 +71,18 @@ public class EditorManager {
 	 * @param toRemove The name of the tag to remove.
 	 */
 	public void deleteTag(Tag toRemove) {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.delete(toRemove);
 		session.getTransaction().commit();
 	}
 	
 	/**
-	 * Insert a new category into the database.
-	 * @param catName The name of the new category.
-	 * @return the new category as an object.
+	 * Insert a new Category into the database.
+	 * @return the new Category as an object.
 	 */
-
 	public Category newCategory() {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Category c = new Category();
 		session.save(c);
@@ -93,7 +95,7 @@ public class EditorManager {
 	 * @param toRemove The name of the category to remove.
 	 */
 	public void deleteCategory(Category toRemove) {
-		Session session = SearchManager.getSessionFactory().getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.delete(toRemove);
 		session.getTransaction().commit();

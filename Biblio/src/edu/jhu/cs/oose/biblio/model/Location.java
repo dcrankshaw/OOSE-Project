@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 
+/**
+ * Store a location in a file to be used for a bookmark
+ */
 @Entity
 @Table( name = "LOCATION" )
-/**
-* Store a location in a file to be used for a bookmark
-*/
-public class Location {
+public class Location implements Keyed {
 	
 	@Id
 	@GenericGenerator(name="generator", strategy="increment")
@@ -47,5 +47,10 @@ public class Location {
 	
 	public float getPercentageOfFile() {
 		return percentageOfFile;
+	}
+	
+	@Override
+	public int getKey() {
+		return id;
 	}
 }

@@ -28,14 +28,7 @@ public class SearchManager {
 	private Set<SearchTagsListener> tagListeners;
 	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
-	// TODO global??
-	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-	// TODO this should probably not be the source of this...
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-	
 	public SearchManager() {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
@@ -116,10 +109,10 @@ public class SearchManager {
 		}
 		// if no tags are specified, then match everything
 		else {
-			Session session = getSessionFactory().getCurrentSession();
+			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 			Criteria crit = session.createCriteria(FileMetadata.class);
-			selectedFiles = (List<FileMetadata>)crit.list();
+			selectedFiles = ((Database<FileMetadata>)Database.get(FileMetadata.class)).executeCriteria(crit);
 			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
 				@Override
 				public int compare(FileMetadata a, FileMetadata b) {
@@ -144,14 +137,13 @@ public class SearchManager {
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
-			Session session = sessionFactory.getCurrentSession();
+			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
 
 			//TODO cleanse the input, using sql parameters instead of string concatenation
 			Criteria crit = session.createCriteria(Tag.class).add(
 					Restrictions.like("name", "%" + searchTerm + "%"));
-			//@SuppressWarnings("unchecked")
-			tagResults = (List<Tag>) crit.list();
+			tagResults = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 			session.getTransaction().commit();
 			fireSearchTags(tagResults);
 		}
@@ -245,7 +237,7 @@ public class SearchManager {
 	public void searchBookmark(String tagName) {
 
 		Collection<Bookmark> bkmarks = new ArrayList<Bookmark>();
-		Session session = sessionFactory.getCurrentSession();
+		Session session = Database.getSessionFactory().getCurrentSession();
 		bkmarks = (ArrayList<Bookmark>) session.createQuery("from Bookmark")
 				.list();
 		boolean match = false;
@@ -285,12 +277,12 @@ public class SearchManager {
 				tagName = split[1].trim();
 			}
 
-			Session session = sessionFactory.getCurrentSession();
+			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();	
 			Criteria crit = session.createCriteria(Category.class).add(
 					Restrictions.like("name", category + "%"));
 			@SuppressWarnings("unchecked")
-			List<Category> cats = (List<Category>) crit.list();
+			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeCriteria(crit);
 			session.getTransaction().commit();
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
