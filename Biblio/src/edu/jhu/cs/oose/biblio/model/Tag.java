@@ -55,8 +55,9 @@ public class Tag implements Comparable<Tag>, Keyed {
 	/**
 	 * Creates a new, blank Tag.
 	 * This should only ever be used by Hibernate.
-	 * DO NOT call this yourself
+	 * DO NOT call this yourself.
 	 */
+	@SuppressWarnings("unused")
 	private Tag() {
 		name = null;
 		children = new HashSet<Tag>();
@@ -79,13 +80,25 @@ public class Tag implements Comparable<Tag>, Keyed {
 		taggedBookmarks = new HashSet<Bookmark>();
 		
 		Database.getSessionFactory().getCurrentSession().save(this);
-		((Database<Tag>)Database.get(Tag.class)).add(this);
+		@SuppressWarnings("unchecked")
+		Database<Tag> database = (Database<Tag>)Database.get(Tag.class);
+		database.add(this);
 	}
 	
+	@Override
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * Sets the name of this tag to the given value.  The name
+	 * may not include the ':' character, as that denotes the end
+	 * of a Category name when searching.  Attempting to set a name
+	 * with a colon will fail
+	 * @param n the new name of this Tag
+	 * @return true if this is a valid tag name, or false if the name
+	 * contains a colon and is not a valid name.
+	 */
 	public boolean setName(String n) {
 		if(n.contains(":"))
 			return false;
@@ -95,38 +108,75 @@ public class Tag implements Comparable<Tag>, Keyed {
 		}
 	}
 
+	/**
+	 * Returns the name of this tag
+	 * @return the name of this tag
+	 */
 	public String getName() {
 		return this.name;
 	}
 
-	public boolean addChildren(Tag tag) {
+	/**
+	 * Adds the given Tag to this one's children.  This means
+	 * that this Tag implies that the given Tag also applies.
+	 * That is, if I am Physics, and tag is "Particle accelerators",
+	 * then "Particle accelerators" is a child of "Physics".
+	 * @param tag the new Child
+	 * @return true if adding the Child succeeded
+	 * false if the child was already added
+	 */
+	public boolean addChild(Tag tag) {
 		return this.children.add(tag);
 	}
 
 	// TODO change these to return sets instead of collections?
+	/**
+	 * Returns all of the children of this Tag.
+	 * That is, all of the children that imply that this Tag
+	 * also applies to a given file.
+	 * @return the Tags that imply this one
+	 */
 	public Collection<Tag> getChildren() {
 		return Collections.unmodifiableCollection(children);
 	}
 
+	/**
+	 * Adds a Bookmark to the set of things that will be found
+	 * when searching using this Tag.
+	 * @param bkmk the bookmark to add
+	 * @return true on success, false if the bookmark is already added.
+	 */
 	public boolean addTaggedBookmark(Bookmark bkmk) {
 		return this.taggedBookmarks.add(bkmk);
 	}
 
+	/**
+	 * Returns a collection of Bookmarks that have been tagged with this Tag.
+	 * @return a collection of Bookmarks that have been tagged with this Tag.
+	 */
 	public Collection<Bookmark> getTaggedBookmarks() {
 		return Collections.unmodifiableCollection(taggedBookmarks);
 	}
 
+	/**
+	 * Adds a FileMetadata to the set of things that will be found
+	 * when searching using this Tag.
+	 * @param file the FileMetadata to add
+	 * @return true on success, false if the FileMetadata is already added.
+	 */
 	public boolean addTaggedFiles(FileMetadata file) {
 		return this.taggedFiles.add(file);
 	}
 
+	/**
+	 * Returns a collection of FileMetadatas that have been tagged with this Tag.
+	 * @return a collection of FileMetadatas that have been tagged with this Tag.
+	 */
 	public Collection<FileMetadata> getTaggedFiles() {
 		return Collections.unmodifiableCollection(taggedFiles);
 	}
 
-	/**
-	 * Compares tags based on a string comparison of their names
-	 */
+	/** Compares tags based on a string comparison of their names */
 	@Override
 	public int compareTo(Tag other) {
 		return getName().compareTo(other.getName());
@@ -159,9 +209,9 @@ public class Tag implements Comparable<Tag>, Keyed {
 		// TODO delete tag from db with name equals tagName
 		
 	}
-	
-	public void update() {
-		// TODO update the tag to database
+		
+	public static void update(Tag t) {
+		
 	}
 	
 	@Override
