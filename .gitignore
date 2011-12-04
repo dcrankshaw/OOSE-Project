@@ -10,3 +10,4 @@ Biblio/*
 !Biblio/.classpath
 !Biblio/.project
 .metadata
+fparser.log

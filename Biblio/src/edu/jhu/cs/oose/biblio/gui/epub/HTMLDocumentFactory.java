@@ -34,7 +34,6 @@ import org.apache.commons.io.IOUtils;
  */
 public class HTMLDocumentFactory implements NavigationEventListener {
 	
-	private static final Logger log = LoggerFactory.getLogger(HTMLDocumentFactory.class);
 	
 	// After opening the book we wait a while before we starting indexing the rest of the pages.
 	// This way the book opens, everything settles down, and while the user looks at the cover page
@@ -172,7 +171,7 @@ public class HTMLDocumentFactory implements NavigationEventListener {
 //		    }
 		    result = document;
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -201,7 +200,7 @@ public class HTMLDocumentFactory implements NavigationEventListener {
 			try {
 				Thread.sleep(DOCUMENT_CACHE_INDEXER_WAIT_TIME);
 			} catch (InterruptedException e) {
-				log.error(e.getMessage());
+				e.printStackTrace();
 			}
 			addAllDocumentsToCache(book);
 		}

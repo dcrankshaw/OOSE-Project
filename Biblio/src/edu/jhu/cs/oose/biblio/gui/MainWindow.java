@@ -3,6 +3,8 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
-import edu.jhu.cs.oose.biblio.model.Watcher;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.Watcher;
 
 /**
  * The main window that contains the interface to Biblio 
@@ -107,9 +109,54 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
-		String dir = "testfiles";
-		//Thread watch =  new Thread (new Watcher(dir));
-		//watch.start();
+		Thread watch =  new Thread (Watcher.getWatcher());
+		win.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowClosed(WindowEvent event) {
+				Watcher watcher = Watcher.getWatcher();
+				watcher.requestStop();
+				
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		watch.start();
 	}
 	
 	/** The tabs displayed in the interface
@@ -117,6 +164,11 @@ public class MainWindow extends JFrame {
 	 */
 	private JTabbedPane getTabbedPane() {
 		return this.tabs;
+	}
+	
+	private void shutdown()
+	{
+		Watcher w = Watcher.getWatcher();
 	}
 	
 	/**
@@ -149,4 +201,5 @@ public class MainWindow extends JFrame {
 			this.add(factory.newFullFilePanel(data));
 		}
 	}
+	
 }

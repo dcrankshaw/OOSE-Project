@@ -44,8 +44,6 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 
 	private static final long serialVersionUID = -5322988066178102320L;
 
-	private static final Logger log = LoggerFactory
-			.getLogger(ContentPane.class);
 	private Navigator navigator;
 	private Resource currentResource;
 	private JEditorPane editorPane;
@@ -175,7 +173,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 			rectangle.height = visibleRectangle.height;
 			editorPane.scrollRectToVisible(rectangle);
 		} catch (BadLocationException e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -256,8 +254,8 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 			editorPane.setDocument(document);
 			scrollToCurrentPosition(sectionPos);
 		} catch (Exception e) {
-			log.error("When reading resource " + resource.getId() + "("
-					+ resource.getHref() + ") :" + e.getMessage(), e);
+			System.err.println("Error when reading resource " + resource.getId() + "("
+					+ resource.getHref() + ") :" + e.getMessage());
 		}
 	}
 
@@ -288,7 +286,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 		Resource resource = navigator.getBook().getResources()
 				.getByHref(resourceHref);
 		if (resource == null) {
-			log.error("Resource with url " + resourceHref + " not found");
+			System.err.println("Resource with url " + resourceHref + " not found");
 		} else {
 			navigator.gotoResource(resource, this);
 		}
@@ -335,7 +333,7 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 			resourceHref = URLDecoder.decode(resourceHref,
 					Constants.ENCODING);
 		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		resourceHref = resourceHref.substring(ImageLoaderCache.IMAGE_URL_PREFIX
 				.length());

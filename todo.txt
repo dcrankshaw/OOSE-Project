@@ -1,7 +1,4 @@
--init and teardown functions?
-      -includes setting up directory watching
-      -either write a config file or add a config table to DB
-      	      -could be a singleton config object? probably not
+-directory watching 
 -finish importing
 -epub support
 -rss reading
@@ -11,3 +8,4 @@
 -tags with pdf and epub metadata - should be pretty easy to do
 -move search from PDFFileMetadata to PDFFileContents
 -add highlighting to selected items (especially in importing)
+-allow user to select a directory to watch (from file menu)

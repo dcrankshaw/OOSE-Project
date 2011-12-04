@@ -36,8 +36,6 @@ import org.slf4j.LoggerFactory;
 class ImageLoaderCache extends Dictionary<String, Image> {
 
 	public static final String IMAGE_URL_PREFIX = "http:/";
-
-	private static final Logger log = LoggerFactory.getLogger(ImageLoaderCache.class);
 	
 	private Map<String, Image> cache = new HashMap<String, Image>();
 	private Book book;
@@ -74,7 +72,7 @@ class ImageLoaderCache extends Dictionary<String, Image> {
 		try {
 			document.setBase(new URL(ImageLoaderCache.IMAGE_URL_PREFIX));
 		} catch (MalformedURLException e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		setContextResource(navigator.getCurrentResource());
 		document.getDocumentProperties().put("imageCache", this);
@@ -99,7 +97,7 @@ class ImageLoaderCache extends Dictionary<String, Image> {
 		try {
 			result = ImageIO.read(imageResource.getInputStream());
 		} catch (IOException e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return result;
 	}

@@ -45,8 +45,9 @@ public class EpubFileContents implements FileContents {
 	
 	@Override
 	public int search(String searchTerm) {
-		// TODO implement this method
-		return 0;
+		SearchIndex searcher = new SearchIndex(this.book);
+		SearchResults results = searcher.doSearch(searchTerm);
+		return results.getHits().size();
 	}
 
 }
