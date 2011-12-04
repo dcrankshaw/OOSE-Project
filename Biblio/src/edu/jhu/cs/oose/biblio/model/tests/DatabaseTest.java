@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -21,7 +22,7 @@ public class DatabaseTest extends TestCase{
 
 	@Test
 	public void testDatabaseConnection() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		
@@ -41,7 +42,7 @@ public class DatabaseTest extends TestCase{
 	
 	@Test
 	public void testDatabaseSchema() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		
@@ -109,7 +110,7 @@ public class DatabaseTest extends TestCase{
 
 	@Test
 	public void testRollback() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		// Commit *****************************************************************************************
 		session.getTransaction().begin();

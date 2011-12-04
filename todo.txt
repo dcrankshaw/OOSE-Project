@@ -15,3 +15,5 @@
 - visitor pattern for factories
 - unit tests
 - actually copy files into a repository
+- DatabaseTests fails with Hibernate errors (exciting!)
+	- Update DatabaseTests to use our DB interface
