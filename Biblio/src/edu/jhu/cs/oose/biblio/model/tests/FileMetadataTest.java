@@ -4,6 +4,10 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import java.util.Date;
 
 import junit.framework.TestCase;
+
+import org.hibernate.Session;
+
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -26,12 +30,22 @@ public class FileMetadataTest extends TestCase {
 	 */
 	Tag tag1;
 	
+	public void setUp() {
+		file = new TestMetadata();
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		tag = new Tag("Tag");
+		tag1 = new Tag("Tag1");
+		session.getTransaction().commit();
+	}
+	
 	/**
 	 * Tests FileMetdata.getContents().
+	 * This is an abstract method on FileMetadata, so this is not a good test. 
 	 */
-	public void testGetContents() {
+	/*public void testGetContents() {
 		assertTrue("Get contents does not return any contents.", file.getContents() != null ); 
-	}
+	}*/
 	
 	/**
 	 * Tests FileMetadata.updateLastOpened().
@@ -87,7 +101,7 @@ public class FileMetadataTest extends TestCase {
 	 */
 	// TODO Paul:I don't think this test works...
 	public void testAddTags(){
-		assertTrue("Bad input", tag.addChildren(tag1));
+		assertTrue("Bad input", tag.addChild(tag1));
 	}
 	
 	/**

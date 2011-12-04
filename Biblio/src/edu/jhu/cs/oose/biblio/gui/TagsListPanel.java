@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -28,6 +29,8 @@ public class TagsListPanel extends JPanel {
 	// or, combine the text field in the bottom with the
 	// list, so that you type into the list, and it absorbs
 	// recognized tags into atomic units.  Just my thoughts... Paul
+	
+	/** The set of tags that are displayed / managed by this panel */
 	private Collection<Tag> tagSet;
 	
 	/** The file whose tags are displayed in this panel */
@@ -35,9 +38,6 @@ public class TagsListPanel extends JPanel {
 	
 	/** The Primary key array of all the tag that was created in this panel so far */
 	private Set<String> newTags;
-	
-	/** The text entered into the pane by the user */
-	private String text;
 	
 	/** The label saying "Tags:" */
 	private JLabel tagsLabel;
@@ -58,7 +58,8 @@ public class TagsListPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String tagName = newTagField.getText();
 				newTagField.setText("");
-				createTag(tagName);
+				Tag t = findOrCreateTag(tagName);
+				addTag(t);
 			}
 		});
 		
@@ -87,19 +88,21 @@ public class TagsListPanel extends JPanel {
 	/** Parses the text the user has entered and attempts to find the matching tag */
 	public void parseString() {}
 	
-	/** creates a new tag and adds it to the list of tags associated with this file
-	 * @param tagName the tag name of the new tag
+	/**
+	 * Gets the tag specified by the string, or creates it if it does
+	 * not already exist.
+	 * @param tagName the tag name of the Tag
+	 * @return the Tag with the given name
 	 *  */
-	public void createTag(String tagName) {
-		Tag t = Tag.get(tagName);
+	private Tag findOrCreateTag(String tagName) {
+		Tag t = Database.getTag(tagName);
 		if (t == null) {
 			t = new Tag(tagName);
-			
 		}
-		addTag(t);
+		return t;
 	}
 	
-	/** delete those new created tag */
+	/** delete those newly created tags */
 	public void rollback() {
 		for (String n : newTags) {
 			Tag.delete(n);
@@ -110,8 +113,9 @@ public class TagsListPanel extends JPanel {
 	/** store the fileMetaData into db and tag them with tags in addedTags */
 	public void commit() {
 		for (String n : newTags) {
-			Tag t = Tag.get(n);
+			Tag t = Database.getTag(n);
 			t.addTaggedFiles(file);
+			//t.update();
 		}
 		newTags.clear();
 	}
@@ -122,8 +126,9 @@ public class TagsListPanel extends JPanel {
 	 */
 	public void addTag(Tag t)
 	{
-		tagsListModel.addElement(t.getName());
-		tagSet.add(t);
+		if( tagSet.add(t) ) {
+			tagsListModel.addElement(t.getName());
+		}
 	}
 	
 	/**
@@ -134,6 +139,11 @@ public class TagsListPanel extends JPanel {
 		setTagsList(f.getTags());
 	}
 	
+	/**
+	 * Sets the collection of Tags that this panel updates
+	 * and displays
+	 * @param newTags the set of Tags to manipulate
+	 */
 	public void setTagsList(Collection<Tag> newTags) {
 		tagSet = newTags;
 		tagsListModel.clear();
@@ -142,6 +152,10 @@ public class TagsListPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Sets the title of this box
+	 * @param title the new title of the box
+	 */
 	public void setTitle(String title) {
 		this.tagsLabel.setText(title);
 	}

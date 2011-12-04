@@ -242,9 +242,25 @@ public class Watcher implements Runnable {
 		for (File currentDir : directories) {
 			String[] children = currentDir.list();
 			for (String s : children) {
-				currentState.add(new File(s));
+				if(supportedFileType(s))
+					currentState.add(new File(s));
 			}
 		}
 	}
 
+	//TODO Bad way to do this, we should think of a better one
+	private boolean supportedFileType(String s)
+	{
+		List<String> supportedTypes = new ArrayList<String>();
+		supportedTypes.add(".epub");
+		supportedTypes.add(".pdf");
+		boolean supported = false;
+		for(String type: supportedTypes)
+		{
+			if(s.toLowerCase().endsWith(type));
+				supported = true;
+		}
+		return supported;
+	}
+	
 }

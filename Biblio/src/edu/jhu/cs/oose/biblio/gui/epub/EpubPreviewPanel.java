@@ -55,6 +55,10 @@ public class EpubPreviewPanel extends PreviewPanel {
 	
 
 	public void paint(Graphics g) {
+		// Make sure that we get a clean background behind us
+		g.setColor(this.getBackground());
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		try {
 			// scale the image appropriately
 			double widthRatio = this.getSize().getWidth()

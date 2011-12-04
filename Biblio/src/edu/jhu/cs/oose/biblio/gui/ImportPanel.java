@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -83,22 +86,18 @@ public class ImportPanel extends JPanel {
 
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
-		applyButton.addMouseListener(new MouseAdapter() {
-
+		applyButton.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				String tagName = tagEntryField.getText();
+			public void actionPerformed(ActionEvent e) {
+				applyTagToMany(tagEntryField.getText());
 				tagEntryField.setText("");
-				Tag current = new Tag(tagName);
-				newTags.add(current);
-				applyTagToMany(current);
 			}
 		});
 		cancelButton = new JButton("Cancel");
-		cancelButton.addMouseListener(new MouseAdapter() {
+		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
 				int result = JOptionPane
 						.showConfirmDialog(ImportPanel.this.owner,
@@ -114,14 +113,20 @@ public class ImportPanel extends JPanel {
 		});
 		
 		finishButton = new JButton("Finish Import");
-		finishButton.addMouseListener(new MouseAdapter() {
-
+		finishButton.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				finishImport();
 			}
 		});
 		tagEntryField = new JTextField(TEXT_FIELD_WIDTH);
+		tagEntryField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applyTagToMany(tagEntryField.getText());
+				tagEntryField.setText("");
+			}
+		});
 		newTags = new ArrayList<Tag>();
 
 		fileCellArray = new ArrayList<FileImportCell>();
@@ -157,16 +162,21 @@ public class ImportPanel extends JPanel {
 	}
 
 	/**
-	 * Applies the supplied tag to all of the files that have been selected by
+	 * Applies the tag with the given name to all of the files that have been selected by
 	 * the user.
 	 * 
-	 * @param tag The tag to apply to all of the selected files
+	 * @param tagName The name of the tag to apply to all of the selected files
 	 */
-	public void applyTagToMany(Tag tag) {
+	public void applyTagToMany(String tagName) {
+		Tag tag = Database.getTag(tagName);
+		if( null == tag ) {
+			tag = new Tag(tagName);
+			newTags.add(tag);
+		}
 		for (FileImportCell cell : fileCellArray) {
 			if(cell.isSelected()) {
-				cell.addNewTag(tag.getName());
-			}	
+				cell.addTag(tag);
+			}
 		}
 	}
 

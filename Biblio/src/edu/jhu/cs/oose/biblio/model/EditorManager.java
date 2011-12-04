@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * Allows the GUI to edit objects and relationships by abstracting
@@ -47,7 +46,6 @@ public class EditorManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
-
 	{
 		return (Set<Category>)this.getAll(Category.class);
 	}
@@ -60,7 +58,7 @@ public class EditorManager {
 	public Tag newTag() {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Tag t = new Tag();
+		Tag t = new Tag("Untitled Tag");
 		session.save(t);
 		session.getTransaction().commit();
 		return t;
@@ -84,7 +82,7 @@ public class EditorManager {
 	public Category newCategory() {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Category c = new Category();
+		Category c = new Category("Untitled Category");
 		session.save(c);
 		session.getTransaction().commit();
 		return c;

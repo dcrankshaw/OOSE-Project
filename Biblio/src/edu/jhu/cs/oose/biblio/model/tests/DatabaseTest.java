@@ -13,6 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -21,17 +22,18 @@ public class DatabaseTest extends TestCase{
 
 	@Test
 	public void testDatabaseConnection() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		
-		Location loc = new Location();
+		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
 		session.save(loc);
 		session.getTransaction().commit();
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
 		session.getTransaction().commit();
 		Location l = result.get(0);
@@ -41,30 +43,26 @@ public class DatabaseTest extends TestCase{
 	
 	@Test
 	public void testDatabaseSchema() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		
 		// location
-		Location loc = new Location();
+		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
 		
 		// PDFFileMetadata
-		PDFFileMetadata pdfmeta = new PDFFileMetadata();
-		pdfmeta.setPathToFile("Back to Back");
+		PDFFileMetadata pdfmeta = new PDFFileMetadata("Back to Back");
 		Date d = Calendar.getInstance().getTime();
 		pdfmeta.setLastOpened(d);
 		assertEquals(d.getTime(), pdfmeta.getLastOpened().getTime());
 		pdfmeta.setOpenedCount(11);
 		
 		// Bookmark
-		Bookmark b = new Bookmark();
-		b.setFile(pdfmeta);
-		b.setLocation(loc);
+		Bookmark b = new Bookmark(pdfmeta, loc);
 		
 		// Tag
-		Tag t = new Tag();
-		t.setName("Pop Song");
+		Tag t = new Tag("Pop Song");
 		t.addTaggedFiles(pdfmeta);
 		t.addTaggedBookmark(b);
 		
@@ -77,9 +75,13 @@ public class DatabaseTest extends TestCase{
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Location> locResult = (List<Location>) session.createQuery("from Location").list();
+		@SuppressWarnings("unchecked")
 		List<PDFFileMetadata> fileResult = (List<PDFFileMetadata>) session.createQuery("from PDFFileMetadata").list();
+		@SuppressWarnings("unchecked")
 		List<Bookmark> bmResult = (List<Bookmark>) session.createQuery("from Bookmark").list();
+		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		
 		session.getTransaction().commit();
@@ -112,18 +114,18 @@ public class DatabaseTest extends TestCase{
 
 	@Test
 	public void testRollback() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		// Commit *****************************************************************************************
 		session.getTransaction().begin();
-		Tag t = new Tag();
-		t.setName("Pop Song");
+		Tag t = new Tag("Pop Song");
 		session.save(t);
 		session.getTransaction().commit();
 		
 		// Rollback ***************************************************************************************
 		session = sessionFactory.getCurrentSession();
 		session.getTransaction().begin();
+		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		Tag tg = tagResult.get(0);
 		int id = tg.getId();

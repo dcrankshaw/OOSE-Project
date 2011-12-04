@@ -7,26 +7,29 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
-
+/** Contains Epub specific metadata on top of that stored in FileMetadata */
 @Entity
 @Table( name = "EPUB_FILEMETADATA" )
 public class EpubFileMetadata extends FileMetadata {
 	
 	
 	/**
-	 * Creates a new instance of the FileMetadata
+	 * Creates a new empty object.  This is here so that
+	 * Hibernate can fill in all the data.
+	 * Use the other constructor instead
 	 */
-	public EpubFileMetadata()
+	@SuppressWarnings("unused")
+	private EpubFileMetadata()
 	{
 		super();
 	}
 	
 	/**
-	 * Creates a new instance of the FileMetadata at the given path
+	 * Creates a new instance of the FileMetadata at the given path.
+	 * This gets a primary key, so there must be an open transaction.
 	 * @param path the path to the file
 	 */
 	public EpubFileMetadata(String path)

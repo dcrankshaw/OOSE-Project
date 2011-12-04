@@ -28,7 +28,7 @@ public class EpubFullFilePanel extends FullFilePanel {
 	
 	/**
 	 * Creates a new FullFilePanel with the given contents
-	 * @param c
+	 * @param c the contents to display
 	 */
 	public EpubFullFilePanel(EpubFileContents c)
 	{

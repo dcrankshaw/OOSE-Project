@@ -101,7 +101,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	/**
-	 * Creates a new window and displays it onscreen.
+	 * Creates a new window and displays it on screen.
 	 * @param args  Command line arguments - they get ignored.
 	 */
 	public static void main(String[] args) {
