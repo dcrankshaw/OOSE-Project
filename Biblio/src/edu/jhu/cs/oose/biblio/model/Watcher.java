@@ -25,6 +25,8 @@ public class Watcher implements Runnable {
 		dir = dirPath;
 		dirFiles = new HashSet<File>();
 		imported = new HashSet<File>();
+		unImported = new HashSet<File>();
+		dirListeners = new HashSet<WatchDirListener>();
 		sessionFactory = new Configuration().configure().buildSessionFactory();
 	}
 
