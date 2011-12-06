@@ -103,10 +103,16 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int openFile = getTabbedPane().getSelectedIndex();
-				if( openFile >= 1 ) {
+				try {
+					// This line will throw an exception when the search panels
+					// are open
 					FileView view = (FileView)getTabbedPane().getComponent(openFile);
 					getTabbedPane().remove(openFile);
 					FileViewManager.getViewManager().removeView(view);
+				}
+				catch(ClassCastException except) {
+					// The correct action to take when trying to close a not-file
+					// is to do nothing and proceed like nothing happened.
 				}
 			}
 		});
