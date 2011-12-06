@@ -13,7 +13,7 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 public class SearchResultsListPanel extends JPanel {
 	
 	/** All of the files that match the search criteria */
-	public List<FileMetadata> matchingFiles;
+	private List<FileMetadata> matchingFiles;
 	
 	/**
 	 * Table where the results are displayed

@@ -133,11 +133,22 @@ public class SearchPanel extends JPanel {
 		tagTable.addTagSelectionListener(new SelectionListener(selectedModel));
 	}
 	
+	/**
+	 * A simple listener that keeps the JList of currently
+	 * selected Tags up to date
+	 */
 	private class SelectionListener implements TagSelectionChangedListener {
+		/** The list of Tag names to be displayed in the list */
 		SortedListModel<String> model;
+		
+		/**
+		 * Creates a new SelectionListener updating the given list.
+		 * @param m the list to keep up to date
+		 */
 		SelectionListener( SortedListModel<String> m) {
 			model = m;
 		}
+		
 		@Override
 		public void tagSelectionChanged(TagSelectionChangedEvent e) {
 			if( e.oldTags != null  ) {

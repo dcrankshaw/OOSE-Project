@@ -56,8 +56,11 @@ public class TagEditorPanel extends JPanel {
 	
 	/** The presentation of the list of tags to the JList */
 	private TagEditorListModel tagListModel;
+	
+	/** The representation of the table of Categories to the JTable */
 	private CategoryTableModel categoryModel;
 	
+	/** Creates, lays out, and connects the GUI elements for editing/creating Tags and Categories. */
 	public TagEditorPanel() {
 		super();
 		
@@ -182,6 +185,10 @@ public class TagEditorPanel extends JPanel {
 		categoryModel.removeCategory(idx);
 	}
 	
+	/**
+	 * Sets the currently selected Tag to that given by this index
+	 * @param selectedIndex the index of the Tag to select
+	 */
 	public void setSelectedTag(int selectedIndex) {
 		this.selectedTag = this.tagListModel.getTag(selectedIndex);
 		nameLabel.setText(selectedTag.getName());
@@ -189,6 +196,10 @@ public class TagEditorPanel extends JPanel {
 		this.categoryModel.setTag(selectedTag);
 	}
 	
+	/**
+	 * Returns the currently selected Tag
+	 * @return the currently selected Tag
+	 */
 	public Tag getSelectedTag() {
 		return this.selectedTag;
 	}

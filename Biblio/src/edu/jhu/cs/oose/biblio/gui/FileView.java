@@ -20,6 +20,9 @@ public interface FileView {
 	/** Lays out the view and redraws it */
 	public void revalidate();
 	
-	/** Returns the file displayed by this view */
+	/**
+	 * Returns the file displayed by this view
+	 * @return the file displayed by this view
+	 */
 	public FileMetadata getFile();
 }
