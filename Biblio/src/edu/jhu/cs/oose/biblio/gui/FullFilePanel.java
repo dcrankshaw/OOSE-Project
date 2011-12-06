@@ -23,7 +23,13 @@ public abstract class FullFilePanel extends JPanel implements ChangeListener, Sc
 	private JViewport viewport;
 	
 	/**
+	 * Returns the viewport containing this panel.
+	 * Useful for subclasses to determine how big they should be
+	 * (i.e. for triggering scrollbars).
+	 * @return the viewport containing this panel
 	 */
+	protected final JViewport getViewport() {
+		return viewport;
 	}
 	
 	/**

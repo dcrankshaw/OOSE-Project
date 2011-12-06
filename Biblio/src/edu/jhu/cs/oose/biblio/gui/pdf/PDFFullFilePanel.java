@@ -133,7 +133,7 @@ public class PDFFullFilePanel extends FullFilePanel {
 
 	@Override
 	public boolean getScrollableTracksViewportWidth() {
-		return false;
+		return this.getViewport().getWidth() > this.getPreferredSize().width;
 	}
 
 	@Override
