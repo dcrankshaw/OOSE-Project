@@ -150,14 +150,31 @@ public class PDFFullFilePanel extends FullFilePanel {
 	private void drawPage(Graphics g, int page) {
 		try {
 			Image pic = contents.getPage(page);
-			g.drawImage(pic, 0, (pageHeight + PAGE_SPACING) * (page - 1) - PAGE_SPACING, null);
+			int xPos = (this.getWidth() - pic.getWidth(null)) / 2;
+			g.drawImage(pic, xPos, (pageHeight + PAGE_SPACING) * (page - 1) - PAGE_SPACING, null);
 		}
 		catch (PdfException e) {
 			// TODO handle this exception
 		}
 	}
 	
+	/**
+	 * This overrides JPanel.paint() to paint with the additional
+	 * knowledge of which part of the panel is visible.
+	 */
 	@Override
+	public void paint(Graphics g) {
+		if( null != this.getViewport() ) {
+			// this was throwing a NullPointerException...
+			paint(g, this.getViewport().getViewRect());
+		}
+	}
+	
+	/**
+	 * Paints only the region that is visible
+	 * @param g the graphics context to draw in
+	 * @param region the visible region to draw in
+	 */
 	public void paint(Graphics g, Rectangle region) {
 		g.setColor(Color.GRAY);
 		g.fillRect(region.x, region.y, region.width, region.height);

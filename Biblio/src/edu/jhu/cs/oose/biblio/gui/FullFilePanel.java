@@ -23,23 +23,8 @@ public abstract class FullFilePanel extends JPanel implements ChangeListener, Sc
 	private JViewport viewport;
 	
 	/**
-	 * This overrides JPanel.paint() to paint with the additional
-	 * knowledge of which part of the panel is visible.
 	 */
-	@Override
-	public final void paint(Graphics g) {
-		if( null != viewport ) {
-			// this was throwing a NullPointerException...
-			paint(g, viewport.getViewRect());
-		}
 	}
-	
-	/**
-	 * Paints only the region that is visible
-	 * @param g the graphics context to draw in
-	 * @param region the visible region to draw in
-	 */
-	public abstract void paint(Graphics g, Rectangle region);
 	
 	/**
 	 * Sets the parent viewport of this panel

@@ -47,15 +47,6 @@ public class EpubFullFilePanel extends FullFilePanel {
 		this.add(tocPanel, BorderLayout.WEST);
 		this.revalidate();
 	}
-	
-	
-
-	@Override
-	public void paint(Graphics g, Rectangle region) {
-		super.paint(g);
-
-	}
-
 
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
