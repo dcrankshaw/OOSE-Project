@@ -1,5 +1,7 @@
 package edu.jhu.cs.oose.biblio.gui;
 
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
+
 /**
  * A FileView is something that displays a file.
  * It can be the tabbed display that contains a FileDisplay panel,
@@ -15,5 +17,9 @@ public interface FileView {
 	 */
 	public void makeVisible();
 	
+	/** Lays out the view and redraws it */
 	public void revalidate();
+	
+	/** Returns the file displayed by this view */
+	public FileMetadata getFile();
 }

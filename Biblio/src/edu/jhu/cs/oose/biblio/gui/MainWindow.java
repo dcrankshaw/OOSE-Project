@@ -31,6 +31,7 @@ public class MainWindow extends JFrame {
 	
 	/**
 	 * Creates the Searching tab of the interface.
+	 * @param manager the object that should actually perform the searches
 	 * @return the searching panel
 	 */
 	private JPanel makeSearchPanel(SearchManager manager) {
@@ -93,6 +94,20 @@ public class MainWindow extends JFrame {
 				tagFrame.pack();
 				tagFrame.setTitle("Manage Tags");
 				tagFrame.setVisible(true);
+			}
+		});
+		menu.add(item);
+		
+		item = new JMenuItem("Close File");
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int openFile = getTabbedPane().getSelectedIndex();
+				if( openFile >= 1 ) {
+					FileView view = (FileView)getTabbedPane().getComponent(openFile);
+					getTabbedPane().remove(openFile);
+					FileViewManager.getViewManager().removeView(view);
+				}
 			}
 		});
 		menu.add(item);
@@ -179,6 +194,7 @@ public class MainWindow extends JFrame {
 		public FileView newView(FileMetadata file) {
 			FileTab result = new FileTab(file);
 			getTabbedPane().add(file.getName(), result);
+			pack();
 			return result;
 		}
 	}
@@ -188,6 +204,8 @@ public class MainWindow extends JFrame {
 	 * manage the full views of files.
 	 */
 	private class FileTab extends JPanel implements FileView {
+		/** The file displayed by this tab */
+		private FileMetadata file;
 		@Override
 		public void makeVisible() {
 			getTabbedPane().setSelectedComponent(this);
@@ -198,10 +216,16 @@ public class MainWindow extends JFrame {
 		 * @param data the file to display
 		 */
 		public FileTab(FileMetadata data) {
+			this.file = data;
 			ScrollFilePanel scrollPanel = new ScrollFilePanel();
 			FullFilePanel panel = factory.newFullFilePanel(data);
 			scrollPanel.setContents(panel);
 			this.add(scrollPanel);
+		}
+		
+		@Override
+		public FileMetadata getFile() {
+			return file;
 		}
 	}
 	

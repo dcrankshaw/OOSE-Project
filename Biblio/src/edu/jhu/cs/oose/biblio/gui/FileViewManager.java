@@ -25,7 +25,7 @@ public class FileViewManager {
 	}
 	
 	/** Returns the object that manages the full display of files.
-	 * @return the object that manages the fullk display of files.
+	 * @return the object that manages the full display of files.
 	 */
 	public static FileViewManager getViewManager() {
 		return FileViewManager.viewManager;
@@ -83,11 +83,19 @@ public class FileViewManager {
 	}
 	
 	/**
+	 * Removes the specified view from the cache.
+	 * It probably got closed, so it shouldn't exist anymore.
+	 * @param view the view should go away.
+	 */
+	public void removeView(FileView view) {
+		this.dataToView.remove(view.getFile());
+	}
+
+	/**
 	 * Gives the Manager a way to create new views for files
 	 * @param f an object that can create views of files
 	 */
 	public void setFactory(FileViewFactory f) {
 		this.factory = f;
 	}
-	
 }

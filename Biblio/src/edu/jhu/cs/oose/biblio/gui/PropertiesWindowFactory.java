@@ -16,9 +16,9 @@ public class PropertiesWindowFactory implements FileViewFactory {
 	 * A window that contains a PropertiesPanel and removes
 	 * the view from the manager when it is closed.
 	 */
-	private class PropertiesFrame extends JFrame implements FileView
+	private static class PropertiesFrame extends JFrame implements FileView
 	{
-		/** The panel displaying the proprties of the file */
+		/** The panel displaying the properties of the file */
 		private PropertiesPanel panel;
 		/**
 		 * Creates a new window to display the properties of the given file.
@@ -38,7 +38,7 @@ public class PropertiesWindowFactory implements FileViewFactory {
 				
 				@Override
 				public void windowClosing(WindowEvent e) {
-					FileViewManager.getPropertiesManager().removeView(panel.getFile());
+					FileViewManager.getPropertiesManager().removeView(PropertiesFrame.this);
 				}
 
 				@Override
@@ -65,6 +65,11 @@ public class PropertiesWindowFactory implements FileViewFactory {
 		@Override
 		public void revalidate() {
 			this.pack();
+		}
+		
+		@Override
+		public FileMetadata getFile() {
+			return panel.getFile();
 		}
 	}
 	
