@@ -29,11 +29,16 @@ public class CategoryTableModel implements TableModel {
 	private List<Category> categories;
 	/** The tags that have been selected for filtering */
 	private Set<Category> selectedCategories;
+	/** Things that listen for when a Tag is put into / taken out of a Category */
 	private Set<CategorySelectionListener> categorySelectionListeners;
+	/** The source of data / interaction with the Database */
 	private EditorManager manager;
+	/** The currently selected tag in the window.  Show this Tag's categories */
 	private Tag selectedTag;
 	
-	/** Creates a new data model for displaying found tags and filtering. */
+	/** Creates a new data model for displaying found tags and filtering.
+	 * @param m the interface to the database model
+	 */
 	public CategoryTableModel(EditorManager m) {
 		manager = m;
 		tableListeners = new HashSet<TableModelListener>();
@@ -171,10 +176,18 @@ public class CategoryTableModel implements TableModel {
 		emitCategoryEvent(new CategorySelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}
 	
+	/**
+	 * Adds an object that is notified when a Tag is moved in/out of a Category
+	 * @param l listens for Tags moving in/out of Categories
+	 */
 	public void addCategorySelectionListener(CategorySelectionListener l) {
 		categorySelectionListeners.add(l);
 	}
 
+	/**
+	 * Stops an object from being notified when a Tag is moved in/out of a Category
+	 * @param l formerly listened for Tags moving in/out of Categories
+	 */
 	public void removeCategorySelectionListener(CategorySelectionListener l) {
 		categorySelectionListeners.remove(l);
 	}
@@ -201,6 +214,10 @@ public class CategoryTableModel implements TableModel {
 		}
 	}
 	
+	/**
+	 * Sets the list of Categories that are displayed in this table
+	 * @param newCats the new list of Categories to display
+	 */
 	public void setCategories(Collection<Category> newCats) {
 		categories.clear();
 		categories.addAll(newCats);
@@ -208,15 +225,24 @@ public class CategoryTableModel implements TableModel {
 		emitEvent(new TableModelEvent(this));
 	}
 	
+	/** Creates a new Category and adds it to the list currently displayed. */
 	public void newCategory() {
 		Category newCat = manager.newCategory();
 		addCategory(newCat);
 	}
 	
+	/**
+	 * Removes from the list and deletes the Category at index idx
+	 * @param idx the index of the Category to delete / remove
+	 */
 	public void removeCategory(int idx) {
 		removeCategory(categories.get(idx));
 	}
 	
+	/**
+	 * Adds the given Category to the list displayed
+	 * @param newCat the new Category to display
+	 */
 	public void addCategory(Category newCat) {
 		categories.add(newCat);
 		Collections.sort(categories);
@@ -224,14 +250,19 @@ public class CategoryTableModel implements TableModel {
 		emitEvent(new TableModelEvent(this));
 	}
 	
+	/**
+	 * Removes the given Category from the list displayed
+	 * @param oldCat the Category to remove
+	 */
 	public void removeCategory(Category oldCat) {
 		categories.remove(oldCat);
 		emitEvent(new TableModelEvent(this));
 	}
 	
 	/**
-	 * This is the tag that checking boxes alters
+	 * This is the Tag that checking boxes alters
 	 * which categories it is in.
+	 * @param t the Tag whose Category membership is displayed in this table
 	 */
 	public void setTag(Tag t) {
 		selectedTag = t;

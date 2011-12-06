@@ -37,6 +37,7 @@ public class SearchPanel extends JPanel {
 	
 	/** A table listing all of the tags matching the search term */
 	private JTable possibleTagsTable;
+	/** A list of all the tags the user has selected. */
 	private JList selectedTagsList;
 	
 	/** A scroll pane to contain the table of tags.	 */
@@ -152,6 +153,10 @@ public class SearchPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Sets the object that will perform searches entered on this panel
+	 * @param m the object to perform searches
+	 */
 	public void setSearchController(SearchManager m) {
 		if( controller != null ) {
 			controller.removeTagsListener(tagTable);
