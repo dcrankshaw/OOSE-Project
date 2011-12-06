@@ -223,10 +223,11 @@ public class MainWindow extends JFrame {
 		 */
 		public FileTab(FileMetadata data) {
 			this.file = data;
+			this.setLayout(new BorderLayout());
 			ScrollFilePanel scrollPanel = new ScrollFilePanel();
 			FullFilePanel panel = factory.newFullFilePanel(data);
 			scrollPanel.setContents(panel);
-			this.add(scrollPanel);
+			this.add(scrollPanel, BorderLayout.CENTER);
 		}
 		
 		@Override
