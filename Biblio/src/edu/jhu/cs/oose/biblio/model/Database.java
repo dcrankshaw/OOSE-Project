@@ -105,7 +105,7 @@ public class Database<T extends Keyed> {
 		// object with that primary key.  If there is, then
 		// use the already existing one instead.
 		// Note that set is an optional operation on Lists, so this might not
-		// work, but then we're probably screwed, so here goes!
+		// work, but then we're probably screwed anyway, so here goes!
 		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
 			int key = newObj.getId();
@@ -122,16 +122,44 @@ public class Database<T extends Keyed> {
 		return results;
 	}
 	
-	void add(T newObj) {
+	/**
+	 * Adds a new object to the memory cache.  This object
+	 * is assumed to be the original object.
+	 * @param newObj the new object to track
+	 */
+	public void add(T newObj) {
 		this.objectCache.put(newObj.getId(), newObj);
 	}
-
+	
+	/**
+	 * Removes the given object from the memory cache and the DB
+	 * @param oldObj the object to remove
+	 */
+	public void delete(T oldObj) {
+		this.objectCache.remove(oldObj.getId());
+		Database.getSessionFactory().getCurrentSession().delete(oldObj);
+	}
+	
+	/**
+	 * Updates the given object in the DB
+	 * @param obj the object to sync to the DB
+	 */
+	public static void update(Keyed obj) {
+		Database.getSessionFactory().getCurrentSession().save(obj);
+	}
+	
+	/**
+	 * Finds the Tag with the given name if it exists
+	 * @param name the name of the Tag to fine
+	 * @return the Tag named name, or null if it does not exist
+	 */
 	public static Tag getTag(String name) {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		//TODO cleanse the input, using sql parameters instead of string concatenation
 		Criteria crit = session.createCriteria(Tag.class).add(
 				Restrictions.eq("name", "%" + name + "%"));
+		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 		session.getTransaction().commit();
 		

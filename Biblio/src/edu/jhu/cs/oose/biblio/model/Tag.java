@@ -205,15 +205,6 @@ public class Tag implements Comparable<Tag>, Keyed {
 		return descendants;
 	}
 	
-	public static void delete(String tagName) {
-		// TODO delete tag from db with name equals tagName
-		
-	}
-		
-	public static void update(Tag t) {
-		
-	}
-	
 	@Override
 	public String toString() {
 		return getName();
