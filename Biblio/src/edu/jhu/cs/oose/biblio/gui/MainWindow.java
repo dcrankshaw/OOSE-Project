@@ -198,7 +198,10 @@ public class MainWindow extends JFrame {
 		 * @param data the file to display
 		 */
 		public FileTab(FileMetadata data) {
-			this.add(factory.newFullFilePanel(data));
+			ScrollFilePanel scrollPanel = new ScrollFilePanel();
+			FullFilePanel panel = factory.newFullFilePanel(data);
+			scrollPanel.setContents(panel);
+			this.add(scrollPanel);
 		}
 	}
 	
