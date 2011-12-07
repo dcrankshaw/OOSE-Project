@@ -62,8 +62,6 @@ public class WatcherImportPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Session session = Database.getSessionFactory().getCurrentSession();
-				session.beginTransaction();
 				getSelectedFiles();
 				ImportDialog importer = new ImportDialog(getMetadataForFiles(), (JFrame) owner.getParent());
 				cancelImport();
@@ -104,6 +102,8 @@ public class WatcherImportPanel extends JPanel {
 	}
 	
 	private List<FileMetadata> getMetadataForFiles() {
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(selectedFiles.size());
 		for( File f : selectedFiles ) {
 			// TODO use the MIME type library...
@@ -117,6 +117,7 @@ public class WatcherImportPanel extends JPanel {
 				// TODO read other kinds of files or give errors
 			}
 		}
+		session.getTransaction().commit();
 		return result;
 	}
 	
@@ -125,9 +126,11 @@ public class WatcherImportPanel extends JPanel {
 		for (Component c : components) {
 			if (c instanceof JCheckBox) {
 				JCheckBox cb = (JCheckBox) c;
-				for (File f : files) {
-					if (f.toString().compareTo(cb.getText()) == 0) {
-						selectedFiles.add(f);
+				if (cb.isSelected()) {
+					for (File f : files) {
+						if (f.toString().compareTo(cb.getText()) == 0) {
+							selectedFiles.add(f);
+						}
 					}
 				}
 			}

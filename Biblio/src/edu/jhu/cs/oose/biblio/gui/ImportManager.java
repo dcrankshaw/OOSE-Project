@@ -39,8 +39,6 @@ public class ImportManager {
 			return;
 		}
 		else if( JFileChooser.APPROVE_OPTION == choiceResult ) {
-			Session session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
 			List<FileMetadata> files = getMetadataForFiles(fileChooser.getSelectedFiles());
 			new ImportDialog(files, parent);
 		}
@@ -52,6 +50,8 @@ public class ImportManager {
 	 * @return FileMetadata for the given files
 	 */
 	private List<FileMetadata> getMetadataForFiles(File[] paths) {
+		Session session = Database.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(paths.length);
 		for( File f : paths ) {
 			// TODO use the MIME type library...
@@ -65,6 +65,7 @@ public class ImportManager {
 				// TODO read other kinds of files or give errors
 			}
 		}
+		session.getTransaction().commit();
 		return result;
 	}
 }
