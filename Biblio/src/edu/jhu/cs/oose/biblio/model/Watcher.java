@@ -242,8 +242,9 @@ public class Watcher implements Runnable {
 		for (File currentDir : directories) {
 			String[] children = currentDir.list();
 			for (String s : children) {
-				if(supportedFileType(s))
+				if(supportedFileType(s)) {
 					currentState.add(new File(s));
+				}
 			}
 		}
 	}
@@ -257,8 +258,9 @@ public class Watcher implements Runnable {
 		boolean supported = false;
 		for(String type: supportedTypes)
 		{
-			if(s.toLowerCase().endsWith(type));
+			if(s.toLowerCase().endsWith(type)) {
 				supported = true;
+			}
 		}
 		return supported;
 	}

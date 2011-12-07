@@ -22,7 +22,7 @@ public class WatcherImportDialog extends JDialog {
 	 * @param owner the parent view of this dialog box
 	 */
 	public WatcherImportDialog(List<File> files, JFrame owner) {
-		super(owner, "Watcher_Import", true);
+		super(owner, "Import Files...", true);
 		this.owner = owner;
 		JPanel watcherImportPanel = new WatcherImportPanel(files, this);
 		this.setContentPane(watcherImportPanel);
