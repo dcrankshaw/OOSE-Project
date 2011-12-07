@@ -18,6 +18,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Watcher;
@@ -54,7 +55,13 @@ public class WatcherSelectorPanel extends JPanel {
 	/** The panel that contain dirList */
 	private JPanel listPanel;
 	
+	private List<File> directoriesToAdd;
+	
+	private List<File> directoriesToRemove;
+	
 	public WatcherSelectorPanel(List<File> files, WatcherSelectorDialog currentOwner) {
+		directoriesToAdd = new ArrayList<File>();
+		directoriesToRemove = new ArrayList<File>();
 		this.owner = currentOwner;
 		this.files = files;
 		Iterator<File> iter = files.iterator();
@@ -65,7 +72,8 @@ public class WatcherSelectorPanel extends JPanel {
 		
 		dirList = new JList(listModel);
 		dirList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		dirList.setVisibleRowCount(-1);
+		JScrollPane listpane = new JScrollPane(dirList);
+		//dirList.setVisibleRowCount(-1);
 		addButton = new JButton("add");
 		addButton.addMouseListener(new MouseAdapter() {
 
@@ -98,21 +106,28 @@ public class WatcherSelectorPanel extends JPanel {
 		
 		listPanel.setLayout(new GridLayout(files.size(), 1));
 		globalOptionsPanel.setLayout(new GridLayout());
-		this.add(listPanel, BorderLayout.CENTER);
+		//this.add(listPanel, BorderLayout.CENTER);
+		this.add(listpane, BorderLayout.CENTER);
 		this.add(globalOptionsPanel, BorderLayout.SOUTH);
 		globalOptionsPanel.add(addButton);
 		globalOptionsPanel.add(removeButton);
 		globalOptionsPanel.add(closeButton);
-		globalOptionsPanel.setPreferredSize(new Dimension(300, 50));
-		listPanel.add(dirList);
-		listPanel.setPreferredSize(new Dimension(300, 100));
+		globalOptionsPanel.setPreferredSize(new Dimension(300, 30));
+		//listPanel.add(dirList);
+		//listPanel.setPreferredSize(new Dimension(300, 100));
+		listpane.setPreferredSize(new Dimension(400, 100));
+		this.setPreferredSize(new Dimension(450, 170));
 	}
 	
 	/**
 	 * Close this dialog
 	 */
 	public void closeDialog() {
-		owner.setVisible(false);
+		//TODO: save changes to watched directories, then close
+		Watcher w = Watcher.getWatcher();
+		w.addWatchedDirectories(directoriesToAdd);
+		w.removeWatchedDirectories(directoriesToRemove);
+		owner.dispose();
 	}
 	
 	/**
@@ -121,7 +136,7 @@ public class WatcherSelectorPanel extends JPanel {
 	public void addDir() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(true);
-		fileChooser.setDialogTitle("Select directories to track");
+		fileChooser.setDialogTitle("Select directories to watch");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int choiceResult = fileChooser.showDialog(owner.getParent(), "Import");
 		if( JFileChooser.CANCEL_OPTION == choiceResult ) {
@@ -139,8 +154,7 @@ public class WatcherSelectorPanel extends JPanel {
 				listModel.addElement(f.toString());
 			}
 			// add these files to watcher
-			Watcher w = Watcher.getWatcher();
-			w.addWatchedDirectories(Arrays.asList(fl));
+			directoriesToAdd.addAll(Arrays.asList(fl));
 		}
 	}
 	
@@ -150,20 +164,15 @@ public class WatcherSelectorPanel extends JPanel {
 	public void removeDir() {
 		// get the selected file list
 		if (!dirList.isSelectionEmpty()) {
-			List<File> fList = new ArrayList<File>();
 			// remove these files from the JList
 			int index[] = (int[]) dirList.getSelectedIndices();
 			for (int j=0; j<index.length; j++) {
 				File fl = getFile(listModel.get(index[j]).toString());
 				if (fl != null) {
-					fList.add(fl);
+					directoriesToRemove.add(fl);
 				}
 				listModel.remove(index[j]);
 			}
-			
-			// add the file list to watcher
-			Watcher w = Watcher.getWatcher();
-			w.removeWatchedDirectories(fList);
 		}
 	}
 	

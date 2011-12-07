@@ -22,7 +22,7 @@ public class WatcherSelectorDialog extends JDialog {
 	 * @param owner the parent view of this dialog box
 	 */
 	public WatcherSelectorDialog(List<File> files, JFrame owner) {
-		super(owner, "Watcher_Selector", true);
+		super(owner, "Select Directories To Watch", true);
 		this.owner = owner;
 		JPanel watcherSelectorPanel = new WatcherSelectorPanel(files, this);
 		this.setContentPane(watcherSelectorPanel);
