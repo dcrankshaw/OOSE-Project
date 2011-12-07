@@ -16,6 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.hibernate.Session;
+
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -52,12 +55,15 @@ public class WatcherImportPanel extends JPanel {
 	public WatcherImportPanel(List<File> files, WatcherImportDialog currentOwner) {
 		this.owner = currentOwner;
 		this.files = files;
+		selectedFiles = new ArrayList<File>();
 		checkList = new ArrayList<JCheckBox>();
 		importButton = new JButton("Import");
 		importButton.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Session session = Database.getSessionFactory().getCurrentSession();
+				session.beginTransaction();
 				getSelectedFiles();
 				ImportDialog importer = new ImportDialog(getMetadataForFiles(), (JFrame) owner.getParent());
 				cancelImport();
