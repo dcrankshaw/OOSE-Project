@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.hibernate.Session;
+
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -72,6 +74,8 @@ public class ImportPanel extends JPanel {
 	 * The parent dialog box containing this import panel.
 	 */
 	JDialog owner;
+	
+	//Session session;
 
 	/**
 	 * Creates a new ImportPanel initialized with the list of files
@@ -81,6 +85,9 @@ public class ImportPanel extends JPanel {
 	 */
 	public ImportPanel(List<FileMetadata> files, JDialog currentOwner) {
 		// Initialize components
+		//session = Database.getSessionFactory().getCurrentSession();
+		//session.beginTransaction();
+		Database.getNewSession();
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
 		applyButton.addActionListener(new ActionListener() {
@@ -241,9 +248,7 @@ public class ImportPanel extends JPanel {
 	 * to close the import window
 	 */
 	public void finishImport() {
-		for (FileImportCell cell : fileCellArray) {
-			cell.commit();
-		}
+		Database.commit();
 	}
 
 	/**
@@ -252,9 +257,7 @@ public class ImportPanel extends JPanel {
 	 */
 	public void cancelImport() {
 		owner.setVisible(false);
-		for (FileImportCell cell : fileCellArray) {
-			cell.rollback();
-		}
+		Database.rollback();
 	}
 
 }

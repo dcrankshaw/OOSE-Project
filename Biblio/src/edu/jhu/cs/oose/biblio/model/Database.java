@@ -28,7 +28,17 @@ public class Database<T extends Keyed> {
 	 * Can we put a decorator on here that redirects criteria to this class?
 	 */
 	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-
+	
+	/**
+	 * The session that is currently open
+	 */
+	private static Session session;
+	
+	/**
+	 * Indicate if the session is currently open
+	 */
+	private static boolean isOpen;
+	
 	/**
 	 * Returns the session factory for connecting to the database.
 	 * @return the session factory for connecting to the database.
@@ -155,14 +165,14 @@ public class Database<T extends Keyed> {
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
-		Session session = Database.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		if (!isOpen) {
+			Database.getNewSession();
+		}
 		//TODO cleanse the input, using sql parameters instead of string concatenation
 		Criteria crit = session.createCriteria(Tag.class).add(
 				Restrictions.eq("name", "%" + name + "%"));
 		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
-		session.getTransaction().commit();
 		
 		if( result.size() <= 0 ) {
 			return null;
@@ -173,6 +183,51 @@ public class Database<T extends Keyed> {
 		else {
 			System.err.println("Searching for tags named " + name + " yielded multiple results.  Picking the first one.");
 			return result.get(0);
+		}
+	}
+	
+	/**
+	 * Get the current running session
+	 */
+	public static Session getSession() {
+		if (isOpen) {
+			return session;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Create a new session and begin transaction
+	 */
+	public static Session getNewSession() {
+		if (isOpen) {
+			return null;
+		} else {
+			session = Database.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			isOpen = true;
+			return session;
+		}
+	}
+	
+	/**
+	 * Commit
+	 */
+	public static void commit() {
+		if (isOpen) {
+			session.getTransaction().commit();
+			isOpen = false;
+		}
+	}
+	
+	/**
+	 * Rollback
+	 */
+	public static void rollback() {
+		if (isOpen) {
+			session.getTransaction().rollback();
+			isOpen = false;
 		}
 	}
 }

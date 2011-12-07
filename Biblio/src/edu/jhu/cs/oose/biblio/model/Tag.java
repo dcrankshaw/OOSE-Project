@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -79,7 +80,15 @@ public class Tag implements Comparable<Tag>, Keyed {
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Session session = Database.getSession();
+		if (session == null) {
+			session = Database.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			session.save(this);
+		} else {
+			session.save(this);
+		}
+		
 		@SuppressWarnings("unchecked")
 		Database<Tag> database = (Database<Tag>)Database.get(Tag.class);
 		database.add(this);

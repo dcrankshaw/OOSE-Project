@@ -131,16 +131,19 @@ public class FileImportCell extends JPanel
 	}
 		
 	/** Rollback to the setting for this cell before the import started. */
+	/*
 	public void rollback() {
 		this.tagsPanel.rollback();
 	}
-	
+	*/
 	/**
 	 * Commit all the changes in this cell to database
 	 */
+	/*
 	public void commit() {
 		this.tagsPanel.commit();
 	}
+	*/
 	
 	/**
 	 * Gets the file being tagged, etc. by this cell.

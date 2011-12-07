@@ -98,12 +98,13 @@ public class TagsListPanel extends JPanel {
 		Tag t = Database.getTag(tagName);
 		if (t == null) {
 			t = new Tag(tagName);
-			newTags.add(t);
 		}
+		newTags.add(t);
 		return t;
 	}
 	
 	/** delete those newly created tags */
+	/*
 	public void rollback() {
 		@SuppressWarnings("unchecked")
 		Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
@@ -112,8 +113,9 @@ public class TagsListPanel extends JPanel {
 		}
 		newTags.clear();
 	}
-	
+	*/
 	/** store the fileMetaData into db and tag them with tags in addedTags */
+	/*
 	public void commit() {
 		for (Tag t : newTags) {
 			t.addTaggedFiles(file);
@@ -121,7 +123,7 @@ public class TagsListPanel extends JPanel {
 		}
 		newTags.clear();
 	}
-	
+	*/
 	/**
 	 * Adds a tag to this file
 	 * @param t the tag to apply 
@@ -130,6 +132,8 @@ public class TagsListPanel extends JPanel {
 	{
 		if( tagSet.add(t) ) {
 			tagsListModel.addElement(t.getName());
+			t.addTaggedFiles(file);
+			Database.update(t);
 		}
 	}
 	
