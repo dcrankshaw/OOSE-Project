@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import edu.jhu.cs.oose.biblio.gui.epub.EpubPreviewPanel;
 import edu.jhu.cs.oose.biblio.gui.pdf.PDFPreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Bookmark;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -18,20 +19,30 @@ public class FilePreviewFactory {
 	 */
 	private static class PreviewConstructor implements FilePreviewVisitor {
 		@Override
-		public PDFPreviewPanel makePDFPreviewPanel(PDFFileMetadata data) {
+		public PDFPreviewPanel makePDFPreviewPanel(PDFFileMetadata data, Bookmark bkmk) {
 			return new PDFPreviewPanel(data);
 		}
 		@Override
-		public EpubPreviewPanel makeEpubPreviewPanel(EpubFileMetadata data) {
+		public EpubPreviewPanel makeEpubPreviewPanel(EpubFileMetadata data, Bookmark bkmk) {
 			return new EpubPreviewPanel(data);
 		}
+	}
+	
+	private static FilePreviewFactory factory = new FilePreviewFactory();
+	
+	public static FilePreviewFactory getFactory() {
+		return factory;
 	}
 	
 	/**
 	 * The visitor given to the FileMetadata to help them construct
 	 * a PreviewPanel.
 	 */
-	private static FilePreviewVisitor visitor = new PreviewConstructor();
+	private FilePreviewVisitor visitor;
+	
+	private FilePreviewFactory() {
+		visitor = new PreviewConstructor();
+	}
 	
 	/**
 	 * Creates a FilePreviewPanel capable of displaying the contents
@@ -39,9 +50,19 @@ public class FilePreviewFactory {
 	 * @param file the file to preview
 	 * @return a new FilePreviewPanel that displays the file
 	 */
-	public static PreviewPanel createPreview(FileMetadata file)
+	public PreviewPanel createPreview(FileMetadata file)
 	{
-		return file.createPreview(visitor);
+		return file.createPreview(visitor, null);
 	}
-
+	/**
+	 * Creates a FilePreviewPanel capable of displaying the contents
+	 * of the given file at a particular Bookmark.
+	 * @param file the file to preview
+	 * @param bkmk the Bookmark (location in the file) to preview
+	 * @return a new FilePreviewPanel that displays the file
+	 */
+	public PreviewPanel createPreview(FileMetadata file, Bookmark bkmk)
+	{
+		return file.createPreview(visitor, bkmk);
+	}
 }

@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
 import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Bookmark;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -79,8 +80,8 @@ public class EpubFileMetadata extends FileMetadata {
 	}
 	
 	@Override
-	public PreviewPanel createPreview(FilePreviewVisitor visitor) {
-		return visitor.makeEpubPreviewPanel(this);
+	public PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk) {
+		return visitor.makeEpubPreviewPanel(this, bkmk);
 	}
 
 }

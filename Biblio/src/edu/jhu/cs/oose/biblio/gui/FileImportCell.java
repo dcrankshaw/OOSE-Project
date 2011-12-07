@@ -62,7 +62,7 @@ public class FileImportCell extends JPanel
 		copyStatus = DEFAULT_COPY_STATUS;
 		isSelected = false;
 		tagsPanel = new TagsListPanel(file);
-		preview = FilePreviewFactory.createPreview(file);
+		preview = FilePreviewFactory.getFactory().createPreview(file);
 		
 		this.copyStatusButton = new JRadioButton(COPY_STRING);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {

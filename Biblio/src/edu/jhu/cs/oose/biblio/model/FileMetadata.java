@@ -232,5 +232,5 @@ public abstract class FileMetadata implements Keyed {
 	 */
 	public abstract FileContents getContents();
 	
-	public abstract PreviewPanel createPreview(FilePreviewVisitor visitor);
+	public abstract PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk);
 }

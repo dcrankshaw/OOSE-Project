@@ -64,7 +64,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	public void displayResults(List<FileMetadata> results) {
 		matchingFiles.clear();
 		for( int i = matchingFiles.size(); i < results.size(); i++ ) {
-			matchingFiles.add(FilePreviewFactory.createPreview(results.get(i)));
+			matchingFiles.add(FilePreviewFactory.getFactory().createPreview(results.get(i)));
 		}
 		
 		int rows;
