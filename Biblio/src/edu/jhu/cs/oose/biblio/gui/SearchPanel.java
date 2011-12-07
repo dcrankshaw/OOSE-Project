@@ -18,8 +18,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import edu.jhu.cs.oose.biblio.gui.TagTableModel.TagSelectionChangedEvent;
+import edu.jhu.cs.oose.biblio.model.FilterSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.TextSearchStrategy;
 
 /**
  * Provides the UI to search. Encloses the text field where search terms are entered, as well as the list of possible tags
@@ -54,13 +56,13 @@ public class SearchPanel extends JPanel {
 	 */
 	private TagTableModel tagTable;
 	
-	private SearchStrategy textStrategy;
-	private SearchStrategy filterStrategy;
+	private TextSearchStrategy textStrategy;
+	private FilterSearchStrategy filterStrategy;
 	
 	/**
 	 * Creates a new UI for searching.
 	 */
-	public SearchPanel(List<SearchStrategy> textStrategies, SearchStrategy filterStrategy) {
+	public SearchPanel(List<TextSearchStrategy> textStrategies, FilterSearchStrategy filterStrategy) {
 		this.filterStrategy = filterStrategy;
 		this.textStrategy = textStrategies.get(0);
 		
@@ -103,8 +105,8 @@ public class SearchPanel extends JPanel {
 			radioPanel.setLayout(new GridLayout(1, textStrategies.size()));
 			
 			class SearchChoiceButtonListener implements ActionListener {
-				private SearchStrategy strategy;
-				SearchChoiceButtonListener(SearchStrategy s) {
+				private TextSearchStrategy strategy;
+				SearchChoiceButtonListener(TextSearchStrategy s) {
 					this.strategy = s;
 				}
 				@Override
@@ -113,7 +115,7 @@ public class SearchPanel extends JPanel {
 				}
 			}
 			
-			for( SearchStrategy strategy : textStrategies ) {
+			for( TextSearchStrategy strategy : textStrategies ) {
 				JRadioButton searchButton = new JRadioButton(strategy.getName());
 				searchButton.addActionListener(new SearchChoiceButtonListener(strategy));
 				searchChoiceGroup.add(searchButton);
@@ -188,17 +190,15 @@ public class SearchPanel extends JPanel {
 	 */
 	private void executeFilter(Set<Tag> selectedTags)
 	{
-		filterStrategy.setTags(selectedTags);
-		filterStrategy.search(controller);
+		filterStrategy.search(controller, selectedTags);
 	}
 	
-	private void setTextSearchStrategy(SearchStrategy newStrat) {
+	private void setTextSearchStrategy(TextSearchStrategy newStrat) {
 		this.textStrategy = newStrat;
 	}
 	
 	/** Triggers execution of the search. */
 	private void executeSearch() {
-		this.textStrategy.setSearchTerm(queryField.getText());
-		this.textStrategy.search(controller);
+		this.textStrategy.search(controller, queryField.getText());
 	}
 }

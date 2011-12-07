@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.FilterSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.TextSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.Watcher;
 
 /**
@@ -40,10 +42,10 @@ public class MainWindow extends JFrame {
 		JPanel largePanel = new JPanel();
 		
 		largePanel.setLayout(new BorderLayout());
-		List<SearchStrategy> searchMethods = new ArrayList<SearchStrategy>();
-		searchMethods.add(SearchStrategy.getStrategy(SearchMode.TAGS));
-		searchMethods.add(SearchStrategy.getStrategy(SearchMode.FULLTEXT));
-		SearchPanel searchPanel = new SearchPanel(searchMethods, SearchStrategy.getStrategy(SearchMode.FILTER));
+		List<TextSearchStrategy> searchMethods = new ArrayList<TextSearchStrategy>();
+		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.TAGS));
+		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.FULLTEXT));
+		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.FILTER));
 		searchPanel.setSearchController(manager);
 		largePanel.add(searchPanel, BorderLayout.WEST);
 		
