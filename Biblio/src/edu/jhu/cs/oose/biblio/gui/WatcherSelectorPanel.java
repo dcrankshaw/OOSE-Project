@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -14,16 +13,12 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Watcher;
-import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
-import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 /**
  * GUI element that present newly created file in 
@@ -150,8 +145,10 @@ public class WatcherSelectorPanel extends JPanel {
 			// get selected files
 			File[] fl = fileChooser.getSelectedFiles();
 			// add these files into JList
+			listModel =  (DefaultListModel) dirList.getModel();
 			for (File f : fl) {
 				listModel.addElement(f.toString());
+				files.add(f);
 			}
 			// add these files to watcher
 			directoriesToAdd.addAll(Arrays.asList(fl));
@@ -164,14 +161,14 @@ public class WatcherSelectorPanel extends JPanel {
 	public void removeDir() {
 		// get the selected file list
 		if (!dirList.isSelectionEmpty()) {
-			// remove these files from the JList
-			int index[] = (int[]) dirList.getSelectedIndices();
-			for (int j=0; j<index.length; j++) {
-				File fl = getFile(listModel.get(index[j]).toString());
+			listModel =  (DefaultListModel) dirList.getModel();
+			while (!dirList.isSelectionEmpty()) {
+				int index = (int) dirList.getSelectedIndex();
+				File fl = getFile(listModel.get(index).toString());
 				if (fl != null) {
 					directoriesToRemove.add(fl);
 				}
-				listModel.remove(index[j]);
+				listModel.remove(index);
 			}
 		}
 	}
