@@ -50,13 +50,13 @@ public class PersistenceTest {
 		light.addTaggedFiles(anotherFile);
 		anotherFile.addTag(light);
 		session.save(light);
-		/*light = new Tag("Analysis");
+		light = new Tag("Analysis");
 		light.addTaggedFiles(anotherFile);
 		anotherFile.addTag(light);
 		session.save(light);
 		light = new Tag("Stories");
 		light.addTaggedFiles(anotherFile);
-		anotherFile.addTag(light);*/
+		anotherFile.addTag(light);
 		session.save(light);
 		
 		session.save(anotherFile);

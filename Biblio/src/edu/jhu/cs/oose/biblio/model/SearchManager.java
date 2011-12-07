@@ -129,10 +129,11 @@ public class SearchManager {
 		else {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			Criteria crit = session.createCriteria(FileMetadata.class);
+			/*Criteria crit = session.createCriteria(FileMetadata.class);
 			@SuppressWarnings("unchecked")
 			Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
-			selectedFiles = db.executeCriteria(crit);
+			selectedFiles = db.executeCriteria(crit);*/
+			selectedFiles = (List<FileMetadata>) session.createQuery("from FileMetadata").list();
 			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
 				@Override
 				public int compare(FileMetadata a, FileMetadata b) {

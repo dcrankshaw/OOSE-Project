@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		menu.add(item);
-		
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		item = new JMenuItem("Manage Tags");
 		item.addActionListener(new ActionListener() {
 			@Override
