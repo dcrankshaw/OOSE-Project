@@ -158,6 +158,11 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		List<File> fList = new ArrayList<File>();
+		fList.add(new File("/Users/jiefengzhai/Desktop/1.pdf"));
+		fList.add(new File("/Users/jiefengzhai/Desktop/2.pdf"));
+		fList.add(new File("/Users/jiefengzhai/Desktop/3.pdf"));
+		new WatcherImportDialog(fList, MainWindow.this);
 	}
 	
 	public void createWatcherImportDialog(List<File> addedFiles)

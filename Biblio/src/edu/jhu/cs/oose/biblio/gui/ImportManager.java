@@ -7,6 +7,9 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import org.hibernate.Session;
+
+import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
@@ -36,6 +39,8 @@ public class ImportManager {
 			return;
 		}
 		else if( JFileChooser.APPROVE_OPTION == choiceResult ) {
+			Session session = Database.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
 			List<FileMetadata> files = getMetadataForFiles(fileChooser.getSelectedFiles());
 			new ImportDialog(files, parent);
 		}
