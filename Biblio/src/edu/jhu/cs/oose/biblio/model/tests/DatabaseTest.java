@@ -52,7 +52,7 @@ public class DatabaseTest extends TestCase{
 		loc.setPercentageOfFile((float) 15.5);
 		
 		// PDFFileMetadata
-		PDFFileMetadata pdfmeta = new PDFFileMetadata("Back to Back");
+		PDFFileMetadata pdfmeta = new PDFFileMetadata("testfiles/test4.pdf");
 		Date d = Calendar.getInstance().getTime();
 		pdfmeta.setLastOpened(d);
 		assertEquals(d.getTime(), pdfmeta.getLastOpened().getTime());
@@ -91,7 +91,7 @@ public class DatabaseTest extends TestCase{
 		Tag tg = tagResult.get(0);
 		
 		assertEquals((float) 15.5, l.getPercentageOfFile());
-		assertEquals("Back to Back", f.getPathToFile());
+		assertEquals("testfiles/test4.pdf", f.getPathToFile());
 		// database cut the Date object, every info other than year, month and date are lost
 		Calendar cal=Calendar.getInstance();
 		cal.setTime(f.getLastOpened());
