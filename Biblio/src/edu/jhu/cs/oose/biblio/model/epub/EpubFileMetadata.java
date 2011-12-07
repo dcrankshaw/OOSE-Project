@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
+import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
@@ -74,6 +76,11 @@ public class EpubFileMetadata extends FileMetadata {
 			}
 		}
 		return contents;
+	}
+	
+	@Override
+	public PreviewPanel createPreview(FilePreviewVisitor visitor) {
+		return visitor.makeEpubPreviewPanel(this);
 	}
 
 }

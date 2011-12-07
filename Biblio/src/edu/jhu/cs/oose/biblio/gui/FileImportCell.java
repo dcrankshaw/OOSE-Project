@@ -12,7 +12,6 @@ import javax.swing.JToggleButton;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
-import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
 
 /**
  * These are laid out in a grid on the ImportPanel. They each display
@@ -63,14 +62,7 @@ public class FileImportCell extends JPanel
 		copyStatus = DEFAULT_COPY_STATUS;
 		isSelected = false;
 		tagsPanel = new TagsListPanel(file);
-		try
-		{
-			preview = FilePreviewFactory.createPreview(file);
-		}
-		catch(UnsupportedFiletypeException e)
-		{
-			preview = null; //means we can't display a preview of the file, which is okay
-		}
+		preview = FilePreviewFactory.createPreview(file);
 		
 		this.copyStatusButton = new JRadioButton(COPY_STRING);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {

@@ -4,13 +4,11 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
-import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
 
 /**
  * This is the body of the full-window search interface. It shows the documents that match the current
@@ -62,34 +60,11 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 		}
 	}
 	
-	/**
-	 * A small panel that indicates an error occurred
-	 * creating the preview for this file.
-	 */
-	private class ErrorPreviewPanel extends PreviewPanel {
-		/**
-		 * Creates a new small panel to display an error message
-		 * @param e the error to display
-		 */
-		ErrorPreviewPanel(Throwable e) {
-			this.add(new JLabel(e.getMessage()));
-		}
-	}
-	
 	@Override
 	public void displayResults(List<FileMetadata> results) {
-		for( int i = 0; i < matchingFiles.size(); i++ ) {
-			this.remove(matchingFiles.get(i));
-		}
 		matchingFiles.clear();
 		for( int i = matchingFiles.size(); i < results.size(); i++ ) {
-			try {
-				matchingFiles.add(FilePreviewFactory.createPreview(results.get(i)));
-			}
-			catch(UnsupportedFiletypeException e) {
-				// though this really shouldn't happen, since we already imported the file...
-				matchingFiles.set(i, new ErrorPreviewPanel(e));
-			}
+			matchingFiles.add(FilePreviewFactory.createPreview(results.get(i)));
 		}
 		
 		int rows;

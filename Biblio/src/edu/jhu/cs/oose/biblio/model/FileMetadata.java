@@ -20,6 +20,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
+import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+
 /**
  * A set of information about a file.
  */
@@ -228,4 +231,6 @@ public abstract class FileMetadata implements Keyed {
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
+	
+	public abstract PreviewPanel createPreview(FilePreviewVisitor visitor);
 }
