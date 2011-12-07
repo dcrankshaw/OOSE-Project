@@ -138,17 +138,6 @@ public class SearchManagerTest extends TestCase {
 		}
 	}
 
-	/**
-	 * Test to ensure that the results pair compareTo gives the correct order
-	 */
-	public void testResultsPairClass() {
-		SearchManager searcher = new SearchManager();
-		SearchManager.ResultsPair moreFrequent = searcher.new ResultsPair(10, testFile1);
-		SearchManager.ResultsPair lessFrequent = searcher.new ResultsPair(6, testFile2);
-		assertTrue(moreFrequent.compareTo(lessFrequent) < 0);
-		
-	}
-	
 
 	/**
 	 * Tests searching for tags based on their name

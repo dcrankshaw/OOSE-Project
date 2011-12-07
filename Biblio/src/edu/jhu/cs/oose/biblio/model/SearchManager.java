@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import nl.siegmann.epublib.domain.Book;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -22,19 +24,27 @@ public class SearchManager {
 
 	/** Listeners that should be notified when a search returns files. */
 	private Set<SearchResultsListener> resultsListeners;
+	
+	/** Listeners that should be notified when a search returns bookmarks. */
+	private Set<BookmarkSearchResultsListener> bookmarkResultsListeners;
 	/** Listeners that should be notified when a search returns tags. */
 	private Set<SearchTagsListener> tagListeners;
 	/** The files that will be searched when full-text search is done. */
 	private List<FileMetadata> selectedFiles;
 	/** The tags that will be used for filtering */
 	private List<Tag> tagResults;
+	
+	private List<Bookmark> selectedBookmarks;
 
 	/** Creates a new SearchManager for searching the database */
 	public SearchManager() {
 		resultsListeners = new HashSet<SearchResultsListener>();
 		tagListeners = new HashSet<SearchTagsListener>();
+		bookmarkResultsListeners = new HashSet<BookmarkSearchResultsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
+		selectedBookmarks = new ArrayList<Bookmark>();
 		searchTags("");
+		filterBookmarksByTags(null);
 		filterByTags(null);
 	}
 
@@ -55,6 +65,13 @@ public class SearchManager {
 	private void fireSearchResult() {
 		for (SearchResultsListener r : resultsListeners) {
 			r.displayResults(selectedFiles);
+		}
+	}
+	
+	/** Fire the bookmark search results to each listener. */
+	private void fireBookmarkSearchResult() {
+		for (BookmarkSearchResultsListener r : bookmarkResultsListeners) {
+			r.displayResults(selectedBookmarks);
 		}
 	}
 
@@ -196,9 +213,7 @@ public class SearchManager {
 	 * object allows for sorting based on the relevance of each search results,
 	 * so we can provide a list of search results ordered by relevance.
 	 */
-	// TODO: changed this to a public class to test, it should be changed back
-	// though
-	public class ResultsPair implements Comparable<ResultsPair> {
+	private class ResultsPair implements Comparable<ResultsPair> {
 		/** The number of times this result was found in the file. */
 		private int occurrences;
 		/** The file that was searched. */
@@ -229,37 +244,92 @@ public class SearchManager {
 		}
 
 	}
-
-	//TODO write tests, use Database interface
+	
 	/**
-	 * Search bookmarks tagged by the same tag.
-	 * 
-	 * @param tagName the text that should be part of the tags on this Bookmark
+	 * Similar to filtering files by tags, but searches for bookmarks instead
+	 * @param tags The tags to filter by (selected from prior tag searches)
 	 */
-	@SuppressWarnings("unchecked")
-	public void searchBookmark(String tagName) {
+	
+	public void filterBookmarksByTags(Set<Tag> tags) {
 
-		Collection<Bookmark> bkmarks = new ArrayList<Bookmark>();
-		Session session = Database.getSessionFactory().getCurrentSession();
-		bkmarks = (ArrayList<Bookmark>) session.createQuery("from Bookmark")
-				.list();
-		boolean match = false;
-		for (Bookmark bk : bkmarks) {
-			for (Tag bkTag : bk.getTags()) {
-				if (bkTag.getName() == tagName) {
-					match = true;
+		selectedBookmarks.clear();
+		if (tags != null && !tags.isEmpty()) {
+			List<Set<Bookmark>> taggedBookmarks = new ArrayList<Set<Bookmark>>();
+			Set<Bookmark> filteredBookmarks = new HashSet<Bookmark>();
+			for (Tag currentTag : tags) {
+
+				Set<Tag> currentChildren = currentTag.getAllDescendants();
+				Set<Bookmark> currentTaggedBookmarks = new HashSet<Bookmark>();
+				currentTaggedBookmarks.addAll(currentTag.getTaggedBookmarks());
+				for (Tag currentChild : currentChildren) {
+					currentTaggedBookmarks.addAll(currentChild.getTaggedBookmarks());
 				}
+				taggedBookmarks.add(currentTaggedBookmarks);
 			}
-			if (match) {
-				selectedFiles.add(bk.getFile());
+			// get the list of bookmarks matching the first tag or its descendants
+			filteredBookmarks.addAll(taggedBookmarks.get(0));
+			// take the intersection of those bookmarks with the bookmarks matching the
+			// rest of the tags
+			for (int i = 1; i < taggedBookmarks.size(); i++) {
+				filteredBookmarks.retainAll(taggedBookmarks.get(i));
 			}
+			selectedBookmarks.addAll(filteredBookmarks);
+			Collections.sort(selectedBookmarks, new Comparator<Bookmark>() {
+				@Override
+				public int compare(Bookmark a, Bookmark b) {
+					if(a.getFile().getName().compareTo(b.getFile().getName()) == 0) {
+						if(a.getLocation().getPercentageOfFile() < b.getLocation().getPercentageOfFile()) {
+							return 1;
+						}
+						else if(a.getLocation().getPercentageOfFile() == b.getLocation().getPercentageOfFile()) {
+							return 0;
+						}
+						else {
+							return -1;
+						}	
+					}
+					else {
+						return a.getFile().getName().compareTo(b.getFile().getName());
+					}
+				}
+			});
 		}
-		fireSearchResult();
+		// if no tags are specified, then match everything
+		else {
+			Session session = Database.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			Criteria crit = session.createCriteria(Bookmark.class);
+			@SuppressWarnings("unchecked")
+			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
+			selectedBookmarks = db.executeCriteria(crit);
+			Collections.sort(selectedBookmarks, new Comparator<Bookmark>() {
+				@Override
+				public int compare(Bookmark a, Bookmark b) {
+					if(a.getFile().getName().compareTo(b.getFile().getName()) == 0) {
+						if(a.getLocation().getPercentageOfFile() < b.getLocation().getPercentageOfFile()) {
+							return 1;
+						}
+						else if(a.getLocation().getPercentageOfFile() == b.getLocation().getPercentageOfFile()) {
+							return 0;
+						}
+						else {
+							return -1;
+						}	
+					}
+					else {
+						return a.getFile().getName().compareTo(b.getFile().getName());
+					}
+				}
+			});
+		}
+		fireBookmarkSearchResult();
 	}
+	
+	
 
 	/**
 	 * Search for tags matching the given search term in the given category
-	 * provides a null result set on a malformed input (more than one colon on the search string)
+	 * provides a null result set on a malformed input (more than one colon in the search string)
 	 * 
 	 * @param term the search query string
 	 */
@@ -308,6 +378,28 @@ public class SearchManager {
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
 		listener.displayResults(selectedFiles);
+	}
+
+	/**
+	 * Stops sending bookmark search results to the given listener.
+	 * 
+	 * @param listener
+	 *            the listener to remove
+	 */
+	public void removeBookmarkResultsListener(BookmarkSearchResultsListener listener) {
+		bookmarkResultsListeners.remove(listener);
+	}
+	
+	
+	/**
+	 * Adds an object that wants to know about bookmarks that are found after a search.
+	 * 
+	 * @param listener
+	 *            an object that wants to know about bookmarks that are found.
+	 */
+	public void addBookmarkResultsListener(BookmarkSearchResultsListener listener) {
+		bookmarkResultsListeners.add(listener);
+		listener.displayResults(selectedBookmarks);
 	}
 
 	/**
