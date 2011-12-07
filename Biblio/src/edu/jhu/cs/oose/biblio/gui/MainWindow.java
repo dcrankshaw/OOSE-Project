@@ -8,6 +8,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.Watcher;
+import edu.jhu.cs.oose.biblio.model.WatcherEventListener;
 
 /**
  * The main window that contains the interface to Biblio 
@@ -132,7 +134,37 @@ public class MainWindow extends JFrame {
 		});
 		menu.add(item);
 		this.setJMenuBar(menuBar);
+		/*Watcher watcher = Watcher.getWatcher();
 		
+		
+		/*----------------------------------------------
+		 * 				Testing Watcher Dialog:
+		 * 				TODO: delete
+		 -----------------------------------------------*
+		
+		List<File> importedFiles = new ArrayList<File>();
+		importedFiles.add(new File("testfiles/test1.pdf"));
+		importedFiles.add(new File("testfiles/test2.pdf"));
+		WatcherImportDialog watcherDialog = new WatcherDialog*/
+		Watcher watcher = Watcher.getWatcher();
+		watcher.addListener(new WatcherEventListener() {
+			
+			@Override
+			public void directoryModified(Set<File> addedFiles, Set<File> deletedFiles) {
+				//TODO for now ignore deleted files
+				List<File> addedFileList = new ArrayList<File>(addedFiles);
+				createWatcherImportDialog(addedFileList);
+				
+			}
+		});
+		
+	}
+	
+	public void createWatcherImportDialog(List<File> addedFiles)
+	{
+		
+		//TODO: verify that these files aren't already in the library
+		WatcherImportDialog watchDialog = new WatcherImportDialog(addedFiles, this);
 	}
 	
 	/**
@@ -144,7 +176,11 @@ public class MainWindow extends JFrame {
 		MainWindow win = new MainWindow();
 		win.pack();
 		win.setVisible(true);
-		Thread watch =  new Thread (Watcher.getWatcher());
+		Watcher watcher = Watcher.getWatcher();
+		Thread watch =  new Thread (watcher);
+		
+		
+		
 		win.addWindowListener(new WindowListener() {
 
 			@Override
@@ -199,11 +235,6 @@ public class MainWindow extends JFrame {
 	 */
 	private JTabbedPane getTabbedPane() {
 		return this.tabs;
-	}
-	
-	private void shutdown()
-	{
-		Watcher w = Watcher.getWatcher();
 	}
 	
 	/**
