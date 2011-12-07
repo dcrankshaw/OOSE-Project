@@ -16,7 +16,6 @@
 - actually copy files into a repository
 - DatabaseTests fails with Hibernate errors (exciting!)
 	- Update DatabaseTests to use our DB interface
-- Full File views don't show up
 - Take a look at searchBookmark
 - Put the regular SQL queries through the database class (Paul just moved the Criteria queries)
 - Remove files from our library ( I can't imagine a use case for this!)

@@ -114,6 +114,7 @@ public class Database<T extends Keyed> {
 			// If there is already an object, use that
 			if( null != oldObj ) {
 				results.set(i, oldObj);
+				update(oldObj);
 			}
 			else {
 				this.add(newObj);
