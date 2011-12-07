@@ -79,11 +79,8 @@ public class ImportPanel extends JPanel {
 	 * @param files the files to be imported
 	 * @param currentOwner the dialog enclosing this panel
 	 */
-	public ImportPanel(List<FileMetadata> files, ImportDialog currentOwner) {
-		// TODO this.owner is of type JDialog, so why do we require that it
-		// is an ImportDialog here? - Paul
+	public ImportPanel(List<FileMetadata> files, JDialog currentOwner) {
 		// Initialize components
-
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
 		applyButton.addActionListener(new ActionListener() {

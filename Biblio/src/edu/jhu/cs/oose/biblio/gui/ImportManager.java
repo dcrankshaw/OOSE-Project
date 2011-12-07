@@ -37,8 +37,7 @@ public class ImportManager {
 		}
 		else if( JFileChooser.APPROVE_OPTION == choiceResult ) {
 			List<FileMetadata> files = getMetadataForFiles(fileChooser.getSelectedFiles());
-			/*ImportDialog importer =*/ new ImportDialog(files, parent);
-			//importer.
+			new ImportDialog(files, parent);
 		}
 	}
 	
