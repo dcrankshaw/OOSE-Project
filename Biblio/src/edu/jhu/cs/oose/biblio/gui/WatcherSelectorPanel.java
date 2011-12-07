@@ -135,8 +135,10 @@ public class WatcherSelectorPanel extends JPanel {
 			// get selected files
 			File[] fl = fileChooser.getSelectedFiles();
 			// add these files into JList
+			listModel =  (DefaultListModel) dirList.getModel();
 			for (File f : fl) {
 				listModel.addElement(f.toString());
+				files.add(f);
 			}
 			// add these files to watcher
 			Watcher w = Watcher.getWatcher();
@@ -151,16 +153,15 @@ public class WatcherSelectorPanel extends JPanel {
 		// get the selected file list
 		if (!dirList.isSelectionEmpty()) {
 			List<File> fList = new ArrayList<File>();
-			// remove these files from the JList
-			int index[] = (int[]) dirList.getSelectedIndices();
-			for (int j=0; j<index.length; j++) {
-				File fl = getFile(listModel.get(index[j]).toString());
+			listModel =  (DefaultListModel) dirList.getModel();
+			while (!dirList.isSelectionEmpty()) {
+				int index = (int) dirList.getSelectedIndex();
+				File fl = getFile(listModel.get(index).toString());
 				if (fl != null) {
 					fList.add(fl);
 				}
-				listModel.remove(index[j]);
+				listModel.remove(index);
 			}
-			
 			// add the file list to watcher
 			Watcher w = Watcher.getWatcher();
 			w.removeWatchedDirectories(fList);
