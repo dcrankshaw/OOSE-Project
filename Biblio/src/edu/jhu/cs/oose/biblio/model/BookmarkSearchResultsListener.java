@@ -14,5 +14,5 @@ public interface BookmarkSearchResultsListener {
 	 * to display the results of the search
 	 * @param results The list of matching documents in order
 	 */
-	public void displayResults(List<Bookmark> results);
+	public void displayBookmarkResults(List<Bookmark> results);
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import edu.jhu.cs.oose.biblio.model.Bookmark;
+import edu.jhu.cs.oose.biblio.model.BookmarkSearchResultsListener;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
@@ -15,7 +17,7 @@ import edu.jhu.cs.oose.biblio.model.SearchResultsListener;
  * search criteria. Full text searches are displayed in order of relevance. It displays a preview
  * of each file.
  */
-public class SearchResultsPreviewPanel extends JPanel implements SearchResultsListener {
+public class SearchResultsPreviewPanel extends JPanel implements SearchResultsListener, BookmarkSearchResultsListener {
 	
 	/** All of the files that match the search criteria */
 	private List<PreviewPanel> matchingFiles;
@@ -53,18 +55,48 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	void setSearchController(SearchManager sc) {
 		if( null != controller ) {
 			this.controller.removeResultsListener(this);
+			this.controller.removeBookmarkResultsListener(this);
 		}
 		this.controller = sc;
 		if( this.controller != null ) {
 			this.controller.addResultsListener(this);
+			this.controller.addBookmarkResultsListener(this);
 		}
 	}
 	
 	@Override
-	public void displayResults(List<FileMetadata> results) {
+	public void displayFileResults(List<FileMetadata> results) {
 		matchingFiles.clear();
 		for( int i = matchingFiles.size(); i < results.size(); i++ ) {
 			matchingFiles.add(FilePreviewFactory.getFactory().createPreview(results.get(i)));
+		}
+		
+		int rows;
+		if( columnCount > 0 ) {
+			rows = results.size() / columnCount;
+			if (results.size() % columnCount > 0) {
+				rows += 1;
+			}
+		}
+		else {
+			rows = 1;
+		}
+
+		this.newLayout(rows);
+		
+		// put all the cells back in, ensuring that they are in the correct order
+		for( int i = 0; i < matchingFiles.size(); i++ ) {
+			this.add(matchingFiles.get(i));
+		}
+		this.revalidate();
+	}
+
+	@Override
+	public void displayBookmarkResults(List<Bookmark> results) {
+		matchingFiles.clear();
+		for( int i = matchingFiles.size(); i < results.size(); i++ ) {
+			Bookmark bkmk = results.get(i);
+			matchingFiles.add(FilePreviewFactory.getFactory().createPreview(bkmk.getFile(), bkmk));
 		}
 		
 		int rows;

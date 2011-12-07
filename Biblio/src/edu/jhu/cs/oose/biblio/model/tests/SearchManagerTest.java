@@ -91,7 +91,7 @@ public class SearchManagerTest extends TestCase {
 
 	public class TestListener implements SearchResultsListener{
 		@Override
-		public void displayResults(List<FileMetadata> results){
+		public void displayBookmarkResults(List<FileMetadata> results){
 			searchResults.clear();
 			for (FileMetadata f : results){
 				searchResults.add((PDFFileMetadata) f);
@@ -354,7 +354,7 @@ public class SearchManagerTest extends TestCase {
 		search.addResultsListener(new SearchResultsListener() {
 
 			@Override
-			public void displayResults(List<FileMetadata> results) {
+			public void displayBookmarkResults(List<FileMetadata> results) {
 				updateSearchResults(results);
 			}
 			
