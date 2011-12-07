@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -38,7 +40,10 @@ public class MainWindow extends JFrame {
 		JPanel largePanel = new JPanel();
 		
 		largePanel.setLayout(new BorderLayout());
-		SearchPanel searchPanel = new SearchPanel();
+		List<SearchStrategy> searchMethods = new ArrayList<SearchStrategy>();
+		searchMethods.add(SearchStrategy.getStrategy(SearchMode.TAGS));
+		searchMethods.add(SearchStrategy.getStrategy(SearchMode.FULLTEXT));
+		SearchPanel searchPanel = new SearchPanel(searchMethods, SearchStrategy.getStrategy(SearchMode.FILTER));
 		searchPanel.setSearchController(manager);
 		largePanel.add(searchPanel, BorderLayout.WEST);
 		
@@ -52,6 +57,19 @@ public class MainWindow extends JFrame {
 		return largePanel;
 	}
 	
+	/*private JPanel makeBookmarkSearchPanel(SearchManager manager) {
+		JPanel largePanel = new JPanel();
+		
+		largePanel.setLayout(new BorderLayout());
+		SearchPanel searchPanel = new SearchPanel();
+		searchPanel.setSearchController(manager);
+		largePanel.add(searchPanel, BorderLayout.WEST);
+		SearchResultsPreviewPanel preview = new SearchResultsPreviewPanel();
+		preview.setSearchController(manager);
+		largePanel.add(preview, BorderLayout.CENTER);
+		return largePanel;
+	}*/
+	
 	/**
 	 * Creates a new GUI.  This is the reading/searching window.
 	 */
@@ -61,8 +79,11 @@ public class MainWindow extends JFrame {
 		tabs = new JTabbedPane();
 		SearchManager sManager = new SearchManager();
 		JPanel searchPanel = makeSearchPanel(sManager);
-		tabs.add("Search", searchPanel);
+		tabs.add("Search Files", searchPanel);
 		this.getContentPane().add(tabs);
+		
+		//searchPanel = makeBookmarkSearchPanel(sManager);
+		//tabs.add("Search Bookmarks", searchPanel);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());
 		
