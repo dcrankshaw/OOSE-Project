@@ -72,6 +72,7 @@ public class MainWindow extends JFrame {
 		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.BOOKMARKS));
 		searchPanel.setSearchController(manager);
 		largePanel.add(searchPanel, BorderLayout.WEST);
+		
 		SearchResultsPreviewPanel preview = new SearchResultsPreviewPanel();
 		preview.setSearchController(manager);
 		preview.listenForBookmarkResults();
@@ -89,10 +90,11 @@ public class MainWindow extends JFrame {
 		SearchManager sManager = new SearchManager();
 		JPanel searchPanel = makeSearchPanel(sManager);
 		tabs.add("Search Files", searchPanel);
-		this.getContentPane().add(tabs);
 		
+		sManager = new SearchManager();
 		searchPanel = makeBookmarkSearchPanel(sManager);
 		tabs.add("Search Bookmarks", searchPanel);
+		this.getContentPane().add(tabs);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());
 		
