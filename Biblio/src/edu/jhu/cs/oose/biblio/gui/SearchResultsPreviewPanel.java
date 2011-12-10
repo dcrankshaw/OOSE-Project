@@ -52,14 +52,22 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 	/** Sets the object to use for searching
 	 * @param sc the object to use for searching
 	 */
-	void setSearchController(SearchManager sc) {
+	public void setSearchController(SearchManager sc) {
 		if( null != controller ) {
 			this.controller.removeResultsListener(this);
 			this.controller.removeBookmarkResultsListener(this);
 		}
 		this.controller = sc;
-		if( this.controller != null ) {
+	}
+	
+	public void listenForFileResults() {
+		if( null != controller ) {
 			this.controller.addResultsListener(this);
+		}
+	}
+	
+	public void listenForBookmarkResults() {
+		if( null != controller ) {
 			this.controller.addBookmarkResultsListener(this);
 		}
 	}
