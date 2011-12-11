@@ -21,7 +21,7 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 	/** The tags that should be displayed */
 	protected List<T> tags;
 	/** The tags that have been selected for filtering */
-	private Set<T> selectedTags;
+	protected Set<T> selectedTags;
 
 	/** Creates a new data model for displaying found tags and filtering. */
 	public AbstractTableModel() {
@@ -97,10 +97,6 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 
 	/** An event describing how the selected items have changed. */
 	public class SelectionChangedEvent extends TableModelEvent {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		/** The tags that were selected before this event. */
 		Set<T> oldTags;
 		/** Tags that weren't selected before but are selected now. */

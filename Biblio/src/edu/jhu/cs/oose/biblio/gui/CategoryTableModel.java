@@ -64,24 +64,36 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (col == 0) {
-			return true;
-		} else {
-			return false;
+		return true;
+	}
+	
+	/**
+	 * Handles attempts to set something in the text field column of the table.
+	 * The user is attempting to rename a category.
+	 * @param newValue the new name of the Category
+	 * @param row the row being modified in the table
+	 */
+	private void setTextField(Object newValue, int row) {
+		if( !(newValue instanceof String) ) {
+			return;
+		}
+		String newName = (String)newValue;
+		Category cat = tags.get(row);
+		// Only actually performs the assignment if this is a valid Category name
+		// If it is not, then we shouldn't notify listeners that something happened,
+		// because it didn't
+		if( cat.setName(newName) ) {
+			emitEvent(new TableModelEvent(this, row, row, 1, TableModelEvent.UPDATE));
 		}
 	}
 	
-	
 	@Override
-	public void setValueAt(Object newValue, int row, int col)
-	{
-		if(col == 1)
-		{
-			
-		}
-		else
-		{
+	public void setValueAt(Object newValue, int row, int col) {
+		if( col == 0 ) {
 			super.setValueAt(newValue, row, col);
+		}
+		else if( col == 1 ) {
+			setTextField(newValue, row);
 		}
 	}
 	
