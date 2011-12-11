@@ -127,8 +127,7 @@ public class SearchManager {
 		}
 		// if no tags are specified, then match everything
 		else {
-			Session session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
+			Session session = Database.getNewSession();
 			
 			/*Criteria crit = session.createCriteria(FileMetadata.class);*/
 			@SuppressWarnings("unchecked")
@@ -141,7 +140,7 @@ public class SearchManager {
 					return a.getName().compareToIgnoreCase(b.getName());
 				}
 			});
-			session.getTransaction().commit();
+			Database.commit();
 		}
 		fireSearchResult();
 	}
@@ -158,8 +157,7 @@ public class SearchManager {
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
-			Session session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
+			Session session = Database.getNewSession();
 			//Query searchQuery = session.createQuery("from Tag where :term like name.lower()");
 			Query searchQuery = session.createQuery("from Tag where name like :term");
 			searchQuery.setString("term", "%" + searchTerm + "%");
@@ -170,7 +168,7 @@ public class SearchManager {
 			@SuppressWarnings("unchecked")
 			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
 			tagResults = db.executeQuery(searchQuery);
-			session.getTransaction().commit();
+			Database.commit();
 			fireSearchTags(tagResults);
 		}
 	}
