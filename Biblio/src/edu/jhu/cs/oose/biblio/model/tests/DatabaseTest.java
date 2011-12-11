@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
@@ -19,61 +20,64 @@ import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
+/**
+ * @author jiefengzhai
+ * 
+ * This unit test works only if the config file is set up to drop and recreate all tables every time the program run
+ * Or the object created in some test will interference with other test and the object created in test will be stored
+ * and interference with the actual program when it runs
+ */
 public class DatabaseTest extends TestCase{
-	
+
+	/**
+	 * Testing
+	 * 1) if merging class contructor with saving in database work
+	 * 2) if 1) works with inheritance - meaning A is base class and B extend A
+	 * but only A's constructor save A in database and B's constructor call super() only
+	 */
 	@Test
 	public void testTagConstructor() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		
-		sessionFactory.getCurrentSession().beginTransaction();
+		Database.getNewSession();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(2);
 		result.add(new PDFFileMetadata("/test/foo.pdf"));
-		sessionFactory.getCurrentSession().getTransaction().commit();
+		Database.commit();
 		
-		sessionFactory.getCurrentSession().beginTransaction();
+		Database.getNewSession();
 		Tag t = Database.getTag("sup");
 		if (t == null) {
 			t = new Tag("Sup");
 		}
 		FileMetadata fm = result.get(0);
 		t.addTaggedFiles(fm);
-		sessionFactory.getCurrentSession().update(t);
-		sessionFactory.getCurrentSession().getTransaction().commit();
+		Database.getSession().update(t);
+		Database.commit();
 	}
 
+	/**
+	 * Test if Database connection is establish correctly with the given config file
+	 */
 	@Test
 	public void testDatabaseConnection() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		Session session = Database.getNewSession();
 		
 		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
-		session.save(loc);
-		session.getTransaction().commit();
+		Database.commit();
 		
-		session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		session = Database.getNewSession();
 		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
-		session.getTransaction().commit();
+		Database.commit();
 		Location l = result.get(0);
 		assertEquals((float) 15.5, l.getPercentageOfFile());
 	}
 
-	public void testDatabaseSession() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		sessionFactory.getCurrentSession().beginTransaction();
-		Tag t = new Tag("sup");
-		sessionFactory.getCurrentSession().save(t);
-		sessionFactory.getCurrentSession().getTransaction().commit();
-	}
-
+	/**
+	 * Test how hibernate map the object that has reference to other object into SQL database
+	 */
 	@Test
 	public void testDatabaseSchema() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		Session session = Database.getNewSession();
 		
 		// location
 		Location loc = new Location(5);
@@ -95,14 +99,9 @@ public class DatabaseTest extends TestCase{
 		t.addTaggedBookmark(b);
 		
 		// store in database
-		session.save(loc);
-		session.save(pdfmeta);
-		session.save(b);
-		session.save(t);
-		session.getTransaction().commit();
+		Database.commit();
 		
-		session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		session = Database.getNewSession();
 		@SuppressWarnings("unchecked")
 		List<Location> locResult = (List<Location>) session.createQuery("from Location").list();
 		@SuppressWarnings("unchecked")
@@ -112,7 +111,7 @@ public class DatabaseTest extends TestCase{
 		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		
-		session.getTransaction().commit();
+		Database.commit();
 		Location l = locResult.get(0);
 		PDFFileMetadata f = fileResult.get(0);
 		Bookmark bm = bmResult.get(0);
@@ -140,32 +139,30 @@ public class DatabaseTest extends TestCase{
 		assertEquals(11, bList.get(0).getFile().getOpenedCount());
 	}
 
+	/**
+	 * Test if hibernate rollback works
+	 */
 	@Test
 	public void testRollback() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
 		// Commit *****************************************************************************************
-		session.getTransaction().begin();
-		Tag t = new Tag("Pop Song");
-		session.save(t);
-		session.getTransaction().commit();
+		Session session = Database.getNewSession();
+		Tag t = new Tag("yoyoyo");
+		Database.commit();
 		
 		// Rollback ***************************************************************************************
-		session = sessionFactory.getCurrentSession();
-		session.getTransaction().begin();
+		session = Database.getNewSession();
 		@SuppressWarnings("unchecked")
-		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
-		Tag tg = tagResult.get(0);
-		int id = tg.getId();
+		List<Tag> tgResult = (List<Tag>) session.createQuery("from Tag").list();
+		Tag tg = tgResult.get(0);
 		tg.setName("Rap");
 		session.update(tg);
-		session.getTransaction().rollback();
+		Database.rollback();
 		
 		// Check ******************************************************************************************
-		session = sessionFactory.getCurrentSession();
-		session.getTransaction().begin();
-		Tag tt = (Tag) session.get(Tag.class, id);
-		assertEquals(tt.getName(), "Pop Song");
-		session.getTransaction().commit();
+		session = Database.getNewSession();
+		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
+		Tag tt = tagResult.get(0);
+		assertEquals(tt.getName(), "yoyoyo");
+		Database.commit();
 	}
 }
