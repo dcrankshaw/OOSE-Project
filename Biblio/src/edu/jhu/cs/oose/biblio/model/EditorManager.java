@@ -3,7 +3,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 /**
@@ -18,13 +18,13 @@ public class EditorManager {
 	 * @param cl the class to get all of
 	 * @return a set of all the instances of a particular class in the DB.
 	 */
-	private Set<?> getAll(Class<?> cl) {
+	private Set<?> getAll(Class<?> cl, String tableName) {
 		Session session = Database.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Criteria crit = session.createCriteria(cl);
+		Query query = session.createQuery("from " + tableName);
 		
 		// Getting a database isn't type safe, but I promise it works
-		Set<?> result = new HashSet<Keyed>(((Database<?>)Database.get(cl)).executeCriteria(crit));
+		Set<?> result = new HashSet<Keyed>(((Database<?>)Database.get(cl)).executeQuery(query));
 		
 		session.getTransaction().commit();
 		return result;
@@ -37,7 +37,7 @@ public class EditorManager {
 	@SuppressWarnings("unchecked")
 	public Set<Tag> getAllTags()
 	{
-		return (Set<Tag>)this.getAll(Tag.class);
+		return (Set<Tag>)this.getAll(Tag.class, "Tag");
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class EditorManager {
 	@SuppressWarnings("unchecked")
 	public Set<Category> getAllCategories()
 	{
-		return (Set<Category>)this.getAll(Category.class);
+		return (Set<Category>)this.getAll(Category.class, "Category");
 	}
 	
 	// Can we do these with reflection or something? - Paul
@@ -63,6 +63,7 @@ public class EditorManager {
 		session.getTransaction().commit();
 		return t;
 	}
+	
 	
 	/**
 	 * Remove the tag from the database.

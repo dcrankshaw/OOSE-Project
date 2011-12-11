@@ -205,6 +205,19 @@ public class SearchManagerTest extends TestCase {
 		assertFalse(tagSearchResults.contains(otherCatAABB));
 		
 		
+		searcher.searchTags("Matches: aA");
+		for(Tag t: tagSearchResults)
+		{
+			System.out.println(t.getName());
+		}
+		assertFalse(tagSearchResults == null);
+		assertTrue(tagSearchResults.contains(aa));
+		assertTrue(tagSearchResults.contains(aabb));
+		assertFalse(tagSearchResults.contains(noA));
+		assertFalse(tagSearchResults.contains(otherCatAA));
+		assertFalse(tagSearchResults.contains(otherCatAABB));
+		
+		
 		
 		searcher.searchTags("hello: aa");
 		assertFalse(tagSearchResults == null);
