@@ -32,7 +32,8 @@ public class WatcherImportDialog extends JDialog {
 	}
 	
 	/**
-	 * return the JFrame that contain this Dialog
+	 * Get the JFrame that contain this Dialog
+	 * @return JFrame that contain this Dialog
 	 */
 	public JFrame getParent() {
 		return this.owner;
