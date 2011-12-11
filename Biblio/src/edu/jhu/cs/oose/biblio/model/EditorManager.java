@@ -23,7 +23,12 @@ public class EditorManager {
 	private Set<?> getAll(Class<?> cl) {
 		Session session = Database.getNewSession();
 		session.beginTransaction();
-		Query query = session.createQuery("from " + cl.getName().toUpperCase());
+		String tableName = cl.getName();
+		int idx = tableName.lastIndexOf('/');
+		if( idx >= 0 ) {
+			tableName= tableName.substring(idx);
+		}
+		Query query = session.createQuery("from " + tableName);
 		// Getting a database isn't type safe, but I promise it works
 		Set<?> result = new HashSet<Keyed>(
 				((Database<?>) Database.get(cl)).executeQuery(query));
