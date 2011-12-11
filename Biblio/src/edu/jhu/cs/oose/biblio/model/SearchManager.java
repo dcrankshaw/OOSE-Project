@@ -1,15 +1,12 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import nl.siegmann.epublib.domain.Book;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -34,7 +31,7 @@ public class SearchManager {
 	private List<FileMetadata> selectedFiles;
 	/** The tags that will be used for filtering */
 	private List<Tag> tagResults;
-	
+	/** The Bookmarks found the last search, used to update new listeners */
 	private List<Bookmark> selectedBookmarks;
 
 	/** Creates a new SearchManager for searching the database */
@@ -65,14 +62,14 @@ public class SearchManager {
 	/** Fire the file search result to each listener. */
 	private void fireSearchResult() {
 		for (SearchResultsListener r : resultsListeners) {
-			r.displayResults(selectedFiles);
+			r.displayFileResults(selectedFiles);
 		}
 	}
 	
 	/** Fire the bookmark search results to each listener. */
 	private void fireBookmarkSearchResult() {
 		for (BookmarkSearchResultsListener r : bookmarkResultsListeners) {
-			r.displayResults(selectedBookmarks);
+			r.displayBookmarkResults(selectedBookmarks);
 		}
 	}
 
@@ -144,6 +141,7 @@ public class SearchManager {
 					return a.getName().compareToIgnoreCase(b.getName());
 				}
 			});
+			session.getTransaction().commit();
 		}
 		fireSearchResult();
 	}
@@ -386,7 +384,7 @@ public class SearchManager {
 	 */
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
-		listener.displayResults(selectedFiles);
+		listener.displayFileResults(selectedFiles);
 	}
 
 	/**
@@ -408,7 +406,7 @@ public class SearchManager {
 	 */
 	public void addBookmarkResultsListener(BookmarkSearchResultsListener listener) {
 		bookmarkResultsListeners.add(listener);
-		listener.displayResults(selectedBookmarks);
+		listener.displayBookmarkResults(selectedBookmarks);
 	}
 
 	/**

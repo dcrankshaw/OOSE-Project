@@ -110,75 +110,67 @@ public class Database<T extends Keyed> {
 	
 	
 	/**
-	 * Executes the given query and replaces the results with already
-	 * existing objects if possible.
-	 * 
-	 * @param q
-	 *            the criteria to execute
+	 * Executes the given query, attaching all known objects
+	 * to the Session before execution to ensure that there is one
+	 * copy of each object.
+	 * @param q the query to execute
 	 * @return the results, using currently existing objects
 	 */
-
 	public List<T> executeQuery(Query q) {
-		
-		// first, execute the query. This can't possibly be entirely
-				// typesafe, but we must continue anyway, so the warning is suppressed.
+		// re-attach all of our objects - TODO is this expensive?
+		for( T toAttach : objectCache.values() ) {
+			update(toAttach);
+		}
+		// first, execute the query.  This can't possibly be entirely
+		// typesafe, but we must continue anyway, so the warning is suppressed.
 		@SuppressWarnings("unchecked")
-		
 		List<T> results = (List<T>) q.list();
 
-		
-
 		// for each object in the list, see if there is already an
-		// object with that primary key. If there is, then
-		// use the already existing one instead.
-		// Note that set is an optional operation on Lists, so this might not
-		// work, but then we're probably screwed anyway, so here goes!
-		for (int i = 0; i < results.size(); i++) {
+		// object with that primary key.  If there is, then it is one that
+		// we just attached.  If it's new, then we add it.
+		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
 			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
 
-			// If there is already an object, use that
-			if (null != oldObj) {
-				results.set(i, oldObj);
-				update(oldObj);
-			} else {
+			// If objects that we didn't know about were returned,
+			// now we know about them
+			if( null == oldObj ) {
 				this.add(newObj);
 			}
 		}
 		return results;
-
 	}
-
+	
 	/**
-	 * Executes the given criteria and replaces the results with already
-	 * existing objects if possible.
-	 * 
-	 * @param c
-	 *            the criteria to execute
+	 * Executes the given criteria, attaching all known objects
+	 * to the Session before execution to ensure that there is one
+	 * copy of each object.
+	 * @param c the criteria to execute
 	 * @return the results, using currently existing objects
 	 */
 	public List<T> executeCriteria(Criteria c) {
-		// first, execute the query. This can't possibly be entirely
+		// re-attach all of our objects - TODO is this expensive?
+		for( T toAttach : objectCache.values() ) {
+			update(toAttach);
+		}
+		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
 		@SuppressWarnings("unchecked")
 		List<T> results = (List<T>) c.list();
-
+		
 		// for each object in the list, see if there is already an
-		// object with that primary key. If there is, then
-		// use the already existing one instead.
-		// Note that set is an optional operation on Lists, so this might not
-		// work, but then we're probably screwed anyway, so here goes!
-		for (int i = 0; i < results.size(); i++) {
+		// object with that primary key.  If there is, then it is one that
+		// we just attached.  If it's new, then we add it.
+		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
 			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
-
-			// If there is already an object, use that
-			if (null != oldObj) {
-				results.set(i, oldObj);
-				update(oldObj);
-			} else {
+			
+			// If objects that we didn't know about were returned,
+			// now we know about them
+			if( null == oldObj ) {
 				this.add(newObj);
 			}
 		}
@@ -214,7 +206,7 @@ public class Database<T extends Keyed> {
 	 *            the object to sync to the DB
 	 */
 	public static void update(Keyed obj) {
-		Database.getSessionFactory().getCurrentSession().save(obj);
+		Database.getSessionFactory().getCurrentSession().update(obj);
 	}
 
 	/**
