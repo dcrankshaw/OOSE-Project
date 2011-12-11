@@ -30,7 +30,7 @@ import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
 @Table( name = "FILEMETADATA" )
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
-public abstract class FileMetadata implements Keyed {
+public abstract class FileMetadata implements Keyed, Tagable {
 
 	/** The ID used to identify this object in the database */
 	@Id
@@ -150,8 +150,8 @@ public abstract class FileMetadata implements Keyed {
 	 * Adds the given tag to those applied to this FileMetadata
 	 * @param t the tag to apply to this file
 	 */
-	public void addTag(Tag t) {
-		tags.add(t);
+	public boolean addTag(Tag t) {
+		return tags.add(t);
 	}
 
 	/**
@@ -238,4 +238,9 @@ public abstract class FileMetadata implements Keyed {
 	public abstract FileContents getContents();
 	
 	public abstract PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk);
+	
+	@Override
+	public boolean removeTag(Tag t) {
+		return tags.remove(t);
+	}
 }
