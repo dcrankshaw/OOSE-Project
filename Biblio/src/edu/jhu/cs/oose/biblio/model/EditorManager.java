@@ -20,11 +20,10 @@ public class EditorManager {
 	 *            the class to get all of
 	 * @return a set of all the instances of a particular class in the DB.
 	 */
-	private Set<?> getAll(Class<?> cl, String tableName) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+	private Set<?> getAll(Class<?> cl) {
+		Session session = Database.getNewSession();
 		session.beginTransaction();
-		Query query = session.createQuery("from " + tableName);
-
+		Query query = session.createQuery("from " + cl.getName().toUpperCase());
 		// Getting a database isn't type safe, but I promise it works
 		Set<?> result = new HashSet<Keyed>(
 				((Database<?>) Database.get(cl)).executeQuery(query));
@@ -39,8 +38,9 @@ public class EditorManager {
 	 * @return a set of all the Tags in the database.
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<Tag> getAllTags() {
-		return (Set<Tag>) this.getAll(Tag.class, "Tag");
+	public Set<Tag> getAllTags()
+	{
+		return (Set<Tag>)this.getAll(Tag.class);
 	}
 
 	/**
@@ -49,8 +49,9 @@ public class EditorManager {
 	 * @return a set of all the Categories in the database.
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<Category> getAllCategories() {
-		return (Set<Category>) this.getAll(Category.class, "Category");
+	public Set<Category> getAllCategories()
+	{
+		return (Set<Category>)this.getAll(Category.class);
 	}
 
 	// Can we do these with reflection or something? - Paul
