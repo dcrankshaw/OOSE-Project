@@ -136,6 +136,7 @@ public class SearchManager {
 					return a.getName().compareToIgnoreCase(b.getName());
 				}
 			});
+			session.getTransaction().commit();
 		}
 		fireSearchResult();
 	}
