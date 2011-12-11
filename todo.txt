@@ -1,22 +1,5 @@
-- directory watching
-	- allow user to select directory to watch (from file menu)
-- finish importing
-- epub support
-- rss reading
-- note taking?
 - bookmarking
-- load rest of pdf in separate thread
-- tags with pdf and epub metadata - should be pretty easy to do
-- move search from PDFFileMetadata to PDFFileContents
-- add highlighting to selected items (especially in importing)
-	- get rid of the "selected" button
-- case insensitive search
-- visitor pattern for factories
 - unit tests
-- actually copy files into a repository
-- DatabaseTests fails with Hibernate errors (exciting!)
-	- Update DatabaseTests to use our DB interface
-- Take a look at searchBookmark
-- Put the regular SQL queries through the database class (Paul just moved the Criteria queries)
-- Remove files from our library ( I can't imagine a use case for this!)
-- Searching on the side of the FullFileView (just add a search panel to the left and we also need to implement SearchResultsListPanel)
+- Merge CategoryTableModel and TagTableModel
+- Javadoc everything!
+- JList - just one column
