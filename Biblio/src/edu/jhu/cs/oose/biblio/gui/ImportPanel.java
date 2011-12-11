@@ -69,24 +69,28 @@ public class ImportPanel extends JPanel {
 	 * Tags that have been created during the current import session.
 	 */
 	private Collection<Tag> newTags;
-	
+
 	/**
 	 * The parent dialog box containing this import panel.
 	 */
 	JDialog owner;
-	
-	//Session session;
+
+	// Session session;
 
 	/**
-	 * Creates a new ImportPanel initialized with the list of files
-	 * and belonging to the given dialog.
-	 * @param files the files to be imported
-	 * @param currentOwner the dialog enclosing this panel
+	 * Creates a new ImportPanel initialized with the list of files and
+	 * belonging to the given dialog.
+	 * 
+	 * @param files
+	 *            the files to be imported
+	 * @param currentOwner
+	 *            the dialog enclosing this panel
 	 */
 	public ImportPanel(List<FileMetadata> files, JDialog currentOwner) {
 		// Initialize components
 		if (Database.isSessionOpen()) {
-			System.out.println(">>>>>>>>> ERROR: PREVIOUS DATABASE TRANSACTION NOT CLOSED");
+			System.out
+					.println(">>>>>>>>> ERROR: PREVIOUS DATABASE TRANSACTION NOT CLOSED");
 		}
 		Database.getNewSession();
 		applyButton = new JButton("Apply");
@@ -116,7 +120,7 @@ public class ImportPanel extends JPanel {
 			}
 
 		});
-		
+
 		finishButton = new JButton("Finish Import");
 		finishButton.addActionListener(new ActionListener() {
 			@Override
@@ -139,15 +143,15 @@ public class ImportPanel extends JPanel {
 
 		// Configure Pane
 		this.setLayout(new BorderLayout());
-		//JScrollPane fileCellsPanel = new JScrollPane();
+		// JScrollPane fileCellsPanel = new JScrollPane();
 		JPanel fileCellsPanel = new JPanel();
-		
+
 		int rows = files.size() / PREVIEW_PANEL_COLUMNS;
 		if (files.size() % PREVIEW_PANEL_COLUMNS > 0) {
 			rows++;
 		}
-//rows, PREVIEW_PANEL_COLUMNS)
-		//fileCellsPanel.setLayout(new ScrollPaneLayout());
+		// rows, PREVIEW_PANEL_COLUMNS)
+		// fileCellsPanel.setLayout(new ScrollPaneLayout());
 		fileCellsPanel.setLayout(new GridLayout(rows, PREVIEW_PANEL_COLUMNS));
 		JPanel globalOptionsPanel = new JPanel();
 		globalOptionsPanel.setLayout(new GridLayout());
@@ -167,20 +171,28 @@ public class ImportPanel extends JPanel {
 	}
 
 	/**
-	 * Applies the tag with the given name to all of the files that have been selected by
-	 * the user.
+	 * Applies the tag with the given name to all of the files that have been
+	 * selected by the user.
 	 * 
-	 * @param tagName The name of the tag to apply to all of the selected files
+	 * @param tagName
+	 *            The name of the tag to apply to all of the selected files
 	 */
 	public void applyTagToMany(String tagName) {
 		Tag tag = Database.getTag(tagName);
-		if( null == tag ) {
-			tag = new Tag(tagName);
-			newTags.add(tag);
+		if (null == tag) {
+			try {
+				tag = new Tag(tagName);
+			} catch (Exception e) {
+				System.out.println("Cannot create a tag with a colon in its name");
+			}
+			if (tag != null)
+				newTags.add(tag);
 		}
-		for (FileImportCell cell : fileCellArray) {
-			if(cell.isSelected()) {
-				cell.addTag(tag);
+		if (tag != null) {
+			for (FileImportCell cell : fileCellArray) {
+				if (cell.isSelected()) {
+					cell.addTag(tag);
+				}
 			}
 		}
 	}
@@ -188,7 +200,8 @@ public class ImportPanel extends JPanel {
 	/**
 	 * Creates a FileImportCell for each file
 	 * 
-	 * @param files the files to place in the import cells
+	 * @param files
+	 *            the files to place in the import cells
 	 */
 	public void setFiles(List<FileMetadata> files) {
 		for (FileMetadata file : files) {
@@ -198,28 +211,31 @@ public class ImportPanel extends JPanel {
 		}
 
 	}
-	
+
 	/**
-	 * A private mouse listener class that allows the ImportPanel to detect when a particular
-	 * cell has been clicked on
+	 * A private mouse listener class that allows the ImportPanel to detect when
+	 * a particular cell has been clicked on
+	 * 
 	 * @author Daniel
 	 */
-	private class ImportCellListener extends MouseAdapter
-	{
-		/** The cell associated with this listener;
-		 *  the one that got clicked. */
+	private class ImportCellListener extends MouseAdapter {
+		/**
+		 * The cell associated with this listener; the one that got clicked.
+		 */
 		private FileImportCell cell;
+
 		/**
 		 * Creates a new listener for the given cell
-		 * @param c the cell to listen for clicks on
+		 * 
+		 * @param c
+		 *            the cell to listen for clicks on
 		 */
-		public ImportCellListener(FileImportCell c)
-		{
+		public ImportCellListener(FileImportCell c) {
 			cell = c;
 		}
+
 		public void mouseClicked(MouseEvent e) {
-			if(!e.isShiftDown())
-			{
+			if (!e.isShiftDown()) {
 				ImportPanel.this.unselectAllCells();
 			}
 			cell.setSelected(true);
@@ -227,23 +243,21 @@ public class ImportPanel extends JPanel {
 	}
 
 	@Override
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paint(g);
 	}
-	
+
 	/**
 	 * Deselects all the cells in the import panel.
 	 */
-	public void unselectAllCells()
-	{
-		for(FileImportCell file: fileCellArray) {
+	public void unselectAllCells() {
+		for (FileImportCell file : fileCellArray) {
 			file.setSelected(false);
 		}
 	}
-	
+
 	/**
 	 * Finishes the import by committing transactions to the model and signaling
 	 * to close the import window

@@ -14,7 +14,7 @@ import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
-	private static void write() {
+	private static void write() throws Exception {
 		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
@@ -80,7 +80,12 @@ public class PersistenceTest {
 	}
 	
 	public static void main(String[] args) {
-		write();
+		try {
+			write();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//read();
 	}
 }

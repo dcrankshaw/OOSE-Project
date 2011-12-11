@@ -22,7 +22,7 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 public class DatabaseTest extends TestCase{
 	
 	@Test
-	public void testTagConstructor() {
+	public void testTagConstructor() throws Exception {
 		SessionFactory sessionFactory = Database.getSessionFactory();
 		
 		sessionFactory.getCurrentSession().beginTransaction();
