@@ -107,11 +107,7 @@ public class CategoryTableModel implements TableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (col == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return true;
 	}
 
 	@Override
@@ -146,17 +142,19 @@ public class CategoryTableModel implements TableModel {
 			removedTags = gone;
 		}
 	}
-
-	@Override
-	public void setValueAt(Object newValue, int row, int col) {
-		// only the checkbox column is editable by the user
-		if( col != 0 ) {
-			return;
-		}
+	
+	/**
+	 * Handles attempts to set something in the check box column of the table.
+	 * This means that the user is putting a Tag into or taking a Tag out
+	 * of a category
+	 * @param newValue a Boolean indicating whether the box is now checked
+	 * or unchecked
+	 * @param row the row being modified in the table
+	 */
+	private void setCheckbox(Object newValue, int row) {
 		if( !(newValue instanceof Boolean) ) {
 			return;
 		}
-		
 		// grab a copy of the tags right now, for the event
 		Set<Category> oldTags = Collections.unmodifiableSet(this.selectedCategories);
 		Set<Category> newTags = null;
@@ -174,6 +172,37 @@ public class CategoryTableModel implements TableModel {
 			rmTags = Collections.singleton(t);
 		}
 		emitCategoryEvent(new CategorySelectionChangedEvent(this, row, oldTags, newTags, rmTags));
+	}
+	
+	/**
+	 * Handles attempts to set something in the text field column of the table.
+	 * The user is attempting to rename a category.
+	 * @param newValue the new name of the Category
+	 * @param row the row being modified in the table
+	 */
+	private void setTextField(Object newValue, int row) {
+		if( !(newValue instanceof String) ) {
+			return;
+		}
+		String newName = (String)newValue;
+		Category cat = categories.get(row);
+		// Only actually performs the assignment if this is a valid Category name
+		// If it is not, then we shouldn't notify listeners that something happened,
+		// because it didn't
+		if( cat.setName(newName) ) {
+			emitEvent(new TableModelEvent(this, row, row, 1, TableModelEvent.UPDATE));
+		}
+	}
+	
+	@Override
+	public void setValueAt(Object newValue, int row, int col) {
+		if( col == 0 ) {
+			setCheckbox(newValue, row);
+		}
+		else if( col == 1 ) {
+			setTextField(newValue, row);
+		}
+		
 	}
 	
 	/**
