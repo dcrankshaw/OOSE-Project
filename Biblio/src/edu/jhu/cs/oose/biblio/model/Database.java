@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -30,14 +31,9 @@ public class Database<T extends Keyed> {
 	private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 	
 	/**
-	 * The session that is currently open
+	 * Indicate if current session has opened a transaction
 	 */
-	private static Session session;
-	
-	/**
-	 * Indicate if the session is currently open
-	 */
-	private static boolean isOpen;
+	private static boolean isTransactionOpen = false;
 	
 	/**
 	 * Returns the session factory for connecting to the database.
@@ -147,16 +143,31 @@ public class Database<T extends Keyed> {
 	 * @param oldObj the object to remove
 	 */
 	public void delete(T oldObj) {
-		this.objectCache.remove(oldObj.getId());
-		Database.getSessionFactory().getCurrentSession().delete(oldObj);
+		if (isTransactionOpen) {
+			this.objectCache.remove(oldObj.getId());
+			sessionFactory.getCurrentSession().delete(oldObj);
+		} else {
+			getNewSession();
+			sessionFactory.getCurrentSession().delete(oldObj);
+			commit();
+		}
 	}
 	
 	/**
 	 * Updates the given object in the DB
 	 * @param obj the object to sync to the DB
+	 * @return true if succeed
+	 * @return false if not
 	 */
 	public static void update(Keyed obj) {
-		Database.getSessionFactory().getCurrentSession().save(obj);
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().update(obj);
+		} else {
+			System.out.println(">>>>>>>>>>>> independent update!!!");
+			getNewSession();
+			sessionFactory.getCurrentSession().update(obj);
+			commit();
+		}
 	}
 	
 	/**
@@ -165,13 +176,13 @@ public class Database<T extends Keyed> {
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
-		if (!isOpen) {
-			Database.getNewSession();
-		}
+		getNewSession();
 		//TODO cleanse the input, using sql parameters instead of string concatenation
-		Criteria crit = session.createCriteria(Tag.class).add(
-				Restrictions.eq("name", "%" + name + "%"));
-		@SuppressWarnings("unchecked")
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
+		//Query q = ((Database<Tag>)Database.get(Tag.class)).sessionFactory.getCurrentSession().createQuery("from Tag where name like :name");
+		//q.setString("name", "%" + name + "%");
+		//List<Tag> result = q.list();
+		
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 		
 		if( result.size() <= 0 ) {
@@ -187,47 +198,73 @@ public class Database<T extends Keyed> {
 	}
 	
 	/**
+	 * Check if there is an open session
+	 * 
+	 * @return true if there is
+	 * @return false if there is not
+	 */
+	public static boolean isSessionOpen() {
+		return isTransactionOpen;
+	}
+	
+	
+	/**
 	 * Get the current running session
+	 * 
+	 * @return Session the current session, return null if there is no open session
 	 */
 	public static Session getSession() {
-		if (isOpen) {
-			return session;
+		if (isTransactionOpen) {
+			return sessionFactory.getCurrentSession();
 		} else {
 			return null;
 		}
 	}
 	
 	/**
-	 * Create a new session and begin transaction
+	 * Open a new session and begin transaction
+	 * 
+	 * @return Session the session just opened, return null if there is already an open session
 	 */
 	public static Session getNewSession() {
-		if (isOpen) {
+		if (isTransactionOpen) {
 			return null;
 		} else {
-			session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			isOpen = true;
-			return session;
+			sessionFactory.getCurrentSession().beginTransaction();
+			isTransactionOpen = true;
+			return sessionFactory.getCurrentSession();
 		}
 	}
 	
 	/**
-	 * Commit
+	 * Commit the transaction and close the session
+	 * 
+	 * @return true if succeed
+	 * @return false if not
 	 */
-	public static void commit() {
-		if (isOpen) {
-			session.getTransaction().commit();
-			isOpen = false;
+	public static boolean commit() {
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			isTransactionOpen = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	/**
-	 * Rollback
+	 * Rollback the transaction and close the session
+	 * 
+	 * @return true if succeed
+	 * @return false if not
 	 */
-	public static void rollback() {
-		if (isOpen) {
-			session.getTransaction().rollback();
-			isOpen = false;
+	public static boolean rollback() {
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			isTransactionOpen = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
