@@ -62,12 +62,15 @@ public class Category implements Comparable<Category>, Keyed {
 	 * It gets a primary key for the DB, so
 	 * there must be an open transaction
 	 * @param n the name of the new Category
+	 * @throws Exception If the user tries to create a category with a colon
 	 */
-	public Category(String n) {
+	public Category(String n) throws Exception {
+		if(n.contains(":"))
+			throw new Exception("Invalid tag name");
 		this.name = n;
 		this.tags = new HashSet<Tag>();
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Database.getSession().save(this);
 		@SuppressWarnings("unchecked")
 		Database<Category> db = (Database<Category>)Database.get(Category.class);
 		db.add(this);

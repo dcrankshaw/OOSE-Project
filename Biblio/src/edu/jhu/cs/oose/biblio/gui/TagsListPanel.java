@@ -54,9 +54,11 @@ public class TagsListPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String tagName = newTagField.getText();
-				newTagField.setText("");
 				Tag t = findOrCreateTag(tagName);
-				addTag(t);
+				if(t != null) {
+					newTagField.setText("");
+					addTag(t);
+				}
 			}
 		});
 		
@@ -94,7 +96,12 @@ public class TagsListPanel extends JPanel {
 	private Tag findOrCreateTag(String tagName) {
 		Tag t = Database.getTag(tagName);
 		if (t == null) {
-			t = new Tag(tagName);
+			
+			try {
+				t = new Tag(tagName);
+			} catch (Exception e) {
+				System.out.println("Cannot create a tag with a colon in it");
+			}
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> new tag");
 		}
 		return t;

@@ -73,8 +73,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * If you need an object, use this constructor;
 	 * DO NOT use the default constructor.
 	 * @param tagName the name of the new Tag.
+	 * @throws Exception If the user tries to add a tagname with a colon
 	 */
-	public Tag(String tagName) {
+	public Tag(String tagName) throws Exception {
+		if(tagName.contains(":"))
+			throw new Exception("Invalid tag name");
 		name = tagName;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();

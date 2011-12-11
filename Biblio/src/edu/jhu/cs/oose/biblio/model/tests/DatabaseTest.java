@@ -34,9 +34,10 @@ public class DatabaseTest extends TestCase{
 	 * 1) if merging class contructor with saving in database work
 	 * 2) if 1) works with inheritance - meaning A is base class and B extend A
 	 * but only A's constructor save A in database and B's constructor call super() only
+	 * @throws Exception 
 	 */
 	@Test
-	public void testTagConstructor() {
+	public void testTagConstructor() throws Exception {
 		Database.getNewSession();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(2);
 		result.add(new PDFFileMetadata("/test/foo.pdf"));
@@ -45,7 +46,7 @@ public class DatabaseTest extends TestCase{
 		Database.getNewSession();
 		Tag t = Database.getTag("sup");
 		if (t == null) {
-			t = new Tag("Sup");
+			t = new Tag("sup");
 		}
 		FileMetadata fm = result.get(0);
 		t.addTaggedFiles(fm);
@@ -74,9 +75,10 @@ public class DatabaseTest extends TestCase{
 
 	/**
 	 * Test how hibernate map the object that has reference to other object into SQL database
+	 * @throws Exception 
 	 */
 	@Test
-	public void testDatabaseSchema() {
+	public void testDatabaseSchema() throws Exception {
 		Session session = Database.getNewSession();
 		
 		// location
@@ -141,9 +143,10 @@ public class DatabaseTest extends TestCase{
 
 	/**
 	 * Test if hibernate rollback works
+	 * @throws Exception 
 	 */
 	@Test
-	public void testRollback() {
+	public void testRollback() throws Exception {
 		// Commit *****************************************************************************************
 		Session session = Database.getNewSession();
 		Tag t = new Tag("yoyoyo");

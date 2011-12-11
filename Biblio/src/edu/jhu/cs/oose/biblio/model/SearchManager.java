@@ -354,14 +354,14 @@ public class SearchManager {
 				tagName = split[1].trim();
 			}
 
-			Session session = Database.getSessionFactory().getCurrentSession();
+			Session session = Database.getNewSession();
 			session.beginTransaction();	
 			//Query query = session.createQuery("from Category where :category like name.lower()");
 			Query query = session.createQuery("from Category where lower(name) like :category");
 			query.setString("category", "%" + category + "%");
 			@SuppressWarnings("unchecked")
 			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeQuery(query);
-			session.getTransaction().commit();
+			Database.commit();
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
 			}
