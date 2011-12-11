@@ -1,15 +1,18 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -54,6 +57,8 @@ public class FileImportCell extends JPanel
 	private static final String LEAVE_IN_PLACE_STRING = "In Place";
 	/** The string telling the user that the file will be copied into the repository. */
 	private static final String COPY_STRING = "Copy";
+	
+	private Border originalBorder;
 	
 	/**
 	 * Creates a cell that allows the user to describe how this file
@@ -125,36 +130,12 @@ public class FileImportCell extends JPanel
 			previewPanelBorder.add(preview, BorderLayout.CENTER);
 		}
 		this.add(tagsPanel, BorderLayout.EAST);
-		this.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		originalBorder = previewPanelBorder.getBorder();
+		preview.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+				toggleSelected();
+				repaint();
 			}
 		});
 		
@@ -217,6 +198,21 @@ public class FileImportCell extends JPanel
 	 */
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected();
+	}
+	
+	/**
+	 * Changes the selected state of the cell. If the cell was
+	 * selected, it deselects it. Otherwise, it selects it.
+	 */
+	public void toggleSelected()
+	{
+		isSelected = isSelected ? false: true;
+		if(isSelected) {
+			previewPanelBorder.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		}
+		else {
+			previewPanelBorder.setBorder(originalBorder);
+		}
 	}
 
 	/**
