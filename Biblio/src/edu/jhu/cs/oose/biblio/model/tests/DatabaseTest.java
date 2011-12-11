@@ -61,7 +61,7 @@ public class DatabaseTest extends TestCase{
 		assertEquals((float) 15.5, l.getPercentageOfFile());
 	}
 
-	public void testDatabaseSession() {
+	public void testDatabaseSession() throws Exception {
 		SessionFactory sessionFactory = Database.getSessionFactory();
 		sessionFactory.getCurrentSession().beginTransaction();
 		Tag t = new Tag("sup");
@@ -70,7 +70,7 @@ public class DatabaseTest extends TestCase{
 	}
 
 	@Test
-	public void testDatabaseSchema() {
+	public void testDatabaseSchema() throws Exception {
 		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
@@ -141,7 +141,7 @@ public class DatabaseTest extends TestCase{
 	}
 
 	@Test
-	public void testRollback() {
+	public void testRollback() throws Exception {
 		SessionFactory sessionFactory = Database.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		// Commit *****************************************************************************************

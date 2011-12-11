@@ -41,9 +41,19 @@ public class SearchManager {
 		bookmarkResultsListeners = new HashSet<BookmarkSearchResultsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
 		selectedBookmarks = new ArrayList<Bookmark>();
+		boolean closeSession = false;
+		Session session = Database.getSession();
+		/*if(session == null)
+		{
+			session = Database.getNewSession();
+			session.beginTransaction();
+			closeSession = true;
+		}*/
 		searchTags("");
 		filterBookmarksByTags(null);
 		filterByTags(null);
+		/*if(closeSession)
+			Database.commit();*/
 	}
 
 	// Constructor just for testing purposes
@@ -128,6 +138,7 @@ public class SearchManager {
 		// if no tags are specified, then match everything
 		else {
 			Session session = Database.getNewSession();
+			session.beginTransaction();
 			
 			/*Criteria crit = session.createCriteria(FileMetadata.class);*/
 			@SuppressWarnings("unchecked")
@@ -158,6 +169,7 @@ public class SearchManager {
 			searchCategory(searchTerm);
 		else {
 			Session session = Database.getNewSession();
+			session.beginTransaction();
 			//Query searchQuery = session.createQuery("from Tag where :term like name.lower()");
 			Query searchQuery = session.createQuery("from Tag where lower(name) like :term");
 			searchQuery.setString("term", "%" + searchTerm + "%");
@@ -301,6 +313,7 @@ public class SearchManager {
 		// if no tags are specified, then match everything
 		else {
 			Session session = Database.getNewSession();
+			session.beginTransaction();
 			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
@@ -325,6 +338,7 @@ public class SearchManager {
 					}
 				}
 			});
+			Database.commit();
 		}
 		fireBookmarkSearchResult();
 	}
@@ -354,8 +368,8 @@ public class SearchManager {
 				tagName = split[1].trim();
 			}
 
-			Session session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();	
+			Session session = Database.getNewSession();
+			session.beginTransaction();
 			//Query query = session.createQuery("from Category where :category like name.lower()");
 			Query query = session.createQuery("from Category where lower(name) like :category");
 			query.setString("category", "%" + category + "%");
@@ -370,6 +384,7 @@ public class SearchManager {
 					results.add(t);
 				}
 			}
+			Database.commit();
 		}
 		fireSearchTags(results);
 	}

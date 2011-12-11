@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import junit.framework.TestCase;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.junit.Before;
 
 import edu.jhu.cs.oose.biblio.model.Category;
 import edu.jhu.cs.oose.biblio.model.Database;
@@ -35,40 +35,18 @@ public class SearchManagerTest extends TestCase {
 	List<FileMetadata> originalFiles;
 	List<FileMetadata> searchResults;
 	Set<Tag> tagSearchResults;
-
-	PDFFileMetadata testFile1, testFile2, testFile3;
-
-	SessionFactory sessionFactory;
-
-	protected void setUp() throws Exception {
-
-		super.setUp();
-		originalFiles = new ArrayList<FileMetadata>();
+	
+	@Before
+	protected void setUp()
+	{
 		testFiles = new ArrayList<FileMetadata>();
+		originalFiles = new ArrayList<FileMetadata>();
 		searchResults = new ArrayList<FileMetadata>();
-		tagSearchResults = new TreeSet<Tag>();
-		String path1 = "testfiles/test4.pdf", path2 = "testfiles/test5.pdf", path3 = "testfiles/test6.pdf";
-		this.fileExist(path1);// 2 Occurrences of searchTerm "Ignorance"
-		this.fileExist(path2);// 5 Occurrences, should return on the top of the
-								// list
-		this.fileExist(path3);// 1 Occurrences
-		fileExist("testfiles/test1.pdf");
-		fileExist("testfiles/test2.pdf");
-		fileExist("testfiles/test3.pdf");
-		for (FileMetadata f : testFiles) {
-			originalFiles.add(f);
-		}
-		System.out.println("\n\n\n\n\n\n");
-		for (FileMetadata t : originalFiles) {
-			System.out.println(t.getName());
-		}
-		System.out.println("\n\n\n\n\n\n");
-
-		// search = new SearchManager(testFiles);
-
-		sessionFactory = Database.getSessionFactory();
+		tagSearchResults = new HashSet<Tag>();
+		
 	}
 
+	PDFFileMetadata testFile1, testFile2, testFile3;
 	/**
 	 * setup helper function to add testfiles to the database
 	 * 
@@ -97,7 +75,33 @@ public class SearchManagerTest extends TestCase {
 	 * Test if searchText() returns results in the correct order
 	 */
 	public void testSearchText() {
-
+		fail();
+		Session s = Database.getNewSession();
+		s.beginTransaction();
+		originalFiles = new ArrayList<FileMetadata>();
+		testFiles = new ArrayList<FileMetadata>();
+		searchResults = new ArrayList<FileMetadata>();
+		tagSearchResults = new TreeSet<Tag>();
+		String path1 = "testfiles/test4.pdf", path2 = "testfiles/test5.pdf", path3 = "testfiles/test6.pdf";
+		this.fileExist(path1);// 2 Occurrences of searchTerm "Ignorance"
+		this.fileExist(path2);// 5 Occurrences, should return on the top of the
+								// list
+		this.fileExist(path3);// 1 Occurrences
+		fileExist("testfiles/test1.pdf");
+		fileExist("testfiles/test2.pdf");
+		fileExist("testfiles/test3.pdf");
+		Database.commit();
+		for (FileMetadata f : testFiles) {
+			originalFiles.add(f);
+		}
+		System.out.println("\n\n\n\n\n\n");
+		for (FileMetadata t : originalFiles) {
+			System.out.println(t.getName());
+		}
+		
+		
+		
+		
 		assertFalse(originalFiles == null);
 		SearchManager search = new SearchManager(originalFiles);
 		String searchTerm = "Ignorance";
@@ -157,8 +161,7 @@ public class SearchManagerTest extends TestCase {
 			}
 
 		});
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		Database.getNewSession().beginTransaction();
 		Category matches = new Category("matches");
 		Category noMatch = new Category("hello");
 
@@ -176,15 +179,8 @@ public class SearchManagerTest extends TestCase {
 		noMatch.addTag(otherCatAABB);
 		noMatch.addTag(otherCatAA);
 
-		session.save(matches);
-		session.save(noMatch);
-		session.save(aa);
-		session.save(aabb);
-		session.save(noA);
-		session.save(otherCatAA);
-		session.save(otherCatAABB);
-		session.getTransaction().commit();
-
+		Database.commit();
+		
 		searcher.searchTags("matches: aa");
 		for (Tag t : tagSearchResults) {
 			System.out.println(t.getName());
@@ -245,6 +241,7 @@ public class SearchManagerTest extends TestCase {
 
 		searcher.addTagsListener(myListener);
 		List<Tag> tags = new ArrayList<Tag>();
+		Database.getNewSession().beginTransaction();
 		try {
 			tags.add(new Tag("abc"));
 
@@ -255,12 +252,9 @@ public class SearchManagerTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		for (Tag t : tags) {
-			session.save(t);
-		}
-		session.getTransaction().commit();
+		
+		
+		Database.commit();
 		searcher.searchTags(searchTerm);
 	}
 
