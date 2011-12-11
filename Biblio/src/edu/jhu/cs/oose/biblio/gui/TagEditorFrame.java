@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 /**
  * Provides the functionality needed to get the user input to edit tags.
  */
-public class TagEditorPanel extends JPanel {
+public class TagEditorFrame extends JFrame {
 	
 	/** A table containing all of the tags. The user can select from here to edit
 	 * existing tags.
@@ -52,7 +53,7 @@ public class TagEditorPanel extends JPanel {
 	private CategoryTableModel categoryModel;
 	
 	/** Creates, lays out, and connects the GUI elements for editing/creating Tags and Categories. */
-	public TagEditorPanel() {
+	public TagEditorFrame() {
 		super();
 		
 		EditorManager manager = new EditorManager();
@@ -161,6 +162,8 @@ public class TagEditorPanel extends JPanel {
 		subpanel.add(subsubpanel, BorderLayout.SOUTH);
 		
 		this.add(subpanel, BorderLayout.EAST);
+		
+		this.setTitle("Manage Tags");
 	}
 	
 	/** Create a new tag */
@@ -204,7 +207,7 @@ public class TagEditorPanel extends JPanel {
 			this.associatedTagPanel.setTagsList(selectedTag.getChildren());
 			this.categoryModel.setTag(selectedTag);
 		}
-		this.revalidate();
+		this.pack();
 		this.nameField.revalidate();
 		this.associatedTagPanel.revalidate();
 		this.repaint();
