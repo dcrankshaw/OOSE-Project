@@ -119,7 +119,8 @@ public class Tag implements Comparable<Tag>, Keyed {
 			return false;
 		else {
 			this.name = n;
-			for( TagListener l : listeners ) {
+			Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
+			for( TagListener l : currentListeners ) {
 				l.nameChanged(this);
 			}
 			return true;
@@ -146,7 +147,8 @@ public class Tag implements Comparable<Tag>, Keyed {
 	public boolean addChild(Tag tag) {
 		boolean result = this.children.add(tag);
 		if( result ) {
-			for( TagListener l : this.listeners ) {
+			Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
+			for( TagListener l : currentListeners ) {
 				l.childrenChanged(this);
 			}
 		}
