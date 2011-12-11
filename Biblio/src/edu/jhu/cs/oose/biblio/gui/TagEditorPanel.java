@@ -3,6 +3,8 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -75,7 +77,9 @@ public class TagEditorPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(this.overallTagTable);
 		this.overallTagTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				setSelectedTag(e.getFirstIndex());
+				if( e.getValueIsAdjusting() == false ) {
+					setSelectedTag();
+				}
 			}
 		});
 		subpanel.add(scrollPane, BorderLayout.CENTER);
@@ -186,14 +190,30 @@ public class TagEditorPanel extends JPanel {
 	}
 	
 	/**
-	 * Sets the currently selected Tag to that given by this index
-	 * @param selectedIndex the index of the Tag to select
+	 * Sets the currently selected Tag to that given by the JList's selected index
 	 */
-	public void setSelectedTag(int selectedIndex) {
-		this.selectedTag = this.tagListModel.getTag(selectedIndex);
-		nameLabel.setText(selectedTag.getName());
-		this.associatedTagPanel.setTagsList(selectedTag.getChildren());
-		this.categoryModel.setTag(selectedTag);
+	public void setSelectedTag() {
+		int selectedIndex = this.overallTagTable.getSelectedIndex();
+		if( selectedIndex < 0 ) {
+			this.selectedTag = null;
+			this.nameLabel.setText("");
+			@SuppressWarnings("unchecked")
+			Collection<Tag> emptySet = (Collection<Tag>)Collections.EMPTY_SET;
+			this.associatedTagPanel.setTagsList(emptySet);
+			this.categoryModel.setTag(null);
+		}
+		else {
+			this.selectedTag = this.tagListModel.getTag(selectedIndex);
+			this.nameLabel.setText(selectedTag.getName());
+			this.associatedTagPanel.setTagsList(selectedTag.getChildren());
+			this.categoryModel.setTag(selectedTag);
+		}
+		this.revalidate();
+		this.nameLabel.revalidate();
+		this.associatedTagPanel.revalidate();
+		this.repaint();
+		this.nameLabel.repaint();
+		this.associatedTagPanel.repaint();
 	}
 	
 	/**
