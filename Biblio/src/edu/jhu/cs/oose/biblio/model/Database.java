@@ -19,8 +19,7 @@ import org.hibernate.criterion.Restrictions;
  * them and then replaces new objects with ones that have already been created.
  * This class need to know about every class that is stored in the database.
  * 
- * @param <T>
- *            the type that should be returned by the query
+ * @param <T> the type that should be returned by the query
  */
 public class Database<T extends Keyed> {
 	/**
@@ -36,15 +35,6 @@ public class Database<T extends Keyed> {
 	 */
 	private static boolean isTransactionOpen = false;
 	
-	/**
-	 * Returns the session factory for connecting to the database.
-	 * 
-	 * @return the session factory for connecting to the database.
-	 */
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
 	/**
 	 * A map from a class to the Database object that deals with queries
 	 * returning that type.
@@ -83,8 +73,7 @@ public class Database<T extends Keyed> {
 	 * should only ever be called from createDatabases(), so it is kind of a
 	 * multi-singleton...
 	 * 
-	 * @param resultType
-	 *            the type that queries to this database return
+	 * @param resultType the type that queries to this database return
 	 */
 	private Database(Class<T> resultType) {
 		this.criteriaResultType = resultType;
@@ -94,16 +83,13 @@ public class Database<T extends Keyed> {
 	/**
 	 * Returns the database that deals with queries for instances of type cl.
 	 * 
-	 * @param cl
-	 *            the type the query should return
+	 * @param cl the type the query should return
 	 * @return the database for these kinds of queries
 	 */
 	public static Database<?> get(Class<?> cl) {
 		return caches.get(cl);
 	}
 
-	
-	
 	/**
 	 * Executes the given query, attaching all known objects
 	 * to the Session before execution to ensure that there is one
@@ -176,8 +162,7 @@ public class Database<T extends Keyed> {
 	 * Adds a new object to the memory cache. This object is assumed to be the
 	 * original object.
 	 * 
-	 * @param newObj
-	 *            the new object to track
+	 * @param newObj  the new object to track
 	 */
 	public void add(T newObj) {
 		this.objectCache.put(newObj.getId(), newObj);
@@ -186,8 +171,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Removes the given object from the memory cache and the DB
 	 * 
-	 * @param oldObj
-	 *            the object to remove
+	 * @param oldObj the object to remove
 	 */
 	public void delete(T oldObj) {
 		if (isTransactionOpen) {
@@ -203,8 +187,6 @@ public class Database<T extends Keyed> {
 	/**
 	 * Updates the given object in the DB
 	 * @param obj the object to sync to the DB
-	 * @return true if succeed
-	 * @return false if not
 	 */
 	public static void update(Keyed obj) {
 		if (isTransactionOpen) {
@@ -219,8 +201,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Finds the Tag with the given name if it exists
 	 * 
-	 * @param name
-	 *            the name of the Tag to fine
+	 * @param name the name of the Tag to fine
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
@@ -228,6 +209,7 @@ public class Database<T extends Keyed> {
 		//TODO cleanse the input, using sql parameters instead of string concatenation
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
 		
+		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 		
 		if( result.size() <= 0 ) {
@@ -244,8 +226,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Check if there is an open session
 	 * 
-	 * @return true if there is
-	 * @return false if there is not
+	 * @return true if there is an open session, false if not
 	 */
 	public static boolean isSessionOpen() {
 		return isTransactionOpen;
@@ -255,7 +236,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Get the current running session
 	 * 
-	 * @return Session the current session, return null if there is no open session
+	 * @return the current session, null if there is no open session
 	 */
 	public static Session getSession() {
 		if (isTransactionOpen) {

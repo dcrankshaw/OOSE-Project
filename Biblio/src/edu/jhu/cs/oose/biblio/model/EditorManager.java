@@ -20,16 +20,20 @@ public class EditorManager {
 	 *            the class to get all of
 	 * @return a set of all the instances of a particular class in the DB.
 	 */
-	private Set<?> getAll(Class<?> cl, String tableName) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+	private Set<?> getAll(Class<?> cl) {
+		Session session = Database.getNewSession();
 		session.beginTransaction();
+		String tableName = cl.getName();
+		int idx = tableName.lastIndexOf('/');
+		if( idx >= 0 ) {
+			tableName= tableName.substring(idx);
+		}
 		Query query = session.createQuery("from " + tableName);
-
 		// Getting a database isn't type safe, but I promise it works
 		Set<?> result = new HashSet<Keyed>(
 				((Database<?>) Database.get(cl)).executeQuery(query));
 
-		session.getTransaction().commit();
+		Database.commit();
 		return result;
 	}
 
@@ -39,8 +43,9 @@ public class EditorManager {
 	 * @return a set of all the Tags in the database.
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<Tag> getAllTags() {
-		return (Set<Tag>) this.getAll(Tag.class, "Tag");
+	public Set<Tag> getAllTags()
+	{
+		return (Set<Tag>)this.getAll(Tag.class);
 	}
 
 	/**
@@ -49,8 +54,9 @@ public class EditorManager {
 	 * @return a set of all the Categories in the database.
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<Category> getAllCategories() {
-		return (Set<Category>) this.getAll(Category.class, "Category");
+	public Set<Category> getAllCategories()
+	{
+		return (Set<Category>)this.getAll(Category.class);
 	}
 
 	// Can we do these with reflection or something? - Paul
@@ -60,12 +66,12 @@ public class EditorManager {
 	 * @return the new Tag as an object.
 	 */
 	public Tag newTag() {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		try {
 			Tag t = new Tag("Untitled Tag");
 			session.save(t);
-			session.getTransaction().commit();
+			Database.commit();
 			return t;
 		} catch (Exception e) {
 			/*
@@ -73,6 +79,7 @@ public class EditorManager {
 			 * exception if tagname has a colon in it. The tagname in this
 			 * method is hardcoded and will never have a colon in the name
 			 */
+			Database.rollback();
 			return null;
 		}
 	}
@@ -84,10 +91,10 @@ public class EditorManager {
 	 *            The name of the tag to remove.
 	 */
 	public void deleteTag(Tag toRemove) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		session.delete(toRemove);
-		session.getTransaction().commit();
+		Database.commit();
 	}
 
 	/**
@@ -96,12 +103,12 @@ public class EditorManager {
 	 * @return the new Category as an object.
 	 */
 	public Category newCategory() {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		try {
 			Category c = new Category("Untitled Category");
 			session.save(c);
-			session.getTransaction().commit();
+			Database.commit();
 			return c;
 		} catch (Exception e) {
 			/*
@@ -109,6 +116,7 @@ public class EditorManager {
 			 * exception if tagname has a colon in it. The tagname in this
 			 * method is hardcoded and will never have a colon in the name
 			 */
+			Database.rollback();
 			return null;
 		}
 	}
@@ -120,10 +128,10 @@ public class EditorManager {
 	 *            The name of the category to remove.
 	 */
 	public void deleteCategory(Category toRemove) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		session.delete(toRemove);
-		session.getTransaction().commit();
+		Database.commit();
 	}
 
 }

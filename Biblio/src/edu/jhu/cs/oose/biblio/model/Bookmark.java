@@ -72,7 +72,7 @@ public class Bookmark implements Keyed {
 		this.location = loc;
 		this.tags = new HashSet<Tag>();
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Database.getSession().save(this);
 		@SuppressWarnings("unchecked")
 		Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
 		db.add(this);

@@ -70,7 +70,7 @@ public class Category implements Comparable<Category>, Keyed {
 		this.name = n;
 		this.tags = new HashSet<Tag>();
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Database.getSession().save(this);
 		@SuppressWarnings("unchecked")
 		Database<Category> db = (Database<Category>)Database.get(Category.class);
 		db.add(this);

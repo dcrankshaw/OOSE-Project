@@ -30,7 +30,7 @@ public class BookmarkTest extends TestCase {
 	Location loc;
 	
 	public void setUp() {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		
 		file = new TestMetadata();
@@ -39,7 +39,7 @@ public class BookmarkTest extends TestCase {
 		session.save(file);
 		
 		bkmk = new Bookmark(file, loc);
-		session.getTransaction().commit();
+		Database.commit();
 	}
 	
 	/**

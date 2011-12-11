@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Controls all of the searching logic. It gets a search term and mode from the
@@ -371,11 +369,11 @@ public class SearchManager {
 			Session session = Database.getNewSession();
 			session.beginTransaction();
 			//Query query = session.createQuery("from Category where :category like name.lower()");
-			Query query = session.createQuery("from Category where lower(name) like :category");
-			query.setString("category", "%" + category + "%");
+			Query query = session.createQuery("from Category where lower(name) like :term");
+			query.setString("term", "%" + category + "%");
 			@SuppressWarnings("unchecked")
 			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeQuery(query);
-			session.getTransaction().commit();
+			Database.commit();
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
 			}

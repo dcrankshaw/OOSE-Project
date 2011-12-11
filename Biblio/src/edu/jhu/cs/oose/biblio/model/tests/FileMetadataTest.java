@@ -32,7 +32,7 @@ public class FileMetadataTest extends TestCase {
 	
 	public void setUp() {
 		file = new TestMetadata();
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		try {
 			tag = new Tag("Tag");
@@ -46,7 +46,7 @@ public class FileMetadataTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		session.getTransaction().commit();
+		Database.commit();
 	}
 	
 	/**

@@ -15,8 +15,8 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
 	private static void write() throws Exception {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
+		Session session = Database.getNewSession();
+		session.getTransaction();
 		
 		session.getTransaction().begin();
 		Tag mag = new Tag("Magnetism");
@@ -61,12 +61,12 @@ public class PersistenceTest {
 		
 		session.save(anotherFile);
 		
-		session.getTransaction().commit();
+		Database.commit();
 	}
 	
 	private static void read() {
-		SessionFactory sessionFactory = Database.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
+		Session session = Database.getNewSession();
+		session.getTransaction();
 		session.getTransaction().begin();
 		Criteria crit = session.createCriteria(Tag.class);
 		System.out.println("***************************************************");
@@ -76,7 +76,7 @@ public class PersistenceTest {
 			System.out.println("Found tag " + t.getName());
 		}
 		System.out.println("***************************************************");
-		session.getTransaction().commit();
+		Database.commit();
 	}
 	
 	public static void main(String[] args) {

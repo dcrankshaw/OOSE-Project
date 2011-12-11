@@ -179,8 +179,8 @@ public class SearchManagerTest extends TestCase {
 		noMatch.addTag(otherCatAABB);
 		noMatch.addTag(otherCatAA);
 
+
 		Database.commit();
-		
 		searcher.searchTags("matches: aa");
 		for (Tag t : tagSearchResults) {
 			System.out.println(t.getName());
@@ -252,8 +252,6 @@ public class SearchManagerTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		Database.commit();
 		searcher.searchTags(searchTerm);
 	}
