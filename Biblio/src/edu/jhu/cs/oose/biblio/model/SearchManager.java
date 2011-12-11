@@ -159,7 +159,7 @@ public class SearchManager {
 		else {
 			Session session = Database.getNewSession();
 			//Query searchQuery = session.createQuery("from Tag where :term like name.lower()");
-			Query searchQuery = session.createQuery("from Tag where name like :term");
+			Query searchQuery = session.createQuery("from Tag where lower(name) like :term");
 			searchQuery.setString("term", "%" + searchTerm + "%");
 			
 			/*
@@ -357,7 +357,7 @@ public class SearchManager {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();	
 			//Query query = session.createQuery("from Category where :category like name.lower()");
-			Query query = session.createQuery("from Category where name like :category");
+			Query query = session.createQuery("from Category where lower(name) like :category");
 			query.setString("category", "%" + category + "%");
 			@SuppressWarnings("unchecked")
 			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeQuery(query);
