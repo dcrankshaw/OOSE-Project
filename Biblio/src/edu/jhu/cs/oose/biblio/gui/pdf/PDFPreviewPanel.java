@@ -74,6 +74,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 		
 		try {
 			// Get the picture from the file
+			System.out.println("Attempting to draw " + this.getFile().getName());
 			Image thumbnail = contents.getPage(this.page);
 			// find the limiting dimension and the best aspect ratio
 			double widthRatio = this.getSize().getWidth() /  (double)thumbnail.getWidth(null);

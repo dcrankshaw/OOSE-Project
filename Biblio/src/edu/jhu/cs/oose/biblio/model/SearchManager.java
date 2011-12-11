@@ -300,12 +300,12 @@ public class SearchManager {
 		}
 		// if no tags are specified, then match everything
 		else {
-			Session session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
+			Session session = Database.getNewSession();
 			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
 			selectedBookmarks = db.executeQuery(q);
+			Database.commit();
 			Collections.sort(selectedBookmarks, new Comparator<Bookmark>() {
 				@Override
 				public int compare(Bookmark a, Bookmark b) {
