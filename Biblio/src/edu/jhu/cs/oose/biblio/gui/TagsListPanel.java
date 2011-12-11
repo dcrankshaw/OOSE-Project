@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -65,7 +63,7 @@ public class TagsListPanel extends JPanel {
 		tagsListModel = new DefaultListModel();
 		tagSet = null;
 		addedTags = new JList(tagsListModel);
-		addedTags.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		addedTags.setLayoutOrientation(JList.VERTICAL);
 		addedTags.setVisibleRowCount(-1);
 		this.setLayout(new BorderLayout());
 		this.add(newTagField, BorderLayout.SOUTH);
@@ -102,7 +100,6 @@ public class TagsListPanel extends JPanel {
 			} catch (Exception e) {
 				System.out.println("Cannot create a tag with a colon in it");
 			}
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> new tag");
 		}
 		return t;
 	}
