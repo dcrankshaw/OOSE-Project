@@ -54,6 +54,14 @@ public class WatcherSelectorPanel extends JPanel {
 	
 	private List<File> directoriesToRemove;
 	
+	/**
+	 * This panel allow user edit the list of directories which Biblio is watching.
+	 * It allows user to browse through file system and add selected directories to watch.
+	 * And user can remove the selected directories from watching.
+	 * 
+	 * @param files the directories that Biblio is currently monitoring
+	 * @param currentOwner the Dialog that contain this panel
+	 */
 	public WatcherSelectorPanel(List<File> files, WatcherSelectorDialog currentOwner) {
 		directoriesToAdd = new ArrayList<File>();
 		directoriesToRemove = new ArrayList<File>();
@@ -126,7 +134,7 @@ public class WatcherSelectorPanel extends JPanel {
 	}
 	
 	/**
-	 * Open file browser
+	 * Open file browser for user to add new directories for Biblio to monitor
 	 */
 	public void addDir() {
 		JFileChooser fileChooser = new JFileChooser();
@@ -156,7 +164,7 @@ public class WatcherSelectorPanel extends JPanel {
 	}
 	
 	/**
-	 * Remove the selected directory, if nothing is selected, do nothing.
+	 * Remove the selected directories, if nothing is selected, do nothing.
 	 */
 	public void removeDir() {
 		// get the selected file list

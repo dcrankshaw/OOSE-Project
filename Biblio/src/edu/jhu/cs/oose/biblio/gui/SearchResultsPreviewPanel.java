@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 		columnCount = 2;
 		newLayout(1);
 		matchingFiles = new ArrayList<PreviewPanel>();
+		this.setOpaque(true);
 	}
 	
 	/**
@@ -100,6 +102,7 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 			this.add(matchingFiles.get(i));
 		}
 		this.revalidate();
+		this.repaint();
 	}
 
 	@Override
@@ -128,5 +131,13 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 			this.add(matchingFiles.get(i));
 		}
 		this.revalidate();
+		this.repaint();
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(this.getBackground());
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		super.paint(g);
 	}
 }

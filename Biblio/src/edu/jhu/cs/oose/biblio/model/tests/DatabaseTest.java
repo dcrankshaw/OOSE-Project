@@ -40,7 +40,7 @@ public class DatabaseTest extends TestCase{
 		sessionFactory.getCurrentSession().update(t);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 	}
-	/*
+
 	@Test
 	public void testDatabaseConnection() {
 		SessionFactory sessionFactory = Database.getSessionFactory();
@@ -168,5 +168,4 @@ public class DatabaseTest extends TestCase{
 		assertEquals(tt.getName(), "Pop Song");
 		session.getTransaction().commit();
 	}
-	*/
 }

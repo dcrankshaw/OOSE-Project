@@ -242,6 +242,9 @@ public class ImportPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * paint the panel
+	 */
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);

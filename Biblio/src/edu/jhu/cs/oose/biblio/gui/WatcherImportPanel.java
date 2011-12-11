@@ -52,6 +52,13 @@ public class WatcherImportPanel extends JPanel {
 	 */
 	JDialog owner;
 	
+	/**
+	 * WatcherImportPanel constructor, it present a list of new files in the watching directories
+	 * and user can choose which one they would like to import into Biblio
+	 * 
+	 * @param files the additional files added or created in the watching directories
+	 * @param currentOwner the dialog that contain this panel
+	 */
 	public WatcherImportPanel(List<File> files, WatcherImportDialog currentOwner) {
 		this.owner = currentOwner;
 		this.files = files;
@@ -98,12 +105,15 @@ public class WatcherImportPanel extends JPanel {
 	 * Close this dialog
 	 */
 	public void cancelImport() {
-		owner.setVisible(false);
+		owner.dispose();
 	}
 	
+	/**
+	 * Construct a list of fileMetatData from the File objects
+	 * @return a list of FileMetadata
+	 */
 	private List<FileMetadata> getMetadataForFiles() {
-		Session session = Database.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		Session session = Database.getNewSession();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(selectedFiles.size());
 		for( File f : selectedFiles ) {
 			// TODO use the MIME type library...
@@ -117,10 +127,13 @@ public class WatcherImportPanel extends JPanel {
 				// TODO read other kinds of files or give errors
 			}
 		}
-		session.getTransaction().commit();
+		Database.commit();
 		return result;
 	}
 	
+	/**
+	 * Go through all the selected JCheckBox and add the associated file into selectedFiles
+	 */
 	private void getSelectedFiles() {
 		Component[] components = checkBoxPanel.getComponents();
 		for (Component c : components) {
