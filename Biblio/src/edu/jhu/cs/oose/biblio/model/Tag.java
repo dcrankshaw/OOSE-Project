@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -51,7 +52,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TAG_BOOKMARK", joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "TAG_ID"), inverseJoinColumns = @JoinColumn(name = "BOOKMARK_ID", referencedColumnName = "BOOKMARK_ID"))
 	private Set<Bookmark> taggedBookmarks;
-
+	
+	/** The set of things listening for changes to this tag */
+	@Transient
+	private Set<TagListener> listeners;
+	
 	/**
 	 * Creates a new, blank Tag.
 	 * This should only ever be used by Hibernate.
@@ -63,6 +68,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
+		listeners = new HashSet<TagListener>();
 	}
 
 	/**
@@ -81,6 +87,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
+		listeners = new HashSet<TagListener>();
 		
 		if (!Database.isSessionOpen()) {
 			Database.getNewSession();
@@ -112,6 +119,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 			return false;
 		else {
 			this.name = n;
+			emitEvent();
 			return true;
 		}
 	}
@@ -134,7 +142,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * false if the child was already added
 	 */
 	public boolean addChild(Tag tag) {
-		return this.children.add(tag);
+		boolean result = this.children.add(tag);
+		if( result ) {
+			emitEvent();
+		}
+		return result;
 	}
 
 	// TODO change these to return sets instead of collections?
@@ -155,7 +167,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * @return true on success, false if the bookmark is already added.
 	 */
 	public boolean addTaggedBookmark(Bookmark bkmk) {
-		return this.taggedBookmarks.add(bkmk);
+		boolean result = this.taggedBookmarks.add(bkmk);
+		if( result ) {
+			emitEvent();
+		}
+		return result;
 	}
 
 	/**
@@ -173,7 +189,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * @return true on success, false if the FileMetadata is already added.
 	 */
 	public boolean addTaggedFiles(FileMetadata file) {
-		return this.taggedFiles.add(file);
+		boolean result = this.taggedFiles.add(file);
+		if( result ) {
+			emitEvent();
+		}
+		return result;
 	}
 
 	/**
@@ -216,5 +236,19 @@ public class Tag implements Comparable<Tag>, Keyed {
 	@Override
 	public String toString() {
 		return getName();
+	}
+	
+	public void addListener(TagListener l) {
+		listeners.add(l);
+	}
+	
+	public void removeListener(TagListener l) {
+		listeners.remove(l);
+	}
+	
+	private void emitEvent() {
+		for( TagListener l : listeners ) {
+			l.tagChanged(this);
+		}
 	}
 }
