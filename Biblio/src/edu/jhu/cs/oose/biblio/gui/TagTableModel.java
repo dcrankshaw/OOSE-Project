@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 
 import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.TagListener;
 
 /**
  * The data model of the table that displays
@@ -29,12 +30,31 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 	/** The tags that have been selected for filtering */
 	private Set<Tag> selectedTags;
 
+	private TagListener listener;
+	private TagListener childrenChangedListener;
+	
 	/** Creates a new data model for displaying found tags and filtering. */
 	public TagTableModel() {
 		tableListeners = new HashSet<TableModelListener>();
 		tagSelectionListeners = new HashSet<TagSelectionChangedListener>();
 		tags = new ArrayList<Tag>();
 		selectedTags = new HashSet<Tag>();
+		listener = new TagListener() {
+			@Override
+			public void nameChanged(Tag t) {
+				TagTableModel.this.matchedTags(TagTableModel.this.tags);
+			}
+			@Override
+			public void childrenChanged(Tag t) {}
+		};
+		childrenChangedListener = new TagListener() {
+			@Override
+			public void nameChanged(Tag t) {	}
+			@Override
+			public void childrenChanged(Tag t) {
+				emitTagEvent(new TagSelectionChangedEvent(TagTableModel.this, 0, new HashSet<Tag>(TagTableModel.this.selectedTags), null, null));
+			}
+		};
 	}
 
 	@Override
@@ -168,10 +188,12 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 		if( val ) {
 			selectedTags.add(t);
 			newTags = Collections.singleton(t);
+			t.addListener(this.childrenChangedListener);
 		}
 		else {
 			selectedTags.remove(t);
 			rmTags = Collections.singleton(t);
+			t.removeListener(this.childrenChangedListener);
 		}
 		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));
 	}
@@ -182,7 +204,13 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 	 */
 	@Override
 	public void matchedTags(List<Tag> matches) {
+		for( Tag t : tags ) {
+			t.removeListener(this.listener);
+		}
 		tags = new ArrayList<Tag>(matches);
+		for( Tag t : tags ) {
+			t.addListener(this.listener);
+		}
 		Collections.sort(tags);
 		emitEvent(new TableModelEvent(this));
 	}
