@@ -135,6 +135,9 @@ public class TagsListPanel extends JPanel {
 		tagsListModel.clear();
 		for( Tag t : newTags ) {
 			tagsListModel.addElement(t);
+			@SuppressWarnings("unchecked")
+			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
+			db.add(t);
 		}
 	}
 	
