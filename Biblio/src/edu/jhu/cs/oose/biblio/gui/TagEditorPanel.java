@@ -12,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -29,8 +30,8 @@ public class TagEditorPanel extends JPanel {
 	 */
 	private JList overallTagTable;
 	
-	/** The label displaying the name of the currently selected Tag */
-	private JLabel nameLabel;
+	/** The text field displaying the name of the currently selected Tag */
+	private JTextField nameField;
 	/**
 	 * Contains all of the tags that currently selected tag has been associated with (all of these
 	 * tags point to the selected tag).
@@ -39,18 +40,6 @@ public class TagEditorPanel extends JPanel {
 	
 	/** The currently selected tag*/
 	private Tag selectedTag;
-	
-	/** A button to create a new tag*/
-	private JButton addTagButton;
-	
-	/** A button to delete the currently selected tag*/
-	private JButton deleteTagButton;
-	
-	/** A button to add a new tag Category to the Biblio infrastructure */
-	private JButton newCategoryButton;
-	
-	/** A button to delete all of the currently checked categories */
-	private JButton deleteCategoryButton;
 	
 	/** A table containing all of the tag categories each with an accompanying checkbox */
 	private JTable categoryTable;
@@ -86,23 +75,23 @@ public class TagEditorPanel extends JPanel {
 		
 		JPanel subsubpanel = new JPanel();
 		subsubpanel.setLayout(new BorderLayout());
-		this.addTagButton = new JButton("New Tag");
-		this.addTagButton.addActionListener(new ActionListener() {
+		JButton addTagButton = new JButton("New Tag");
+		addTagButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newTag();
 			}
 		});
-		subsubpanel.add(this.addTagButton, BorderLayout.WEST);
+		subsubpanel.add(addTagButton, BorderLayout.WEST);
 		
-		this.deleteTagButton = new JButton("Delete Tag");
-		this.deleteTagButton.addActionListener(new ActionListener() {
+		JButton deleteTagButton = new JButton("Delete Tag");
+		deleteTagButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				deleteTag();
 			}
 		});
-		subsubpanel.add(this.deleteTagButton, BorderLayout.EAST);
+		subsubpanel.add(deleteTagButton, BorderLayout.EAST);
 		subpanel.add(subsubpanel, BorderLayout.SOUTH);
 		
 		this.add(subpanel, BorderLayout.WEST);
@@ -112,8 +101,15 @@ public class TagEditorPanel extends JPanel {
 		
 		subsubpanel = new JPanel();
 		subsubpanel.add(new JLabel("Name: "), BorderLayout.WEST);
-		this.nameLabel = new JLabel("                ");
-		subsubpanel.add(this.nameLabel, BorderLayout.CENTER);
+		this.nameField = new JTextField();
+		this.nameField.setColumns(30);
+		this.nameField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateTagName();
+			}
+		});
+		subsubpanel.add(this.nameField, BorderLayout.CENTER);
 		subpanel.add(subsubpanel, BorderLayout.NORTH);
 		
 		this.associatedTagPanel = new TagsListPanel();
@@ -144,23 +140,23 @@ public class TagEditorPanel extends JPanel {
 		
 		subsubpanel = new JPanel();
 		subsubpanel.setLayout(new BorderLayout());
-		this.newCategoryButton = new JButton("New Category");
-		this.newCategoryButton.addActionListener(new ActionListener() {
+		JButton newCategoryButton = new JButton("New Category");
+		newCategoryButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newCategory();
 			}
 		});
-		subsubpanel.add(this.newCategoryButton, BorderLayout.WEST);
+		subsubpanel.add(newCategoryButton, BorderLayout.WEST);
 		
-		this.deleteCategoryButton = new JButton("Delete Category");
-		this.deleteCategoryButton.addActionListener( new ActionListener() {
+		JButton deleteCategoryButton = new JButton("Delete Category");
+		deleteCategoryButton.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				deleteCategory();
 			}
 		});
-		subsubpanel.add(this.deleteCategoryButton, BorderLayout.EAST);
+		subsubpanel.add(deleteCategoryButton, BorderLayout.EAST);
 		subpanel.add(subsubpanel, BorderLayout.SOUTH);
 		
 		this.add(subpanel, BorderLayout.EAST);
@@ -195,7 +191,7 @@ public class TagEditorPanel extends JPanel {
 		int selectedIndex = this.overallTagTable.getSelectedIndex();
 		if( selectedIndex < 0 ) {
 			this.selectedTag = null;
-			this.nameLabel.setText("");
+			this.nameField.setText("");
 			@SuppressWarnings("unchecked")
 			Collection<Tag> emptySet = (Collection<Tag>)Collections.EMPTY_SET;
 			this.associatedTagPanel.setTagsList(emptySet);
@@ -203,15 +199,15 @@ public class TagEditorPanel extends JPanel {
 		}
 		else {
 			this.selectedTag = this.tagListModel.getTag(selectedIndex);
-			this.nameLabel.setText(selectedTag.getName());
+			this.nameField.setText(selectedTag.getName());
 			this.associatedTagPanel.setTagsList(selectedTag.getChildren());
 			this.categoryModel.setTag(selectedTag);
 		}
 		this.revalidate();
-		this.nameLabel.revalidate();
+		this.nameField.revalidate();
 		this.associatedTagPanel.revalidate();
 		this.repaint();
-		this.nameLabel.repaint();
+		this.nameField.repaint();
 		this.associatedTagPanel.repaint();
 	}
 	
@@ -221,5 +217,24 @@ public class TagEditorPanel extends JPanel {
 	 */
 	public Tag getSelectedTag() {
 		return this.selectedTag;
+	}
+	
+	/**
+	 * Responds to the user entering a new name for the selected Tag
+	 */
+	private void updateTagName() {
+		if( null == this.selectedTag ) {
+			return;
+		}
+		// When the tags list updates, the selection may change,
+		// which will trigger all the listeners, so we need to
+		// make sure that the right tag is selected
+		// before we return
+		Tag currentTag = this.selectedTag;
+		String newName = this.nameField.getText();
+		if( currentTag.setName(newName) ) {
+			this.tagListModel.forceUpdate();
+			this.overallTagTable.setSelectedIndex(this.tagListModel.indexOf(currentTag));
+		}
 	}
 }

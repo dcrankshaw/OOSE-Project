@@ -33,10 +33,7 @@ public class TagEditorListModel implements ListModel {
 		this.manager = m;
 		tags = new ArrayList<Tag>();
 		listeners = new HashSet<ListDataListener>();
-		if( this.manager.getAllTags() != null ) {
-			tags.addAll(this.manager.getAllTags());
-		}
-		Collections.sort(tags);
+		forceUpdate();
 	}
 	
 	@Override
@@ -80,12 +77,44 @@ public class TagEditorListModel implements ListModel {
 	}
 	
 	/**
+	 * Sends the given ContentsChanged event to all the listeners
+	 * @param event the ContentsChange event to fire off
+	 */
+	private void fireContentsChangedEvent(ListDataEvent event) {
+		for( ListDataListener listener : listeners ) {
+			listener.contentsChanged(event);
+		}
+	}
+	
+	/**
+	 * Forces the model to reload everything from the DB
+	 * and update all dependent listeners
+	 */
+	public void forceUpdate() {
+		this.tags.clear();
+		if( this.manager.getAllTags() != null ) {
+			this.tags.addAll(this.manager.getAllTags());
+		}
+		Collections.sort(this.tags);
+		this.fireContentsChangedEvent(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, this.tags.size()));
+	}
+	
+	/**
 	 * Returns the Tag at the given index in the list
 	 * @param idx the index of the desired Tag
 	 * @return the Tag at index idx
 	 */
 	public Tag getTag(int idx) {
 		return this.tags.get(idx);
+	}
+	
+	/**
+	 * Returns the index of the given tag.
+	 * @param t the tag to find
+	 * @return the index of t
+	 */
+	public int indexOf(Tag t) {
+		return this.tags.indexOf(t);
 	}
 	
 	/** Creates a new Tag and inserts it into the list.	 */
