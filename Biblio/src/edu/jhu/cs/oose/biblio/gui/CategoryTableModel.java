@@ -140,6 +140,7 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 	public void removeCategory(Category oldCat) {
 		tags.remove(oldCat);
 		emitEvent(new TableModelEvent(this));
+		this.manager.deleteCategory(oldCat);
 	}
 	
 	/**
