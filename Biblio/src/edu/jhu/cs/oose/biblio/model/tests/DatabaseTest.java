@@ -9,8 +9,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
@@ -149,7 +147,7 @@ public class DatabaseTest extends TestCase{
 	public void testRollback() throws Exception {
 		// Commit *****************************************************************************************
 		Session session = Database.getNewSession();
-		Tag t = new Tag("yoyoyo");
+		new Tag("yoyoyo");
 		Database.commit();
 		
 		// Rollback ***************************************************************************************
@@ -163,6 +161,7 @@ public class DatabaseTest extends TestCase{
 		
 		// Check ******************************************************************************************
 		session = Database.getNewSession();
+		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		Tag tt = tagResult.get(0);
 		assertEquals(tt.getName(), "yoyoyo");

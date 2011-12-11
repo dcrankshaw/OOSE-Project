@@ -90,8 +90,6 @@ public class Database<T extends Keyed> {
 		return caches.get(cl);
 	}
 
-	
-	
 	/**
 	 * Executes the given query, attaching all known objects
 	 * to the Session before execution to ensure that there is one
@@ -211,6 +209,7 @@ public class Database<T extends Keyed> {
 		//TODO cleanse the input, using sql parameters instead of string concatenation
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
 		
+		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
 		
 		if( result.size() <= 0 ) {
