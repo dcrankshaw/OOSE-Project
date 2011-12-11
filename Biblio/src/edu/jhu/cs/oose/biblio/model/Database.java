@@ -37,15 +37,6 @@ public class Database<T extends Keyed> {
 	private static boolean isTransactionOpen = false;
 	
 	/**
-	 * Returns the session factory for connecting to the database.
-	 * 
-	 * @return the session factory for connecting to the database.
-	 */
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	/**
 	 * A map from a class to the Database object that deals with queries
 	 * returning that type.
 	 */
