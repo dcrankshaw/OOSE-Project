@@ -50,13 +50,13 @@ public class DatabaseTest extends TestCase{
 		Location loc = new Location(5);
 		loc.setPercentageOfFile((float) 15.5);
 		session.save(loc);
-		session.getTransaction().commit();
+		Database.commit();
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
-		session.getTransaction().commit();
+		Database.commit();
 		Location l = result.get(0);
 		assertEquals((float) 15.5, l.getPercentageOfFile());
 	}
@@ -99,7 +99,7 @@ public class DatabaseTest extends TestCase{
 		session.save(pdfmeta);
 		session.save(b);
 		session.save(t);
-		session.getTransaction().commit();
+		Database.commit();
 		
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
@@ -112,7 +112,7 @@ public class DatabaseTest extends TestCase{
 		@SuppressWarnings("unchecked")
 		List<Tag> tagResult = (List<Tag>) session.createQuery("from Tag").list();
 		
-		session.getTransaction().commit();
+		Database.commit();
 		Location l = locResult.get(0);
 		PDFFileMetadata f = fileResult.get(0);
 		Bookmark bm = bmResult.get(0);
@@ -148,7 +148,7 @@ public class DatabaseTest extends TestCase{
 		session.getTransaction().begin();
 		Tag t = new Tag("Pop Song");
 		session.save(t);
-		session.getTransaction().commit();
+		Database.commit();
 		
 		// Rollback ***************************************************************************************
 		session = sessionFactory.getCurrentSession();
@@ -159,13 +159,13 @@ public class DatabaseTest extends TestCase{
 		int id = tg.getId();
 		tg.setName("Rap");
 		session.update(tg);
-		session.getTransaction().rollback();
+		Database.rollback();
 		
 		// Check ******************************************************************************************
 		session = sessionFactory.getCurrentSession();
 		session.getTransaction().begin();
 		Tag tt = (Tag) session.get(Tag.class, id);
 		assertEquals(tt.getName(), "Pop Song");
-		session.getTransaction().commit();
+		Database.commit();
 	}
 }

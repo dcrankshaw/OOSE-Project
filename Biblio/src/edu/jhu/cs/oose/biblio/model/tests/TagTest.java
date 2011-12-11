@@ -15,19 +15,19 @@ public class TagTest extends TestCase {
 	/** Tests to make sure that setName enforces proper syntax. 
 	 * @throws Exception */
 	public void testSetName() throws Exception {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		Tag tag = new Tag("");
 		assertFalse(tag.setName("has a :"));
 		assertTrue(tag.setName("no colon"));
-		session.getTransaction().rollback();
+		Database.rollback();
 	}
 	
 	/** Tests to make sure that getAllDescendents finds all descendents 
 	 * @throws Exception */
 	public void testGetAllDescendants() throws Exception
 	{
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		Tag math = new Tag("math");
 		Tag numbers = new Tag("numbers");
@@ -68,6 +68,6 @@ public class TagTest extends TestCase {
 		assertTrue(descendants.contains(onePointFive));
 		assertTrue(descendants.contains(twoPointFive));
 		
-		session.getTransaction().rollback();
+		Database.rollback();
 	}
 }

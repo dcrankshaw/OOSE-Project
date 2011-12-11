@@ -183,7 +183,7 @@ public class SearchManagerTest extends TestCase {
 		session.save(noA);
 		session.save(otherCatAA);
 		session.save(otherCatAABB);
-		session.getTransaction().commit();
+		Database.commit();
 
 		searcher.searchTags("matches: aa");
 		for (Tag t : tagSearchResults) {
@@ -260,7 +260,7 @@ public class SearchManagerTest extends TestCase {
 		for (Tag t : tags) {
 			session.save(t);
 		}
-		session.getTransaction().commit();
+		Database.commit();
 		searcher.searchTags(searchTerm);
 	}
 

@@ -46,7 +46,7 @@ public class Location implements Keyed {
 	public Location(float pos) {
 		this.percentageOfFile = pos;
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Database.getSession().save(this);
 		@SuppressWarnings("unchecked")
 		Database<Location> db = (Database<Location>)Database.get(Location.class);
 		db.add(this);

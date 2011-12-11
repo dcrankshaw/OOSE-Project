@@ -33,7 +33,7 @@ public class EditorManager {
 		Set<?> result = new HashSet<Keyed>(
 				((Database<?>) Database.get(cl)).executeQuery(query));
 
-		session.getTransaction().commit();
+		Database.commit();
 		return result;
 	}
 
@@ -66,12 +66,12 @@ public class EditorManager {
 	 * @return the new Tag as an object.
 	 */
 	public Tag newTag() {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		try {
 			Tag t = new Tag("Untitled Tag");
 			session.save(t);
-			session.getTransaction().commit();
+			Database.commit();
 			return t;
 		} catch (Exception e) {
 			/*
@@ -79,6 +79,7 @@ public class EditorManager {
 			 * exception if tagname has a colon in it. The tagname in this
 			 * method is hardcoded and will never have a colon in the name
 			 */
+			Database.rollback();
 			return null;
 		}
 	}
@@ -90,10 +91,10 @@ public class EditorManager {
 	 *            The name of the tag to remove.
 	 */
 	public void deleteTag(Tag toRemove) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		session.delete(toRemove);
-		session.getTransaction().commit();
+		Database.commit();
 	}
 
 	/**
@@ -102,12 +103,12 @@ public class EditorManager {
 	 * @return the new Category as an object.
 	 */
 	public Category newCategory() {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		try {
 			Category c = new Category("Untitled Category");
 			session.save(c);
-			session.getTransaction().commit();
+			Database.commit();
 			return c;
 		} catch (Exception e) {
 			/*
@@ -115,6 +116,7 @@ public class EditorManager {
 			 * exception if tagname has a colon in it. The tagname in this
 			 * method is hardcoded and will never have a colon in the name
 			 */
+			Database.rollback();
 			return null;
 		}
 	}
@@ -126,10 +128,10 @@ public class EditorManager {
 	 *            The name of the category to remove.
 	 */
 	public void deleteCategory(Category toRemove) {
-		Session session = Database.getSessionFactory().getCurrentSession();
+		Session session = Database.getNewSession();
 		session.beginTransaction();
 		session.delete(toRemove);
-		session.getTransaction().commit();
+		Database.commit();
 	}
 
 }
