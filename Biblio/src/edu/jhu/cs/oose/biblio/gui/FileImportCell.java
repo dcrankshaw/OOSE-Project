@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -12,7 +13,6 @@ import javax.swing.JToggleButton;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
-import edu.jhu.cs.oose.biblio.model.UnsupportedFiletypeException;
 
 /**
  * These are laid out in a grid on the ImportPanel. They each display
@@ -23,6 +23,9 @@ public class FileImportCell extends JPanel
 {
 	/** the preview of the file to display to the user */
 	public PreviewPanel preview;
+	/** A Panel we put the preview panel into so that we can draw a border around it*/
+	public JPanel previewPanelBorder;
+	
 	/** The list of tags this file has already been tagged with */
 	public TagsListPanel tagsPanel;
 	/** All of the associated meta data that accompanies this file */
@@ -41,9 +44,9 @@ public class FileImportCell extends JPanel
 	 * There will not be a copy in our repository. */
 	private JRadioButton leaveStatusButton;
 	/** the ButtonGroup that wrap the selectButton */
-	ButtonGroup selectButtonGroup;
+	//ButtonGroup selectButtonGroup;
 	/** The button that tells us if this FileImportCell has been selected. */
-	private JToggleButton selectButton;
+	//private JToggleButton selectButton;
 	/** The string telling the user that the file will be moved into the repository. */
 	private static final String MOVE_STRING = "Move";
 	/** The string telling the user that the file will be left along and not copied to the repository. */
@@ -63,14 +66,7 @@ public class FileImportCell extends JPanel
 		copyStatus = DEFAULT_COPY_STATUS;
 		isSelected = false;
 		tagsPanel = new TagsListPanel(file);
-		try
-		{
-			preview = FilePreviewFactory.createPreview(file);
-		}
-		catch(UnsupportedFiletypeException e)
-		{
-			preview = null; //means we can't display a preview of the file, which is okay
-		}
+		preview = FilePreviewFactory.getFactory().createPreview(file);
 		
 		this.copyStatusButton = new JRadioButton(COPY_STRING);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {
@@ -99,26 +95,60 @@ public class FileImportCell extends JPanel
 				FileImportCell.this.setCopyStatus(CopyStatus.LEAVEINPLACE);
 			}
 		});
-		this.selectButton = new JToggleButton("Select");
+		//this.selectButton = new JToggleButton("Select");
 		
 		ButtonGroup copyButtonGroup = new ButtonGroup();
 		copyButtonGroup.add(copyStatusButton);
 		copyButtonGroup.add(moveStatusButton);
 		copyButtonGroup.add(leaveStatusButton);
 		
-		selectButtonGroup = new ButtonGroup();
+		//selectButtonGroup = new ButtonGroup();
 		
 		this.setLayout(new BorderLayout());
 		JPanel copyButtonsPanel = new JPanel(new GridLayout(1, CopyStatus.values().length));
 		copyButtonsPanel.add(moveStatusButton);
 		copyButtonsPanel.add(copyStatusButton);
 		copyButtonsPanel.add(leaveStatusButton);
-		copyButtonsPanel.add(selectButton);
+		//copyButtonsPanel.add(selectButton);
 		this.add(copyButtonsPanel, BorderLayout.SOUTH);
+		previewPanelBorder = new JPanel(new BorderLayout());
+		this.add(previewPanelBorder);
 		if(preview != null) {
-			this.add(preview, BorderLayout.CENTER);
+			previewPanelBorder.add(preview, BorderLayout.CENTER);
 		}
 		this.add(tagsPanel, BorderLayout.EAST);
+		this.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 	
@@ -153,7 +183,7 @@ public class FileImportCell extends JPanel
 	 * @return true if the cell is selected, false otherwise
 	 */
 	public boolean isSelected() {
-		return selectButton.isSelected();
+		return this.isSelected;
 	}
 
 	/**

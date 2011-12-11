@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.Location;
 
 
 /**
@@ -54,4 +55,6 @@ public abstract class PreviewPanel extends FileDisplayPanel {
 			}
 		});
 	}
+	
+	public abstract void setLocation(Location loc);
 }

@@ -91,7 +91,7 @@ public class SearchManagerTest extends TestCase {
 
 	public class TestListener implements SearchResultsListener{
 		@Override
-		public void displayResults(List<FileMetadata> results){
+		public void displayFileResults(List<FileMetadata> results){
 			searchResults.clear();
 			for (FileMetadata f : results){
 				searchResults.add((PDFFileMetadata) f);
@@ -193,6 +193,19 @@ public class SearchManagerTest extends TestCase {
 		session.getTransaction().commit();
 		
 		searcher.searchTags("matches: aa");
+		for(Tag t: tagSearchResults)
+		{
+			System.out.println(t.getName());
+		}
+		assertFalse(tagSearchResults == null);
+		assertTrue(tagSearchResults.contains(aa));
+		assertTrue(tagSearchResults.contains(aabb));
+		assertFalse(tagSearchResults.contains(noA));
+		assertFalse(tagSearchResults.contains(otherCatAA));
+		assertFalse(tagSearchResults.contains(otherCatAABB));
+		
+		
+		searcher.searchTags("Matches: aA");
 		for(Tag t: tagSearchResults)
 		{
 			System.out.println(t.getName());
@@ -354,7 +367,7 @@ public class SearchManagerTest extends TestCase {
 		search.addResultsListener(new SearchResultsListener() {
 
 			@Override
-			public void displayResults(List<FileMetadata> results) {
+			public void displayFileResults(List<FileMetadata> results) {
 				updateSearchResults(results);
 			}
 			

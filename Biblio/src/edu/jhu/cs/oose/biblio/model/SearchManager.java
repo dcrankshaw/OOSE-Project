@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -9,9 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import nl.siegmann.epublib.domain.Book;
-
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -33,7 +31,7 @@ public class SearchManager {
 	private List<FileMetadata> selectedFiles;
 	/** The tags that will be used for filtering */
 	private List<Tag> tagResults;
-	
+	/** The Bookmarks found the last search, used to update new listeners */
 	private List<Bookmark> selectedBookmarks;
 
 	/** Creates a new SearchManager for searching the database */
@@ -64,14 +62,14 @@ public class SearchManager {
 	/** Fire the file search result to each listener. */
 	private void fireSearchResult() {
 		for (SearchResultsListener r : resultsListeners) {
-			r.displayResults(selectedFiles);
+			r.displayFileResults(selectedFiles);
 		}
 	}
 	
 	/** Fire the bookmark search results to each listener. */
 	private void fireBookmarkSearchResult() {
 		for (BookmarkSearchResultsListener r : bookmarkResultsListeners) {
-			r.displayResults(selectedBookmarks);
+			r.displayBookmarkResults(selectedBookmarks);
 		}
 	}
 
@@ -94,6 +92,8 @@ public class SearchManager {
 	 * @param tags
 	 *            the tags to filter by
 	 */
+	
+	
 	public void filterByTags(Set<Tag> tags) {
 
 		selectedFiles.clear();
@@ -129,17 +129,19 @@ public class SearchManager {
 		else {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			/*Criteria crit = session.createCriteria(FileMetadata.class);
+			
+			/*Criteria crit = session.createCriteria(FileMetadata.class);*/
 			@SuppressWarnings("unchecked")
 			Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
-			selectedFiles = db.executeCriteria(crit);*/
-			selectedFiles = (List<FileMetadata>) session.createQuery("from FileMetadata").list();
+			Query query = session.createQuery("from FileMetadata");
+			selectedFiles = db.executeQuery(query);
 			Collections.sort(selectedFiles, new Comparator<FileMetadata>() {
 				@Override
 				public int compare(FileMetadata a, FileMetadata b) {
 					return a.getName().compareToIgnoreCase(b.getName());
 				}
 			});
+			session.getTransaction().commit();
 		}
 		fireSearchResult();
 	}
@@ -152,19 +154,22 @@ public class SearchManager {
 	 *            the string to match against tag names
 	 */
 	public void searchTags(String searchTerm) {
-		
+		searchTerm = searchTerm.toLowerCase();
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-
-			//TODO cleanse the input, using sql parameters instead of string concatenation
+			//Query searchQuery = session.createQuery("from Tag where :term like name.lower()");
+			Query searchQuery = session.createQuery("from Tag where name like :term");
+			searchQuery.setString("term", "%" + searchTerm + "%");
+			
+			/*
 			Criteria crit = session.createCriteria(Tag.class).add(
-					Restrictions.like("name", "%" + searchTerm + "%"));
+					Restrictions.like("name", "%" + searchTerm + "%"));*/
 			@SuppressWarnings("unchecked")
 			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
-			tagResults = db.executeCriteria(crit);
+			tagResults = db.executeQuery(searchQuery);
 			session.getTransaction().commit();
 			fireSearchTags(tagResults);
 		}
@@ -299,10 +304,10 @@ public class SearchManager {
 		else {
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
-			Criteria crit = session.createCriteria(Bookmark.class);
+			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
-			selectedBookmarks = db.executeCriteria(crit);
+			selectedBookmarks = db.executeQuery(q);
 			Collections.sort(selectedBookmarks, new Comparator<Bookmark>() {
 				@Override
 				public int compare(Bookmark a, Bookmark b) {
@@ -353,10 +358,11 @@ public class SearchManager {
 
 			Session session = Database.getSessionFactory().getCurrentSession();
 			session.beginTransaction();	
-			Criteria crit = session.createCriteria(Category.class).add(
-					Restrictions.like("name", category + "%"));
+			//Query query = session.createQuery("from Category where :category like name.lower()");
+			Query query = session.createQuery("from Category where name like :category");
+			query.setString("category", "%" + category + "%");
 			@SuppressWarnings("unchecked")
-			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeCriteria(crit);
+			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeQuery(query);
 			session.getTransaction().commit();
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
@@ -378,7 +384,7 @@ public class SearchManager {
 	 */
 	public void addResultsListener(SearchResultsListener listener) {
 		resultsListeners.add(listener);
-		listener.displayResults(selectedFiles);
+		listener.displayFileResults(selectedFiles);
 	}
 
 	/**
@@ -400,7 +406,7 @@ public class SearchManager {
 	 */
 	public void addBookmarkResultsListener(BookmarkSearchResultsListener listener) {
 		bookmarkResultsListeners.add(listener);
-		listener.displayResults(selectedBookmarks);
+		listener.displayBookmarkResults(selectedBookmarks);
 	}
 
 	/**
