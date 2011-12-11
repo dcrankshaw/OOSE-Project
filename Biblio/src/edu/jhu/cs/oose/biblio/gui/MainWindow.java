@@ -161,18 +161,6 @@ public class MainWindow extends JFrame {
 		});
 		menu.add(item);
 		this.setJMenuBar(menuBar);
-		/*Watcher watcher = Watcher.getWatcher();
-		
-		
-		/*----------------------------------------------
-		 * 				Testing Watcher Dialog:
-		 * 				TODO: delete
-		 -----------------------------------------------*
-		
-		List<File> importedFiles = new ArrayList<File>();
-		importedFiles.add(new File("testfiles/test1.pdf"));
-		importedFiles.add(new File("testfiles/test2.pdf"));
-		WatcherImportDialog watcherDialog = new WatcherDialog*/
 		Watcher watcher = Watcher.getWatcher();
 		watcher.addListener(new WatcherEventListener() {
 			
@@ -181,21 +169,12 @@ public class MainWindow extends JFrame {
 				//TODO for now ignore deleted files
 				List<File> addedFileList = new ArrayList<File>(addedFiles);
 				createWatcherImportDialog(addedFileList);
-				
 			}
 		});
-		/*// testing for WatcherImportDialog
-		List<File> fList = new ArrayList<File>();
-		fList.add(new File("/Users/jiefengzhai/Desktop/1.pdf"));
-		fList.add(new File("/Users/jiefengzhai/Desktop/2.pdf"));
-		fList.add(new File("/Users/jiefengzhai/Desktop/3.pdf"));
-		new WatcherImportDialog(fList, MainWindow.this);
-		*/
 	}
 	
 	public void createWatcherImportDialog(List<File> addedFiles)
 	{
-		
 		//TODO: verify that these files aren't already in the library
 		WatcherImportDialog watchDialog = new WatcherImportDialog(addedFiles, this);
 	}

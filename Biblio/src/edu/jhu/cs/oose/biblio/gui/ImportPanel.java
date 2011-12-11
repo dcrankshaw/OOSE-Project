@@ -75,8 +75,6 @@ public class ImportPanel extends JPanel {
 	 */
 	JDialog owner;
 
-	// Session session;
-
 	/**
 	 * Creates a new ImportPanel initialized with the list of files and
 	 * belonging to the given dialog.
@@ -174,8 +172,7 @@ public class ImportPanel extends JPanel {
 	 * Applies the tag with the given name to all of the files that have been
 	 * selected by the user.
 	 * 
-	 * @param tagName
-	 *            The name of the tag to apply to all of the selected files
+	 * @param tagName The name of the tag to apply to all of the selected files
 	 */
 	public void applyTagToMany(String tagName) {
 		Tag tag = Database.getTag(tagName);
@@ -200,8 +197,7 @@ public class ImportPanel extends JPanel {
 	/**
 	 * Creates a FileImportCell for each file
 	 * 
-	 * @param files
-	 *            the files to place in the import cells
+	 * @param files the files to place in the import cells
 	 */
 	public void setFiles(List<FileMetadata> files) {
 		for (FileMetadata file : files) {
@@ -242,9 +238,6 @@ public class ImportPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * paint the panel
-	 */
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
