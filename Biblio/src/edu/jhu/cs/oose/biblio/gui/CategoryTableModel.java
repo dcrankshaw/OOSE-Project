@@ -286,6 +286,7 @@ public class CategoryTableModel implements TableModel {
 	public void removeCategory(Category oldCat) {
 		categories.remove(oldCat);
 		emitEvent(new TableModelEvent(this));
+		this.manager.deleteCategory(oldCat);
 	}
 	
 	/**
