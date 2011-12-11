@@ -157,8 +157,8 @@ public class SearchPanel extends JPanel {
 		
 		@Override
 		public void tagSelectionChanged(TagSelectionChangedEvent e) {
-			if( e.oldTags != null  ) {
-				for( Tag t : e.oldTags ) {
+			if( e.removedTags != null  ) {
+				for( Tag t : e.removedTags ) {
 					model.remove(t.getName());
 				}
 			}
