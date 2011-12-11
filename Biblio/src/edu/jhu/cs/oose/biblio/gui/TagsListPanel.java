@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,6 +13,7 @@ import javax.swing.JTextField;
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.TagListener;
 
 /**
  * Automatically recognizes tags that are entered in and converts the string to an atomic entity. If it cannot
@@ -22,7 +22,7 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 public class TagsListPanel extends JPanel {
 	
 	/** All of the tags already added to the file */
-	private DefaultListModel tagsListModel;
+	private SortedListModel<Tag> tagsListModel;
 	// TODO migrate this to a List<Tag> extends ListModel (for the JList)
 	// or, combine the text field in the bottom with the
 	// list, so that you type into the list, and it absorbs
@@ -43,6 +43,8 @@ public class TagsListPanel extends JPanel {
 	/** Display of the tags that have already been applied to this file. */
 	private JList addedTags;
 	
+	private TagListener listener;
+	
 	/** Creates a new Panel that displays the tags applied to a file. */
 	public TagsListPanel() {
 		tagsLabel = new JLabel("Tags:");
@@ -51,16 +53,11 @@ public class TagsListPanel extends JPanel {
 		newTagField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String tagName = newTagField.getText();
-				Tag t = findOrCreateTag(tagName);
-				if(t != null) {
-					newTagField.setText("");
-					addTag(t);
-				}
+				parseString();
 			}
 		});
 		
-		tagsListModel = new DefaultListModel();
+		tagsListModel = new SortedListModel<Tag>();
 		tagSet = null;
 		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.VERTICAL);
@@ -69,6 +66,12 @@ public class TagsListPanel extends JPanel {
 		this.add(newTagField, BorderLayout.SOUTH);
 		this.add(addedTags, BorderLayout.CENTER);
 		this.add(tagsLabel, BorderLayout.NORTH);
+		listener = new TagListener() {
+			@Override
+			public void tagChanged(Tag tag) {
+				TagsListPanel.this.setTagsList(TagsListPanel.this.tagSet);
+			}
+		};
 	}
 	
 	/**
@@ -83,7 +86,14 @@ public class TagsListPanel extends JPanel {
 	}
 	
 	/** Parses the text the user has entered and attempts to find the matching tag */
-	public void parseString() {}
+	public void parseString() {
+		String tagName = newTagField.getText();
+		Tag t = findOrCreateTag(tagName);
+		if(t != null) {
+			newTagField.setText("");
+			addTag(t);
+		}
+	}
 	
 	/**
 	 * Gets the tag specified by the string, or creates it if it does
@@ -111,9 +121,10 @@ public class TagsListPanel extends JPanel {
 	public void addTag(Tag t)
 	{
 		if( tagSet.add(t) ) {
-			tagsListModel.addElement(t.getName());
+			tagsListModel.add(t);
 			t.addTaggedFiles(file);
 			Database.update(t);
+			t.addListener(this.listener);
 		}
 	}
 	
@@ -131,13 +142,19 @@ public class TagsListPanel extends JPanel {
 	 * @param newTags the set of Tags to manipulate
 	 */
 	public void setTagsList(Collection<Tag> newTags) {
+		if( null != this.tagSet ) {
+			for( Tag t : this.tagSet ) {
+				t.removeListener(this.listener);
+			}
+		}
 		tagSet = newTags;
 		tagsListModel.clear();
 		for( Tag t : newTags ) {
-			tagsListModel.addElement(t);
 			@SuppressWarnings("unchecked")
 			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
 			db.add(t);
+			t.addListener(this.listener);
+			tagsListModel.add(t);
 		}
 	}
 	
