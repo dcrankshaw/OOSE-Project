@@ -5,8 +5,14 @@ package edu.jhu.cs.oose.biblio.model;
  */
 public interface TagListener {
 	/**
-	 * Notification that that Tag tag has changed
+	 * Notification that a Tag's name has changed
+	 * @param tag the Tag whose name changed
+	 */
+	public void nameChanged(Tag tag);
+	
+	/**
+	 * Notification that a Tag's implied children have changed
 	 * @param tag the Tag that has changed
 	 */
-	public void tagChanged(Tag tag);
+	public void childrenChanged(Tag tag);
 }

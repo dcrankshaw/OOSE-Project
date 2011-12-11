@@ -119,7 +119,9 @@ public class Tag implements Comparable<Tag>, Keyed {
 			return false;
 		else {
 			this.name = n;
-			emitEvent();
+			for( TagListener l : listeners ) {
+				l.nameChanged(this);
+			}
 			return true;
 		}
 	}
@@ -144,7 +146,9 @@ public class Tag implements Comparable<Tag>, Keyed {
 	public boolean addChild(Tag tag) {
 		boolean result = this.children.add(tag);
 		if( result ) {
-			emitEvent();
+			for( TagListener l : this.listeners ) {
+				l.childrenChanged(this);
+			}
 		}
 		return result;
 	}
@@ -168,9 +172,6 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 */
 	public boolean addTaggedBookmark(Bookmark bkmk) {
 		boolean result = this.taggedBookmarks.add(bkmk);
-		if( result ) {
-			emitEvent();
-		}
 		return result;
 	}
 
@@ -190,9 +191,6 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 */
 	public boolean addTaggedFiles(FileMetadata file) {
 		boolean result = this.taggedFiles.add(file);
-		if( result ) {
-			emitEvent();
-		}
 		return result;
 	}
 
@@ -244,11 +242,5 @@ public class Tag implements Comparable<Tag>, Keyed {
 	
 	public void removeListener(TagListener l) {
 		listeners.remove(l);
-	}
-	
-	private void emitEvent() {
-		for( TagListener l : listeners ) {
-			l.tagChanged(this);
-		}
 	}
 }
