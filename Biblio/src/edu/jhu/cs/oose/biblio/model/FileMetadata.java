@@ -20,6 +20,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
+import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+
 /**
  * A set of information about a file.
  */
@@ -83,8 +86,13 @@ public abstract class FileMetadata implements Keyed {
 		this.openedCount = 0;
 		this.pathToFile = path;
 		this.tags = new HashSet<Tag>();
+
+		if (!Database.isSessionOpen()) {
+			Database.getNewSession();
+		}
 		
-		Database.getSessionFactory().getCurrentSession().save(this);
+		Database.getSession().save(this);
+		
 		@SuppressWarnings("unchecked")
 		Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
 		db.add(this);
@@ -228,4 +236,6 @@ public abstract class FileMetadata implements Keyed {
 	 * @return contents The file contents
 	 */
 	public abstract FileContents getContents();
+	
+	public abstract PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk);
 }

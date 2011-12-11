@@ -1,5 +1,6 @@
 package edu.jhu.cs.oose.biblio.model.tests;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -9,17 +10,37 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Bookmark;
 import edu.jhu.cs.oose.biblio.model.Database;
+import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class DatabaseTest extends TestCase{
-
+	
+	@Test
+	public void testTagConstructor() {
+		SessionFactory sessionFactory = Database.getSessionFactory();
+		
+		sessionFactory.getCurrentSession().beginTransaction();
+		List<FileMetadata> result = new ArrayList<FileMetadata>(2);
+		result.add(new PDFFileMetadata("/test/foo.pdf"));
+		sessionFactory.getCurrentSession().getTransaction().commit();
+		
+		sessionFactory.getCurrentSession().beginTransaction();
+		Tag t = Database.getTag("sup");
+		if (t == null) {
+			t = new Tag("Sup");
+		}
+		FileMetadata fm = result.get(0);
+		t.addTaggedFiles(fm);
+		sessionFactory.getCurrentSession().update(t);
+		sessionFactory.getCurrentSession().getTransaction().commit();
+	}
+	/*
 	@Test
 	public void testDatabaseConnection() {
 		SessionFactory sessionFactory = Database.getSessionFactory();
@@ -40,7 +61,14 @@ public class DatabaseTest extends TestCase{
 		assertEquals((float) 15.5, l.getPercentageOfFile());
 	}
 
-	
+	public void testDatabaseSession() {
+		SessionFactory sessionFactory = Database.getSessionFactory();
+		sessionFactory.getCurrentSession().beginTransaction();
+		Tag t = new Tag("sup");
+		sessionFactory.getCurrentSession().save(t);
+		sessionFactory.getCurrentSession().getTransaction().commit();
+	}
+
 	@Test
 	public void testDatabaseSchema() {
 		SessionFactory sessionFactory = Database.getSessionFactory();
@@ -140,4 +168,5 @@ public class DatabaseTest extends TestCase{
 		assertEquals(tt.getName(), "Pop Song");
 		session.getTransaction().commit();
 	}
+	*/
 }

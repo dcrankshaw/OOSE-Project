@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -17,8 +18,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import edu.jhu.cs.oose.biblio.gui.TagTableModel.TagSelectionChangedEvent;
+import edu.jhu.cs.oose.biblio.model.FilterSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.TextSearchStrategy;
 
 /**
  * Provides the UI to search. Encloses the text field where search terms are entered, as well as the list of possible tags
@@ -30,10 +33,10 @@ public class SearchPanel extends JPanel {
 	private JTextField queryField;
 	
 	/** A radio button to indicate whether to search for tags */
-	private JRadioButton searchTagsButton;
+	//private JRadioButton searchTagsButton;
 	
 	/** A radio button to indicate whether to search through full text */
-	private JRadioButton searchTextButton;
+	//private JRadioButton searchTextButton;
 	
 	/** A table listing all of the tags matching the search term */
 	private JTable possibleTagsTable;
@@ -42,9 +45,6 @@ public class SearchPanel extends JPanel {
 	
 	/** A scroll pane to contain the table of tags.	 */
 	private JScrollPane  tagsScrollPane;
-	
-	/** Whether the next search should be tags or full text. */
-	private SearchMode currentSearchMode;
 	
 	/** The object that will actually do the searching. */
 	private SearchManager controller;
@@ -56,11 +56,15 @@ public class SearchPanel extends JPanel {
 	 */
 	private TagTableModel tagTable;
 	
+	private TextSearchStrategy textStrategy;
+	private FilterSearchStrategy filterStrategy;
+	
 	/**
 	 * Creates a new UI for searching.
 	 */
-	public SearchPanel() {
-		currentSearchMode = SearchMode.TAGS;
+	public SearchPanel(List<TextSearchStrategy> textStrategies, FilterSearchStrategy filterStrategy) {
+		this.filterStrategy = filterStrategy;
+		this.textStrategy = textStrategies.get(0);
 		
 		queryField = new JTextField();
 		queryField.setColumns(20);
@@ -74,7 +78,6 @@ public class SearchPanel extends JPanel {
 		
 		tagTable = new TagTableModel();
 		tagTable.addTagSelectionListener(new TagSelectionChangedListener() {
-			
 			@Override
 			public void tagSelectionChanged(TagSelectionChangedEvent e) {
 				Set<Tag> selectedTags = new HashSet<Tag>(e.oldTags);
@@ -95,30 +98,33 @@ public class SearchPanel extends JPanel {
 		upperPanel.setLayout(new BorderLayout());
 		upperPanel.add(queryField, BorderLayout.NORTH);
 		
-		JPanel radioPanel = new JPanel();
-		ButtonGroup searchChoiceGroup = new ButtonGroup();
-		radioPanel.setLayout(new GridLayout(1, 2));
-		searchTagsButton = new JRadioButton("Search Tags");
-		searchTagsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setSearchMode(SearchMode.TAGS);
-			}
-		});
-		searchChoiceGroup.add(searchTagsButton);
-		searchTextButton = new JRadioButton("Full Text Search");
-		searchTextButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setSearchMode(SearchMode.FULLTEXT);
-			}
-		});
-		searchChoiceGroup.add(searchTextButton);
-		radioPanel.add(searchTagsButton);
-		radioPanel.add(searchTextButton);
-		upperPanel.add(radioPanel, BorderLayout.CENTER);
-		searchChoiceGroup.setSelected(searchTagsButton.getModel(), true);
+		if( textStrategies.size() > 1 ) {
 		
+			JPanel radioPanel = new JPanel();
+			ButtonGroup searchChoiceGroup = new ButtonGroup();
+			radioPanel.setLayout(new GridLayout(1, textStrategies.size()));
+			
+			class SearchChoiceButtonListener implements ActionListener {
+				private TextSearchStrategy strategy;
+				SearchChoiceButtonListener(TextSearchStrategy s) {
+					this.strategy = s;
+				}
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setTextSearchStrategy(strategy);
+				}
+			}
+			
+			for( TextSearchStrategy strategy : textStrategies ) {
+				JRadioButton searchButton = new JRadioButton(strategy.getName());
+				searchButton.addActionListener(new SearchChoiceButtonListener(strategy));
+				searchChoiceGroup.add(searchButton);
+				radioPanel.add(searchButton);
+			}
+			
+			upperPanel.add(radioPanel, BorderLayout.CENTER);
+			searchChoiceGroup.setSelected(searchChoiceGroup.getElements().nextElement().getModel(), true);
+		}
 		this.add(upperPanel, BorderLayout.NORTH);
 		tagsScrollPane = new JScrollPane(possibleTagsTable);
 		this.add(tagsScrollPane, BorderLayout.CENTER);
@@ -151,8 +157,8 @@ public class SearchPanel extends JPanel {
 		
 		@Override
 		public void tagSelectionChanged(TagSelectionChangedEvent e) {
-			if( e.oldTags != null  ) {
-				for( Tag t : e.oldTags ) {
+			if( e.removedTags != null  ) {
+				for( Tag t : e.removedTags ) {
 					model.remove(t.getName());
 				}
 			}
@@ -179,38 +185,20 @@ public class SearchPanel extends JPanel {
 	}
 	
 	/**
-	 * Sets how the next search should be conducted,
-	 * either for tags or for text
-	 * @param newMode the next search method
-	 */
-	public void setSearchMode(SearchMode newMode) {
-		this.currentSearchMode = newMode;
-	}
-	
-	/** 
-	 * Gets the type of search the user wants to do
-	 * @return the search mode
-	 */
-	public SearchMode getSearchMode() {
-		return this.currentSearchMode;
-	}
-	
-	/**
 	 * Tells SearchManager to select all files tagged by the entire set of selectedTags
 	 * @param selectedTags All of the tags a file needs to have
 	 */
 	private void executeFilter(Set<Tag> selectedTags)
 	{
-		controller.filterByTags(selectedTags);
+		filterStrategy.search(controller, selectedTags);
+	}
+	
+	private void setTextSearchStrategy(TextSearchStrategy newStrat) {
+		this.textStrategy = newStrat;
 	}
 	
 	/** Triggers execution of the search. */
 	private void executeSearch() {
-		if( this.currentSearchMode == SearchMode.FULLTEXT ) {
-			controller.searchText(queryField.getText());
-		}
-		else if( this.currentSearchMode == SearchMode.TAGS ) {
-			controller.searchTags(queryField.getText());
-		}
+		this.textStrategy.search(controller, queryField.getText());
 	}
 }

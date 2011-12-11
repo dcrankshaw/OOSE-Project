@@ -3,6 +3,9 @@ package edu.jhu.cs.oose.biblio.model.tests;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
+import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Bookmark;
 import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
@@ -21,6 +24,11 @@ class TestMetadata extends FileMetadata {
 
 	@Override
 	public FileContents getContents() {
+		return null;
+	}
+	
+	@Override
+	public PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk) {
 		return null;
 	}
 }

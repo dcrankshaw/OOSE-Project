@@ -4,16 +4,24 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.grouping.PdfGroupingAlgorithms;
 import org.jpedal.grouping.SearchType;
 import org.jpedal.objects.PdfPageData;
 
+import edu.jhu.cs.oose.biblio.model.Database;
+import edu.jhu.cs.oose.biblio.gui.FilePreviewVisitor;
+import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Bookmark;
 import edu.jhu.cs.oose.biblio.model.FileContents;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -157,6 +165,11 @@ public class PDFFileMetadata extends FileMetadata {
 			}
 		}
 		return num_results;
+	}
+	
+	@Override
+	public PreviewPanel createPreview(FilePreviewVisitor visitor, Bookmark bkmk) {
+		return visitor.makePDFPreviewPanel(this, bkmk);
 	}
 	
 //	//TODO need to discuss how to normalize the 

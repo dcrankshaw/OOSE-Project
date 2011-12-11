@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileContents;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 
@@ -89,6 +90,14 @@ public class EpubPreviewPanel extends PreviewPanel {
 		}
 		this.getBorder().paintBorder(this, g, 0, 0, this.getSize().width,
 				this.getSize().height);
+	}
+
+	@Override
+	public void setLocation(Location loc) {
+		//do nothing, for Epub we will always display the cover as the preview, even
+		//if the user bookmarked the middle of the book. This method is included for
+		//inheritance compatibility
+		
 	}
 
 }

@@ -80,14 +80,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
 		
-		Session session = Database.getSession();
-		if (session == null) {
-			session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.save(this);
-		} else {
-			session.save(this);
+		if (!Database.isSessionOpen()) {
+			Database.getNewSession();
 		}
+		
+		Database.getSession().save(this);
 		
 		@SuppressWarnings("unchecked")
 		Database<Tag> database = (Database<Tag>)Database.get(Tag.class);

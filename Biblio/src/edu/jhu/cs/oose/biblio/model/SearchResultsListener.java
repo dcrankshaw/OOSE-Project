@@ -14,5 +14,5 @@ public interface SearchResultsListener {
 	 * to display the results of the search
 	 * @param results The list of matching documents in order
 	 */
-	public void displayResults(List<FileMetadata> results);
+	public void displayFileResults(List<FileMetadata> results);
 }

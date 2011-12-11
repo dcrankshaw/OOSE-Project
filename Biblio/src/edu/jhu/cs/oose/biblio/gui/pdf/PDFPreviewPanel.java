@@ -8,6 +8,7 @@ import java.awt.Image;
 import org.jpedal.exception.PdfException;
 
 import edu.jhu.cs.oose.biblio.gui.PreviewPanel;
+import edu.jhu.cs.oose.biblio.model.Location;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileContents;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
@@ -17,13 +18,11 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
  */
 public class PDFPreviewPanel extends PreviewPanel {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	/** The contents of the file we are showing a preview of */
-	public PDFFileContents contents;
+	private PDFFileContents contents;
 
+	private int page;
+	
 	/**
 	 * Creates a new PDFPreviewPanel with no file to display.
 	 */
@@ -44,6 +43,12 @@ public class PDFPreviewPanel extends PreviewPanel {
 		setContents((PDFFileContents)c.getContents());
 	}
 	
+	public PDFPreviewPanel(PDFFileMetadata c, Location loc) {
+		super(c);
+		setContents((PDFFileContents)c.getContents());
+		setLocation(loc);
+	}
+	
 	@Override
 	public Dimension getPreferredSize()
 	{
@@ -57,6 +62,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 			System.err.println("Could not generate the thumbnail needed for a preview: " + e.getLocalizedMessage());
 		}
 		// TODO this should probably be something sensible, and not magic numbers
+		// but it only happens when an error occurs, and we were good and logged the error
 		return new Dimension(10, 10);
 	}
 	
@@ -68,7 +74,7 @@ public class PDFPreviewPanel extends PreviewPanel {
 		
 		try {
 			// Get the picture from the file
-			Image thumbnail = contents.getPage(1);
+			Image thumbnail = contents.getPage(this.page);
 			// find the limiting dimension and the best aspect ratio
 			double widthRatio = this.getSize().getWidth() /  (double)thumbnail.getWidth(null);
 			double heightRatio = this.getSize().getHeight() /  (double)thumbnail.getHeight(null);
@@ -107,6 +113,25 @@ public class PDFPreviewPanel extends PreviewPanel {
 	 * @param c the file contents to display
 	 */
 	public void setContents(PDFFileContents c) {
-		contents = c;
+		this.contents = c;
+		this.page = 1;
+	}
+	
+	@Override
+	public void setLocation(Location loc) {
+		if( null == this.contents ) {
+			// location doesn't mean anything right now, so don't do anything
+			return;
+		}
+		try {
+			page = (int)Math.ceil(loc.getPercentageOfFile() * this.contents.getPageCount());
+			if( 0 == page ) {
+				page = 1;
+			}
+			this.revalidate();
+		} catch (PdfException e) {
+			// TODO There was an error reading the PDF file, which is weird,
+			// since it was there before...
+		}
 	}
 }

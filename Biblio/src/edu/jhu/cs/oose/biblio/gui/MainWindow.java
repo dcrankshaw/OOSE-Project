@@ -18,7 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
+import edu.jhu.cs.oose.biblio.model.FilterSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
+import edu.jhu.cs.oose.biblio.model.TextSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.Watcher;
 import edu.jhu.cs.oose.biblio.model.WatcherEventListener;
 
@@ -43,17 +45,38 @@ public class MainWindow extends JFrame {
 		JPanel largePanel = new JPanel();
 		
 		largePanel.setLayout(new BorderLayout());
-		SearchPanel searchPanel = new SearchPanel();
+		List<TextSearchStrategy> searchMethods = new ArrayList<TextSearchStrategy>();
+		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.TAGS));
+		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.FULLTEXT));
+		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.FILTER));
 		searchPanel.setSearchController(manager);
 		largePanel.add(searchPanel, BorderLayout.WEST);
 		
 		SearchResultsPreviewPanel previews = new SearchResultsPreviewPanel();
 		previews.setSearchController(manager);
+		previews.listenForFileResults();
 		largePanel.add(previews, BorderLayout.CENTER);
 		
 		// connect the preview panel to the search panel
 		// using the search controller classes
 		
+		return largePanel;
+	}
+	
+	private JPanel makeBookmarkSearchPanel(SearchManager manager) {
+		JPanel largePanel = new JPanel();
+		
+		largePanel.setLayout(new BorderLayout());
+		List<TextSearchStrategy> searchMethods = new ArrayList<TextSearchStrategy>();
+		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.TAGS));
+		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.BOOKMARKS));
+		searchPanel.setSearchController(manager);
+		largePanel.add(searchPanel, BorderLayout.WEST);
+		
+		SearchResultsPreviewPanel preview = new SearchResultsPreviewPanel();
+		preview.setSearchController(manager);
+		preview.listenForBookmarkResults();
+		largePanel.add(preview, BorderLayout.CENTER);
 		return largePanel;
 	}
 	
@@ -66,7 +89,11 @@ public class MainWindow extends JFrame {
 		tabs = new JTabbedPane();
 		SearchManager sManager = new SearchManager();
 		JPanel searchPanel = makeSearchPanel(sManager);
-		tabs.add("Search", searchPanel);
+		tabs.add("Search Files", searchPanel);
+		
+		sManager = new SearchManager();
+		searchPanel = makeBookmarkSearchPanel(sManager);
+		tabs.add("Search Bookmarks", searchPanel);
 		this.getContentPane().add(tabs);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());

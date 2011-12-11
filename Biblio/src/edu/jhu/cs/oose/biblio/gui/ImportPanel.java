@@ -85,8 +85,9 @@ public class ImportPanel extends JPanel {
 	 */
 	public ImportPanel(List<FileMetadata> files, JDialog currentOwner) {
 		// Initialize components
-		//session = Database.getSessionFactory().getCurrentSession();
-		//session.beginTransaction();
+		if (Database.isSessionOpen()) {
+			System.out.println(">>>>>>>>> ERROR: PREVIOUS DATABASE TRANSACTION NOT CLOSED");
+		}
 		Database.getNewSession();
 		applyButton = new JButton("Apply");
 		this.owner = currentOwner;
@@ -249,6 +250,7 @@ public class ImportPanel extends JPanel {
 	 */
 	public void finishImport() {
 		Database.commit();
+		owner.dispose();
 	}
 
 	/**
@@ -256,8 +258,8 @@ public class ImportPanel extends JPanel {
 	 * to the model
 	 */
 	public void cancelImport() {
-		owner.setVisible(false);
 		Database.rollback();
+		owner.dispose();
 	}
 
 }

@@ -170,7 +170,7 @@ public class TagTableModel implements TableModel, SearchTagsListener {
 			newTags = Collections.singleton(t);
 		}
 		else {
-			selectedTags.remove(tags.get(row));
+			selectedTags.remove(t);
 			rmTags = Collections.singleton(t);
 		}
 		emitTagEvent(new TagSelectionChangedEvent(this, row, oldTags, newTags, rmTags));

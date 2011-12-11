@@ -50,8 +50,7 @@ public class ImportManager {
 	 * @return FileMetadata for the given files
 	 */
 	private List<FileMetadata> getMetadataForFiles(File[] paths) {
-		Session session = Database.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		Database.getNewSession();
 		List<FileMetadata> result = new ArrayList<FileMetadata>(paths.length);
 		for( File f : paths ) {
 			// TODO use the MIME type library...
@@ -65,7 +64,7 @@ public class ImportManager {
 				// TODO read other kinds of files or give errors
 			}
 		}
-		session.getTransaction().commit();
+		Database.commit();
 		return result;
 	}
 }

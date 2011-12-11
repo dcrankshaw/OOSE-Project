@@ -36,9 +36,6 @@ public class TagsListPanel extends JPanel {
 	/** The file whose tags are displayed in this panel */
 	private FileMetadata file;
 	
-	/** The Set of all the tag that was created in this panel so far */
-	private Set<Tag> newTags;
-	
 	/** The label saying "Tags:" */
 	private JLabel tagsLabel;
 	
@@ -65,7 +62,6 @@ public class TagsListPanel extends JPanel {
 		
 		tagsListModel = new DefaultListModel();
 		tagSet = null;
-		newTags = new HashSet<Tag>();
 		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		addedTags.setVisibleRowCount(-1);
@@ -82,6 +78,7 @@ public class TagsListPanel extends JPanel {
 	public TagsListPanel(FileMetadata fileMetadata)
 	{
 		this();
+		this.file = fileMetadata;
 		this.setFile(fileMetadata);
 	}
 	
@@ -98,32 +95,11 @@ public class TagsListPanel extends JPanel {
 		Tag t = Database.getTag(tagName);
 		if (t == null) {
 			t = new Tag(tagName);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> new tag");
 		}
-		newTags.add(t);
 		return t;
 	}
-	
-	/** delete those newly created tags */
-	/*
-	public void rollback() {
-		@SuppressWarnings("unchecked")
-		Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
-		for (Tag t : newTags) {
-			db.delete(t);
-		}
-		newTags.clear();
-	}
-	*/
-	/** store the fileMetaData into db and tag them with tags in addedTags */
-	/*
-	public void commit() {
-		for (Tag t : newTags) {
-			t.addTaggedFiles(file);
-			//t.update();
-		}
-		newTags.clear();
-	}
-	*/
+
 	/**
 	 * Adds a tag to this file
 	 * @param t the tag to apply 

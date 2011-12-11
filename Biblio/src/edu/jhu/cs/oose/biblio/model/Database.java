@@ -32,15 +32,10 @@ public class Database<T extends Keyed> {
 			.configure().buildSessionFactory();
 
 	/**
-	 * The session that is currently open
+	 * Indicate if current session has opened a transaction
 	 */
-	private static Session session;
-
-	/**
-	 * Indicate if the session is currently open
-	 */
-	private static boolean isOpen;
-
+	private static boolean isTransactionOpen = false;
+	
 	/**
 	 * Returns the session factory for connecting to the database.
 	 * 
@@ -110,75 +105,67 @@ public class Database<T extends Keyed> {
 	
 	
 	/**
-	 * Executes the given query and replaces the results with already
-	 * existing objects if possible.
-	 * 
-	 * @param q
-	 *            the criteria to execute
+	 * Executes the given query, attaching all known objects
+	 * to the Session before execution to ensure that there is one
+	 * copy of each object.
+	 * @param q the query to execute
 	 * @return the results, using currently existing objects
 	 */
-
 	public List<T> executeQuery(Query q) {
-		
-		// first, execute the query. This can't possibly be entirely
-				// typesafe, but we must continue anyway, so the warning is suppressed.
+		// re-attach all of our objects - TODO is this expensive?
+		for( T toAttach : objectCache.values() ) {
+			update(toAttach);
+		}
+		// first, execute the query.  This can't possibly be entirely
+		// typesafe, but we must continue anyway, so the warning is suppressed.
 		@SuppressWarnings("unchecked")
-		
 		List<T> results = (List<T>) q.list();
 
-		
-
 		// for each object in the list, see if there is already an
-		// object with that primary key. If there is, then
-		// use the already existing one instead.
-		// Note that set is an optional operation on Lists, so this might not
-		// work, but then we're probably screwed anyway, so here goes!
-		for (int i = 0; i < results.size(); i++) {
+		// object with that primary key.  If there is, then it is one that
+		// we just attached.  If it's new, then we add it.
+		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
 			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
 
-			// If there is already an object, use that
-			if (null != oldObj) {
-				results.set(i, oldObj);
-				update(oldObj);
-			} else {
+			// If objects that we didn't know about were returned,
+			// now we know about them
+			if( null == oldObj ) {
 				this.add(newObj);
 			}
 		}
 		return results;
-
 	}
-
+	
 	/**
-	 * Executes the given criteria and replaces the results with already
-	 * existing objects if possible.
-	 * 
-	 * @param c
-	 *            the criteria to execute
+	 * Executes the given criteria, attaching all known objects
+	 * to the Session before execution to ensure that there is one
+	 * copy of each object.
+	 * @param c the criteria to execute
 	 * @return the results, using currently existing objects
 	 */
 	public List<T> executeCriteria(Criteria c) {
-		// first, execute the query. This can't possibly be entirely
+		// re-attach all of our objects - TODO is this expensive?
+		for( T toAttach : objectCache.values() ) {
+			update(toAttach);
+		}
+		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
 		@SuppressWarnings("unchecked")
 		List<T> results = (List<T>) c.list();
-
+		
 		// for each object in the list, see if there is already an
-		// object with that primary key. If there is, then
-		// use the already existing one instead.
-		// Note that set is an optional operation on Lists, so this might not
-		// work, but then we're probably screwed anyway, so here goes!
-		for (int i = 0; i < results.size(); i++) {
+		// object with that primary key.  If there is, then it is one that
+		// we just attached.  If it's new, then we add it.
+		for( int i = 0; i < results.size(); i++ ) {
 			T newObj = results.get(i);
 			int key = newObj.getId();
 			T oldObj = this.objectCache.get(key);
-
-			// If there is already an object, use that
-			if (null != oldObj) {
-				results.set(i, oldObj);
-				update(oldObj);
-			} else {
+			
+			// If objects that we didn't know about were returned,
+			// now we know about them
+			if( null == oldObj ) {
 				this.add(newObj);
 			}
 		}
@@ -203,18 +190,30 @@ public class Database<T extends Keyed> {
 	 *            the object to remove
 	 */
 	public void delete(T oldObj) {
-		this.objectCache.remove(oldObj.getId());
-		Database.getSessionFactory().getCurrentSession().delete(oldObj);
+		if (isTransactionOpen) {
+			this.objectCache.remove(oldObj.getId());
+			sessionFactory.getCurrentSession().delete(oldObj);
+		} else {
+			getNewSession();
+			sessionFactory.getCurrentSession().delete(oldObj);
+			commit();
+		}
 	}
 
 	/**
 	 * Updates the given object in the DB
-	 * 
-	 * @param obj
-	 *            the object to sync to the DB
+	 * @param obj the object to sync to the DB
+	 * @return true if succeed
+	 * @return false if not
 	 */
 	public static void update(Keyed obj) {
-		Database.getSessionFactory().getCurrentSession().save(obj);
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().update(obj);
+		} else {
+			getNewSession();
+			sessionFactory.getCurrentSession().update(obj);
+			commit();
+		}
 	}
 
 	/**
@@ -225,18 +224,13 @@ public class Database<T extends Keyed> {
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
-		if (!isOpen) {
-			Database.getNewSession();
-		}
-		// TODO cleanse the input, using sql parameters instead of string
-		// concatenation
-		Criteria crit = session.createCriteria(Tag.class).add(
-				Restrictions.eq("name", "%" + name + "%"));
-		@SuppressWarnings("unchecked")
-		List<Tag> result = ((Database<Tag>) Database.get(Tag.class))
-				.executeCriteria(crit);
-
-		if (result.size() <= 0) {
+		getNewSession();
+		//TODO cleanse the input, using sql parameters instead of string concatenation
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
+		
+		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
+		
+		if( result.size() <= 0 ) {
 			return null;
 		} else if (result.size() == 1) {
 			return result.get(0);
@@ -248,47 +242,73 @@ public class Database<T extends Keyed> {
 	}
 
 	/**
+	 * Check if there is an open session
+	 * 
+	 * @return true if there is
+	 * @return false if there is not
+	 */
+	public static boolean isSessionOpen() {
+		return isTransactionOpen;
+	}
+	
+	
+	/**
 	 * Get the current running session
+	 * 
+	 * @return Session the current session, return null if there is no open session
 	 */
 	public static Session getSession() {
-		if (isOpen) {
-			return session;
+		if (isTransactionOpen) {
+			return sessionFactory.getCurrentSession();
 		} else {
 			return null;
 		}
 	}
 
 	/**
-	 * Create a new session and begin transaction
+	 * Open a new session and begin transaction
+	 * 
+	 * @return Session the session just opened, return null if there is already an open session
 	 */
 	public static Session getNewSession() {
-		if (isOpen) {
+		if (isTransactionOpen) {
 			return null;
 		} else {
-			session = Database.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			isOpen = true;
-			return session;
+			sessionFactory.getCurrentSession().beginTransaction();
+			isTransactionOpen = true;
+			return sessionFactory.getCurrentSession();
 		}
 	}
 
 	/**
-	 * Commit
+	 * Commit the transaction and close the session
+	 * 
+	 * @return true if succeed
+	 * @return false if not
 	 */
-	public static void commit() {
-		if (isOpen) {
-			session.getTransaction().commit();
-			isOpen = false;
+	public static boolean commit() {
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			isTransactionOpen = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	/**
-	 * Rollback
+	 * Rollback the transaction and close the session
+	 * 
+	 * @return true if succeed
+	 * @return false if not
 	 */
-	public static void rollback() {
-		if (isOpen) {
-			session.getTransaction().rollback();
-			isOpen = false;
+	public static boolean rollback() {
+		if (isTransactionOpen) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			isTransactionOpen = false;
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
