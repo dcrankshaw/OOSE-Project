@@ -25,7 +25,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "TAG")
-public class Tag implements Comparable<Tag>, Keyed {
+public class Tag implements Comparable<Tag>, Keyed, Tagable {
 
 	/** The database's primary key for this Tag */
 	@Id
@@ -78,7 +78,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * If you need an object, use this constructor;
 	 * DO NOT use the default constructor.
 	 * @param tagName the name of the new Tag.
-	 * @throws Exception If the user tries to add a tagname with a colon
+	 * @throws Exception If the user tries to add a tag name with a colon
 	 */
 	public Tag(String tagName) throws Exception {
 		if(tagName.contains(":"))
@@ -147,12 +147,31 @@ public class Tag implements Comparable<Tag>, Keyed {
 	public boolean addChild(Tag tag) {
 		boolean result = this.children.add(tag);
 		if( result ) {
-			Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
-			for( TagListener l : currentListeners ) {
-				l.childrenChanged(this);
-			}
+			this.emitChildrenChangedEvent();
 		}
 		return result;
+	}
+	
+	/**
+	 * Removes the given Tag from this Tag's children.
+	 * The given Tag will no longer be searched when this Tag is searched.
+	 * @param tag the Tag to not look for
+	 * @return true if tag was a child of this Tag, false otherwise
+	 */
+	public boolean removeChild(Tag tag) {
+		boolean result = this.children.remove(tag);
+		if( result ) {
+			this.emitChildrenChangedEvent();
+		}
+		return result;
+	}
+	
+	/** Emits an event indicating that the children of this Tag changed.	 */
+	private void emitChildrenChangedEvent() {
+		Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
+		for( TagListener l : currentListeners ) {
+			l.childrenChanged(this);
+		}
 	}
 
 	// TODO change these to return sets instead of collections?
@@ -163,7 +182,7 @@ public class Tag implements Comparable<Tag>, Keyed {
 	 * @return the Tags that imply this one
 	 */
 	public Collection<Tag> getChildren() {
-		return Collections.unmodifiableCollection(children);
+		return children;
 	}
 
 	/**
@@ -238,11 +257,34 @@ public class Tag implements Comparable<Tag>, Keyed {
 		return getName();
 	}
 	
+	/**
+	 * Adds an object that will be notified when this Tag changes
+	 * @param l the object to be notified
+	 */
 	public void addListener(TagListener l) {
 		listeners.add(l);
 	}
 	
+	/**
+	 * Removes an object that should not be notified when this Tag changes
+	 * @param l the object to not be notified
+	 */
 	public void removeListener(TagListener l) {
 		listeners.remove(l);
+	}
+
+	@Override
+	public boolean addTag(Tag t) {
+		return addChild(t);
+	}
+
+	@Override
+	public boolean removeTag(Tag t) {
+		return removeChild(t);
+	}
+
+	@Override
+	public Collection<Tag> getTags() {
+		return getChildren();
 	}
 }
