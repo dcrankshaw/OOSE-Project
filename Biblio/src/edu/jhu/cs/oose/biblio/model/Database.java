@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -58,11 +59,6 @@ public class Database<T extends Keyed> {
 	}
 
 	/**
-	 * The type that queries to this database return.
-	 */
-	private Class<T> criteriaResultType;
-
-	/**
 	 * A mapping from primary key to the actual object of things that have
 	 * already been created.
 	 */
@@ -76,7 +72,6 @@ public class Database<T extends Keyed> {
 	 * @param resultType the type that queries to this database return
 	 */
 	private Database(Class<T> resultType) {
-		this.criteriaResultType = resultType;
 		objectCache = new HashMap<Integer, T>();
 	}
 
@@ -100,7 +95,13 @@ public class Database<T extends Keyed> {
 	public List<T> executeQuery(Query q) {
 		// re-attach all of our objects - TODO is this expensive?
 		for( T toAttach : objectCache.values() ) {
-			update(toAttach);
+			try {
+				update(toAttach);
+			}
+			catch(NonUniqueObjectException e) {
+				// This means that this object was already attached to the
+				// session, so we can just continue
+			}
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -134,7 +135,13 @@ public class Database<T extends Keyed> {
 	public List<T> executeCriteria(Criteria c) {
 		// re-attach all of our objects - TODO is this expensive?
 		for( T toAttach : objectCache.values() ) {
-			update(toAttach);
+			try {
+				update(toAttach);
+			}
+			catch(NonUniqueObjectException e) {
+				// This means that this object was already attached to the
+				// session, so we can just continue
+			}
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -188,7 +195,7 @@ public class Database<T extends Keyed> {
 	 * Updates the given object in the DB
 	 * @param obj the object to sync to the DB
 	 */
-	public static void update(Keyed obj) {
+	public static void update(Object obj) {
 		if (isTransactionOpen) {
 			sessionFactory.getCurrentSession().update(obj);
 		} else {
@@ -205,13 +212,24 @@ public class Database<T extends Keyed> {
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
-		getNewSession();
+		Session session;
+		boolean opened_session;
+		if( Database.isSessionOpen() ) {
+			session = Database.getSession();
+			opened_session = false;
+		}
+		else {
+			session = Database.getNewSession();
+			opened_session = true;
+		}
 		//TODO cleanse the input, using sql parameters instead of string concatenation
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
+		Criteria crit = session.createCriteria(Tag.class).add(Restrictions.eq("name", name ));
 		
 		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
-		
+		if( opened_session ) {
+			Database.rollback();
+		}
 		if( result.size() <= 0 ) {
 			return null;
 		} else if (result.size() == 1) {
@@ -264,8 +282,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Commit the transaction and close the session
 	 * 
-	 * @return true if succeed
-	 * @return false if not
+	 * @return true if succeed, false if not
 	 */
 	public static boolean commit() {
 		if (isTransactionOpen) {
@@ -280,8 +297,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Rollback the transaction and close the session
 	 * 
-	 * @return true if succeed
-	 * @return false if not
+	 * @return true if succeed, false if not
 	 */
 	public static boolean rollback() {
 		if (isTransactionOpen) {

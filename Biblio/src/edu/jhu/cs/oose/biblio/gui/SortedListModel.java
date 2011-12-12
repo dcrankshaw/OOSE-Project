@@ -97,4 +97,14 @@ public class SortedListModel<T extends Comparable<? super T> > implements ListMo
 		data.remove(item);
 		emitIntervalRemoved(new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index));
 	}
+	
+	/** Removes everything from this list */
+	public void clear() {
+		int size = this.data.size();
+		if( size <= 0 ) {
+			return;
+		}
+		this.data.clear();
+		emitIntervalRemoved(new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, 0, size));
+	}
 }

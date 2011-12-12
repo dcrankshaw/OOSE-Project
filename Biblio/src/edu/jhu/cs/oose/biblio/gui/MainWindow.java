@@ -63,6 +63,12 @@ public class MainWindow extends JFrame {
 		return largePanel;
 	}
 	
+	/**
+	 * Creates a panel for searching through and previewing
+	 * the bookmarks.
+	 * @param manager the manager of the searches, used to actually do searching
+	 * @return the searching panel
+	 */
 	private JPanel makeBookmarkSearchPanel(SearchManager manager) {
 		JPanel largePanel = new JPanel();
 		
@@ -120,11 +126,8 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO there should only really be one of these...
-				TagEditorPanel panel = new TagEditorPanel();
-				JFrame tagFrame = new JFrame();
-				tagFrame.add(panel);
+				TagEditorFrame tagFrame = new TagEditorFrame();
 				tagFrame.pack();
-				tagFrame.setTitle("Manage Tags");
 				tagFrame.setVisible(true);
 			}
 		});

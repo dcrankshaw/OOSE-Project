@@ -28,8 +28,13 @@ public class FilePreviewFactory {
 		}
 	}
 	
+	/** The only object that can create the previews for files */
 	private static FilePreviewFactory factory = new FilePreviewFactory();
 	
+	/**
+	 * Returns the object that can create FilePreviewPanels
+	 * @return the factory for FilePreviewPanels
+	 */
 	public static FilePreviewFactory getFactory() {
 		return factory;
 	}
@@ -40,6 +45,7 @@ public class FilePreviewFactory {
 	 */
 	private FilePreviewVisitor visitor;
 	
+	/** Creates a new FilePreviewFactory, using the default Visitor object */
 	private FilePreviewFactory() {
 		visitor = new PreviewConstructor();
 	}

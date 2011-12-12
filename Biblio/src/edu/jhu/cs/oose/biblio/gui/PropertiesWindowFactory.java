@@ -39,6 +39,7 @@ public class PropertiesWindowFactory implements FileViewFactory {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					FileViewManager.getPropertiesManager().removeView(PropertiesFrame.this);
+					panel.cleanup();
 				}
 
 				@Override

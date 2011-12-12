@@ -22,7 +22,6 @@ public class EditorManager {
 	 */
 	private Set<?> getAll(Class<?> cl) {
 		Session session = Database.getNewSession();
-		session.beginTransaction();
 		String tableName = cl.getName();
 		int idx = tableName.lastIndexOf('/');
 		if( idx >= 0 ) {
@@ -67,7 +66,6 @@ public class EditorManager {
 	 */
 	public Tag newTag() {
 		Session session = Database.getNewSession();
-		session.beginTransaction();
 		try {
 			Tag t = new Tag("Untitled Tag");
 			session.save(t);
@@ -92,7 +90,6 @@ public class EditorManager {
 	 */
 	public void deleteTag(Tag toRemove) {
 		Session session = Database.getNewSession();
-		session.beginTransaction();
 		session.delete(toRemove);
 		Database.commit();
 	}
@@ -104,7 +101,6 @@ public class EditorManager {
 	 */
 	public Category newCategory() {
 		Session session = Database.getNewSession();
-		session.beginTransaction();
 		try {
 			Category c = new Category("Untitled Category");
 			session.save(c);
@@ -129,7 +125,6 @@ public class EditorManager {
 	 */
 	public void deleteCategory(Category toRemove) {
 		Session session = Database.getNewSession();
-		session.beginTransaction();
 		session.delete(toRemove);
 		Database.commit();
 	}

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -14,6 +12,11 @@ import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
 public class PersistenceTest {
+	
+	/**
+	 * Fills the DB with some known tags and files.
+	 * We use this to put the DB in a good state for GUI testing.
+	 */
 	private static void write() throws Exception {
 		Session session = Database.getNewSession();
 		session.getTransaction();
@@ -64,13 +67,14 @@ public class PersistenceTest {
 		Database.commit();
 	}
 	
+	/** Reads the database and prints out all the tags that are in it */
 	private static void read() {
 		Session session = Database.getNewSession();
-		session.getTransaction();
-		session.getTransaction().begin();
 		Criteria crit = session.createCriteria(Tag.class);
 		System.out.println("***************************************************");
-		List<Tag> results = (List<Tag>)crit.list();
+		@SuppressWarnings("unchecked")
+		Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
+		List<Tag> results = db.executeCriteria(crit);
 		System.out.println("There are " + Integer.toString(results.size()) + " tags in the DB.");
 		for( Tag t : results ) {
 			System.out.println("Found tag " + t.getName());
