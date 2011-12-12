@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -100,7 +101,13 @@ public class Database<T extends Keyed> {
 	public List<T> executeQuery(Query q) {
 		// re-attach all of our objects - TODO is this expensive?
 		for( T toAttach : objectCache.values() ) {
-			update(toAttach);
+			try {
+				update(toAttach);
+			}
+			catch(NonUniqueObjectException e) {
+				// This means that this object was already attached to the
+				// session, so we can just continue
+			}
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -134,7 +141,13 @@ public class Database<T extends Keyed> {
 	public List<T> executeCriteria(Criteria c) {
 		// re-attach all of our objects - TODO is this expensive?
 		for( T toAttach : objectCache.values() ) {
-			update(toAttach);
+			try {
+				update(toAttach);
+			}
+			catch(NonUniqueObjectException e) {
+				// This means that this object was already attached to the
+				// session, so we can just continue
+			}
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -216,7 +229,7 @@ public class Database<T extends Keyed> {
 			opened_session = true;
 		}
 		//TODO cleanse the input, using sql parameters instead of string concatenation
-		Criteria crit = session.createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
+		Criteria crit = session.createCriteria(Tag.class).add(Restrictions.eq("name", name ));
 		
 		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
@@ -275,8 +288,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Commit the transaction and close the session
 	 * 
-	 * @return true if succeed
-	 * @return false if not
+	 * @return true if succeed, false if not
 	 */
 	public static boolean commit() {
 		if (isTransactionOpen) {
@@ -291,8 +303,7 @@ public class Database<T extends Keyed> {
 	/**
 	 * Rollback the transaction and close the session
 	 * 
-	 * @return true if succeed
-	 * @return false if not
+	 * @return true if succeed, false if not
 	 */
 	public static boolean rollback() {
 		if (isTransactionOpen) {
