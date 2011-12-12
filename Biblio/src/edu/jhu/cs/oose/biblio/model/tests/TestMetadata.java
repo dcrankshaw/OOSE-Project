@@ -17,6 +17,15 @@ import edu.jhu.cs.oose.biblio.model.FileMetadata;
 @Entity
 @Table( name = "TEST_FILEMETADATA" )
 class TestMetadata extends FileMetadata {
+	
+	public TestMetadata(String name) {
+		super(name);
+	}
+	
+	public TestMetadata() {
+		super();
+	}
+	
 	@Override
 	public int searchText(String searchTerm) throws Exception {
 		return 0;

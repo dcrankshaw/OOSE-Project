@@ -86,10 +86,6 @@ public abstract class FileMetadata implements Keyed {
 		this.openedCount = 0;
 		this.pathToFile = path;
 		this.tags = new HashSet<Tag>();
-
-		if (!Database.isSessionOpen()) {
-			Database.getNewSession();
-		}
 		
 		Database.getSession().save(this);
 		
