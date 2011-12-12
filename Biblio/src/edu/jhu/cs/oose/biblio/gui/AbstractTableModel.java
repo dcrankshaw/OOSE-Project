@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +11,15 @@ import javax.swing.table.TableModel;
 
 import edu.jhu.cs.oose.biblio.model.Named;
 
+/**
+ * This is an abstract class to store the information in a 2xN table. The table has
+ * checkboxes in the first column and String names representing the names
+ * of the objects in the table in the second column.
+ * 
+ *
+ * @param <T> The type of object in this table. Must extend Named (e.g. have a getName() method).
+ */
+
 public abstract class AbstractTableModel<T extends Named> implements TableModel {
 	
 	/** Objects that need to know when the table should be updated.	 */
@@ -21,7 +29,7 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 	/** The tags that should be displayed */
 	protected List<T> tags;
 	/** The tags that have been selected for filtering */
-	private Set<T> selectedTags;
+	protected Set<T> selectedTags;
 
 	/** Creates a new data model for displaying found tags and filtering. */
 	public AbstractTableModel() {
@@ -97,10 +105,6 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 
 	/** An event describing how the selected items have changed. */
 	public class SelectionChangedEvent extends TableModelEvent {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		/** The tags that were selected before this event. */
 		Set<T> oldTags;
 		/** Tags that weren't selected before but are selected now. */
@@ -127,47 +131,16 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 		}
 	}
 
-	@Override
-	public void setValueAt(Object newValue, int row, int col) {
-		// only the checkbox column is editable by the user
-		if( col != 0 ) {
-			return;
-		}
-		if( !(newValue instanceof Boolean) ) {
-			return;
-		}
-		
-		// grab a copy of the tags right now, for the event
-		Set<T> oldTags = new HashSet<T>(this.selectedTags);
-		Set<T> newTags = null;
-		Set<T> rmTags = null;
-		// this cast will always succeed because we do the
-		// runtime check just above
-		Boolean val = (Boolean)(newValue);
-		T t = tags.get(row);
-		if( val ) {
-			selectedTags.add(t);
-			newTags = Collections.singleton(t);
-		}
-		else {
-			selectedTags.remove(t);
-			rmTags = Collections.singleton(t);
-		}
-		emitEvent(new SelectionChangedEvent(this, row, oldTags, newTags, rmTags));
-	}
-
-
 	/**
 	 * Sends the given tag changed event to all the listeners.
 	 * This also sends the event to the Table Listeners
 	 * @param e the event to broadcast.
 	 */
-	private void emitEvent(SelectionChangedEvent e) {
+	protected void emitEvent(SelectionChangedEvent e) {
 		for (TableSelectionChangedListener<T> listener : selectionListeners) {
 			listener.selectionChanged(e);
 		}
-		emitEvent(e);
-		System.out.print(e.getFirstRow());
+		emitEvent((TableModelEvent)e);
 	}
 	
 	/**
@@ -180,6 +153,4 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 			listener.tableChanged(e);
 		}
 	}
-
-
 }

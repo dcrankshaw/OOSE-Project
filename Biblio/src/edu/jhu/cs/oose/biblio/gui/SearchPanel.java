@@ -56,11 +56,22 @@ public class SearchPanel extends JPanel {
 	 */
 	private TagTableModel tagTable;
 	
+	/**
+	 * The current strategy to use for searching when text
+	 * is entered in the text field.
+	 */
 	private TextSearchStrategy textStrategy;
+	/**
+	 * The current strategy to use when Tags are selected for filtering.
+	 */
 	private FilterSearchStrategy filterStrategy;
 	
 	/**
 	 * Creates a new UI for searching.
+	 * @param textStrategies a list of strategies for searching based
+	 * on the text field.
+	 * @param filterStrategy the strategy to use for searching based on which
+	 * Tags are selected in the table.
 	 */
 	public SearchPanel(List<TextSearchStrategy> textStrategies, FilterSearchStrategy filterStrategy) {
 		this.filterStrategy = filterStrategy;
@@ -88,7 +99,6 @@ public class SearchPanel extends JPanel {
 					selectedTags.removeAll(e.removedTags);
 				}
 				executeFilter(selectedTags);
-				
 			}
 		});
 		possibleTagsTable = new JTable(tagTable);
@@ -100,7 +110,6 @@ public class SearchPanel extends JPanel {
 		upperPanel.add(queryField, BorderLayout.NORTH);
 		
 		if( textStrategies.size() > 1 ) {
-		
 			JPanel radioPanel = new JPanel();
 			ButtonGroup searchChoiceGroup = new ButtonGroup();
 			radioPanel.setLayout(new GridLayout(1, textStrategies.size()));
@@ -194,6 +203,10 @@ public class SearchPanel extends JPanel {
 		filterStrategy.search(controller, selectedTags);
 	}
 	
+	/**
+	 * Sets the strategy used to search when text is entered in the text field.
+	 * @param newStrat the strategy used to search when text is entered in the text field.
+	 */
 	private void setTextSearchStrategy(TextSearchStrategy newStrat) {
 		this.textStrategy = newStrat;
 	}

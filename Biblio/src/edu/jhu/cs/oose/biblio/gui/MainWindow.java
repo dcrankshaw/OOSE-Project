@@ -63,23 +63,6 @@ public class MainWindow extends JFrame {
 		return largePanel;
 	}
 	
-	private JPanel makeBookmarkSearchPanel(SearchManager manager) {
-		JPanel largePanel = new JPanel();
-		
-		largePanel.setLayout(new BorderLayout());
-		List<TextSearchStrategy> searchMethods = new ArrayList<TextSearchStrategy>();
-		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.TAGS));
-		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.BOOKMARKS));
-		searchPanel.setSearchController(manager);
-		largePanel.add(searchPanel, BorderLayout.WEST);
-		
-		SearchResultsPreviewPanel preview = new SearchResultsPreviewPanel();
-		preview.setSearchController(manager);
-		preview.listenForBookmarkResults();
-		largePanel.add(preview, BorderLayout.CENTER);
-		return largePanel;
-	}
-	
 	/**
 	 * Creates a new GUI.  This is the reading/searching window.
 	 */
@@ -91,9 +74,6 @@ public class MainWindow extends JFrame {
 		JPanel searchPanel = makeSearchPanel(sManager);
 		tabs.add("Search Files", searchPanel);
 		
-		sManager = new SearchManager();
-		searchPanel = makeBookmarkSearchPanel(sManager);
-		tabs.add("Search Bookmarks", searchPanel);
 		this.getContentPane().add(tabs);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());
@@ -120,11 +100,8 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO there should only really be one of these...
-				TagEditorPanel panel = new TagEditorPanel();
-				JFrame tagFrame = new JFrame();
-				tagFrame.add(panel);
+				TagEditorFrame tagFrame = new TagEditorFrame();
 				tagFrame.pack();
-				tagFrame.setTitle("Manage Tags");
 				tagFrame.setVisible(true);
 			}
 		});

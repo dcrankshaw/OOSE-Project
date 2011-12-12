@@ -2,6 +2,8 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
 
@@ -64,27 +66,64 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (col == 0) {
-			return true;
-		} else {
-			return false;
+		return true;
+	}
+	
+	/**
+	 * Handles attempts to set something in the text field column of the table.
+	 * The user is attempting to rename a category.
+	 * @param newValue the new name of the Category
+	 * @param row the row being modified in the table
+	 */
+	private void setTextField(Object newValue, int row) {
+		if( !(newValue instanceof String) ) {
+			return;
+		}
+		String newName = (String)newValue;
+		Category cat = tags.get(row);
+		// Only actually performs the assignment if this is a valid Category name
+		// If it is not, then we shouldn't notify listeners that something happened,
+		// because it didn't
+		if( cat.setName(newName) ) {
+			emitEvent(new TableModelEvent(this, row, row, 1, TableModelEvent.UPDATE));
 		}
 	}
 	
-	
+	public void setCheckbox(Object newValue, int row) {
+		if( !(newValue instanceof Boolean) ) {
+			return;
+		}
+		
+		// grab a copy of the tags right now, for the event
+		Set<Category> oldTags = new HashSet<Category>(this.selectedTags);
+		Set<Category> newTags = null;
+		Set<Category> rmTags = null;
+		// this cast will always succeed because we do the
+		// runtime check just above
+		Boolean val = (Boolean)(newValue);
+		Category t = tags.get(row);
+		if( val ) {
+			selectedTags.add(t);
+			newTags = Collections.singleton(t);
+		}
+		else {
+			selectedTags.remove(t);
+			rmTags = Collections.singleton(t);
+		}
+		emitEvent(new SelectionChangedEvent(this, row, oldTags, newTags, rmTags));
+	}
+
 	@Override
-	public void setValueAt(Object newValue, int row, int col)
-	{
-		if(col == 1)
-		{
-			
+	public void setValueAt(Object newValue, int row, int col) {
+		if( col == 0 ) {
+			setCheckbox(newValue, row);
 		}
-		else
-		{
-			super.setValueAt(newValue, row, col);
+		else if( col == 1 ) {
+			setTextField(newValue, row);
 		}
+		
 	}
-	
+		
 	/**
 	 * Sets the list of Categories that are displayed in this table
 	 * @param newCats the new list of Categories to display
@@ -128,6 +167,7 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 	public void removeCategory(Category oldCat) {
 		tags.remove(oldCat);
 		emitEvent(new TableModelEvent(this));
+		this.manager.deleteCategory(oldCat);
 	}
 	
 	/**

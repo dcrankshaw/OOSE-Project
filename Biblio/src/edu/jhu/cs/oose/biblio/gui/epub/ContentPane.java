@@ -31,13 +31,9 @@ import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Displays a page
- * 
- * @return
  */
 public class ContentPane extends JPanel implements NavigationEventListener,
 		HyperlinkListener {
@@ -157,8 +153,6 @@ public class ContentPane extends JPanel implements NavigationEventListener,
 	 * @param attributeValue
 	 * @param editorPane
 	 * @param elementIterator
-	 * 
-	 * @return whether it was a match and we jumped there.
 	 */
 	private static void scrollToElement(JEditorPane editorPane, HTMLDocument.Iterator elementIterator) {
 		try {

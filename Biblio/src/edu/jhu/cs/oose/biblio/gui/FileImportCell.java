@@ -52,6 +52,10 @@ public class FileImportCell extends JPanel
 	/** The string telling the user that the file will be copied into the repository. */
 	//private static final String COPY_STRING = "Copy";
 	
+	/**
+	 * The border of this cell. We need this to make sure that
+	 * it gets drawn on top of all the other things in this cell.
+	 */
 	private Border originalBorder;
 	
 	/**

@@ -172,6 +172,6 @@ public class PDFFileMetadata extends FileMetadata {
 //		
 //		return density;
 //		
-//	}
+//
 	
 }
