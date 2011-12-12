@@ -90,6 +90,10 @@ public class EditorManager {
 	 */
 	public void deleteTag(Tag toRemove) {
 		Session session = Database.getNewSession();
+		for( FileMetadata file : toRemove.getTaggedFiles() ) {
+			file.removeTag(toRemove);
+			Database.update(file);
+		}
 		session.delete(toRemove);
 		Database.commit();
 	}

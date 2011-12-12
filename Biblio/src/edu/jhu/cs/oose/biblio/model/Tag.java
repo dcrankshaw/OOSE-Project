@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,7 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "TAG")
-public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
+public class Tag extends Tagable implements Comparable<Tag>, Keyed, Named {
 
 	/** The database's primary key for this Tag */
 	@Id
@@ -53,10 +52,6 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 	@JoinTable(name = "TAG_BOOKMARK", joinColumns = @JoinColumn(name = "TAG_ID", referencedColumnName = "TAG_ID"), inverseJoinColumns = @JoinColumn(name = "BOOKMARK_ID", referencedColumnName = "BOOKMARK_ID"))
 	private Set<Bookmark> taggedBookmarks;
 	
-	/** The set of things listening for changes to this tag */
-	@Transient
-	private Set<TagListener> listeners;
-	
 	/**
 	 * Creates a new, blank Tag.
 	 * This should only ever be used by Hibernate.
@@ -64,11 +59,11 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 	 */
 	@SuppressWarnings("unused")
 	private Tag() {
+		super();
 		name = null;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
-		listeners = new HashSet<TagListener>();
 	}
 	
 	public String getClassName()
@@ -86,13 +81,13 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 	 * @throws Exception If the user tries to add a tag name with a colon
 	 */
 	public Tag(String tagName) throws Exception {
+		super();
 		if(tagName.contains(":"))
 			throw new Exception("Invalid tag name");
 		name = tagName;
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
-		listeners = new HashSet<TagListener>();
 		
 		Database.getSession().save(this);
 		
@@ -120,10 +115,7 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 			return false;
 		else {
 			this.name = n;
-			Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
-			for( TagListener l : currentListeners ) {
-				l.nameChanged(this);
-			}
+			super.emitNameChangedEvent();
 			return true;
 		}
 	}
@@ -165,14 +157,6 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 			this.emitChildrenChangedEvent();
 		}
 		return result;
-	}
-	
-	/** Emits an event indicating that the children of this Tag changed.	 */
-	private void emitChildrenChangedEvent() {
-		Set<TagListener> currentListeners = new HashSet<TagListener>(this.listeners);
-		for( TagListener l : currentListeners ) {
-			l.childrenChanged(this);
-		}
 	}
 
 	// TODO change these to return sets instead of collections?
@@ -255,25 +239,9 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 	
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + "\t" + super.toString();
 	}
 	
-	/**
-	 * Adds an object that will be notified when this Tag changes
-	 * @param l the object to be notified
-	 */
-	public void addListener(TagListener l) {
-		listeners.add(l);
-	}
-	
-	/**
-	 * Removes an object that should not be notified when this Tag changes
-	 * @param l the object to not be notified
-	 */
-	public void removeListener(TagListener l) {
-		listeners.remove(l);
-	}
-
 	@Override
 	public boolean addTag(Tag t) {
 		return addChild(t);

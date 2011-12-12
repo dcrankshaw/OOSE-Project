@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -69,6 +70,7 @@ public class TagEditorFrame extends JFrame {
 				}
 			}
 		});
+		this.overallTagTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		subpanel.add(scrollPane, BorderLayout.CENTER);
 		subpanel.add(new JLabel("Tags:"), BorderLayout.NORTH);
 		
@@ -138,6 +140,7 @@ public class TagEditorFrame extends JFrame {
 			}
 		});
 		this.categoryTable = new JTable(this.categoryModel);
+		this.categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane = new JScrollPane(this.categoryTable);
 		subpanel.add(scrollPane, BorderLayout.CENTER);
 		
@@ -194,11 +197,12 @@ public class TagEditorFrame extends JFrame {
 	 */
 	public void setSelectedTag() {
 		int selectedIndex = this.overallTagTable.getSelectedIndex();
-		if( selectedIndex < 0 ) {
+		if( selectedIndex < 0 || selectedIndex >= this.tagListModel.getSize() ) {
 			this.selectedTag = null;
 			this.nameField.setText("");
 			this.associatedTagPanel.setTags(null);
 			this.categoryModel.setTag(null);
+			this.overallTagTable.setSelectedIndex(this.tagListModel.getSize());
 		}
 		else {
 			this.selectedTag = this.tagListModel.getTag(selectedIndex);
