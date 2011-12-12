@@ -197,11 +197,12 @@ public class TagEditorFrame extends JFrame {
 	 */
 	public void setSelectedTag() {
 		int selectedIndex = this.overallTagTable.getSelectedIndex();
-		if( selectedIndex < 0 ) {
+		if( selectedIndex < 0 || selectedIndex >= this.tagListModel.getSize() ) {
 			this.selectedTag = null;
 			this.nameField.setText("");
 			this.associatedTagPanel.setTags(null);
 			this.categoryModel.setTag(null);
+			this.overallTagTable.setSelectedIndex(this.tagListModel.getSize());
 		}
 		else {
 			this.selectedTag = this.tagListModel.getTag(selectedIndex);
