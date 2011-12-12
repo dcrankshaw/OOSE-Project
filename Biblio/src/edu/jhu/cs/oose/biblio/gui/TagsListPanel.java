@@ -44,6 +44,7 @@ public class TagsListPanel extends JPanel {
 	 * and updates this panel
 	 */
 	private TagListener listener;
+	private TagListener tagChangedListener;
 	
 	/** Creates a new Panel that displays the tags applied to a file. */
 	public TagsListPanel() {
@@ -69,12 +70,23 @@ public class TagsListPanel extends JPanel {
 		this.add(tagsLabel, BorderLayout.NORTH);
 		listener = new TagListener() {
 			@Override
-			public void nameChanged(Tag tag) {
+			public void nameChanged(Tagable tag) {
 				TagsListPanel.this.setTags(TagsListPanel.this.data);
 			}
 			@Override
-			public void childrenChanged(Tag tag) {
+			public void childrenChanged(Tagable tag) {
 			}
+		};
+		this.tagChangedListener = new TagListener() {
+
+			@Override
+			public void nameChanged(Tagable tag) {}
+
+			@Override
+			public void childrenChanged(Tagable tag) {
+				TagsListPanel.this.setTags(tag);
+			}
+			
 		};
 		this.addedTags.addKeyListener(new KeyAdapter() {
 			@Override
@@ -180,6 +192,7 @@ public class TagsListPanel extends JPanel {
 			for( Tag t : this.data.getTags() ) {
 				t.removeListener(this.listener);
 			}
+			this.data.removeListener(this.tagChangedListener);
 		}
 		data = newData;
 		tagsListModel.clear();
@@ -191,6 +204,7 @@ public class TagsListPanel extends JPanel {
 				t.addListener(this.listener);
 				tagsListModel.add(t);
 			}
+			this.data.addListener(this.tagChangedListener);
 		}
 	}
 		

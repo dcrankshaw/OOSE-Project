@@ -132,8 +132,10 @@ public class TagEditorListModel implements ListModel {
 	 * @param index the Tag to annihilate
 	 */
 	public void deleteTag(int index) {
+		Tag tag = this.tags.get(index);
 		this.tags.remove(index);
 		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index);
 		this.fireIntervalRemovedEvent(event);
+		this.manager.deleteTag(tag);
 	}
 }

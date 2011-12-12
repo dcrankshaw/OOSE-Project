@@ -8,11 +8,11 @@ public interface TagListener {
 	 * Notification that a Tag's name has changed
 	 * @param tag the Tag whose name changed
 	 */
-	public void nameChanged(Tag tag);
+	public void nameChanged(Tagable tag);
 	
 	/**
 	 * Notification that a Tag's implied children have changed
 	 * @param tag the Tag that has changed
 	 */
-	public void childrenChanged(Tag tag);
+	public void childrenChanged(Tagable tag);
 }
