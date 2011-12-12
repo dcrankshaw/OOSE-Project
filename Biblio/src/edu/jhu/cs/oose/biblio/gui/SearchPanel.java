@@ -99,7 +99,6 @@ public class SearchPanel extends JPanel {
 					selectedTags.removeAll(e.removedTags);
 				}
 				executeFilter(selectedTags);
-				
 			}
 		});
 		possibleTagsTable = new JTable(tagTable);
@@ -111,7 +110,6 @@ public class SearchPanel extends JPanel {
 		upperPanel.add(queryField, BorderLayout.NORTH);
 		
 		if( textStrategies.size() > 1 ) {
-		
 			JPanel radioPanel = new JPanel();
 			ButtonGroup searchChoiceGroup = new ButtonGroup();
 			radioPanel.setLayout(new GridLayout(1, textStrategies.size()));

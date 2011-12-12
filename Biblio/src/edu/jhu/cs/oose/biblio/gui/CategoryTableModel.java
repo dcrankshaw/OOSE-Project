@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
@@ -88,10 +89,34 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 		}
 	}
 	
+	public void setCheckbox(Object newValue, int row) {
+		if( !(newValue instanceof Boolean) ) {
+			return;
+		}
+		
+		// grab a copy of the tags right now, for the event
+		Set<Category> oldTags = new HashSet<Category>(this.selectedTags);
+		Set<Category> newTags = null;
+		Set<Category> rmTags = null;
+		// this cast will always succeed because we do the
+		// runtime check just above
+		Boolean val = (Boolean)(newValue);
+		Category t = tags.get(row);
+		if( val ) {
+			selectedTags.add(t);
+			newTags = Collections.singleton(t);
+		}
+		else {
+			selectedTags.remove(t);
+			rmTags = Collections.singleton(t);
+		}
+		emitEvent(new SelectionChangedEvent(this, row, oldTags, newTags, rmTags));
+	}
+
 	@Override
 	public void setValueAt(Object newValue, int row, int col) {
 		if( col == 0 ) {
-			super.setValueAt(newValue, row, col);
+			setCheckbox(newValue, row);
 		}
 		else if( col == 1 ) {
 			setTextField(newValue, row);

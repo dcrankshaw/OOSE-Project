@@ -1,7 +1,6 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -123,46 +122,16 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 		}
 	}
 
-	@Override
-	public void setValueAt(Object newValue, int row, int col) {
-		// only the checkbox column is editable by the user
-		if( col != 0 ) {
-			return;
-		}
-		if( !(newValue instanceof Boolean) ) {
-			return;
-		}
-		
-		// grab a copy of the tags right now, for the event
-		Set<T> oldTags = new HashSet<T>(this.selectedTags);
-		Set<T> newTags = null;
-		Set<T> rmTags = null;
-		// this cast will always succeed because we do the
-		// runtime check just above
-		Boolean val = (Boolean)(newValue);
-		T t = tags.get(row);
-		if( val ) {
-			selectedTags.add(t);
-			newTags = Collections.singleton(t);
-		}
-		else {
-			selectedTags.remove(t);
-			rmTags = Collections.singleton(t);
-		}
-		emitEvent(new SelectionChangedEvent(this, row, oldTags, newTags, rmTags));
-	}
-
-
 	/**
 	 * Sends the given tag changed event to all the listeners.
 	 * This also sends the event to the Table Listeners
 	 * @param e the event to broadcast.
 	 */
-	private void emitEvent(SelectionChangedEvent e) {
+	protected void emitEvent(SelectionChangedEvent e) {
 		for (TableSelectionChangedListener<T> listener : selectionListeners) {
 			listener.selectionChanged(e);
 		}
-		emitEvent(e);
+		emitEvent((TableModelEvent)e);
 		System.out.print(e.getFirstRow());
 	}
 	
@@ -176,6 +145,4 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 			listener.tableChanged(e);
 		}
 	}
-
-
 }

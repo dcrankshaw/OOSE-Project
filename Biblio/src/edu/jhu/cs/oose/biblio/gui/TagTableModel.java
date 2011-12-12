@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -43,23 +41,6 @@ public class TagTableModel extends AbstractTableModel<Tag> implements SearchTags
 				emitEvent(new SelectionChangedEvent(TagTableModel.this, 0, new HashSet<Tag>(TagTableModel.this.selectedTags), null, null));
 			}
 		};
-		this.addSelectionListener(new TableSelectionChangedListener<Tag>(){
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent e) {
-				if( e.removedTags != null ) {
-					for( Tag t : e.removedTags ) {
-						t.removeListener(TagTableModel.this.childrenChangedListener);
-					}
-				}
-				if( e.newTags != null ) {
-					for( Tag t : e.newTags ) {
-						t.addListener(TagTableModel.this.childrenChangedListener);
-					}
-				}
-			}
-			
-		});
 	}
 
 	@Override
@@ -101,4 +82,34 @@ public class TagTableModel extends AbstractTableModel<Tag> implements SearchTags
 		emitEvent(new TableModelEvent(this));
 	}
 
+	@Override
+	public void setValueAt(Object newValue, int row, int col) {
+		// only the checkbox column is editable by the user
+		if( col != 0 ) {
+			return;
+		}
+		if( !(newValue instanceof Boolean) ) {
+			return;
+		}
+		
+		// grab a copy of the tags right now, for the event
+		Set<Tag> oldTags = new HashSet<Tag>(this.selectedTags);
+		Set<Tag> newTags = null;
+		Set<Tag> rmTags = null;
+		// this cast will always succeed because we do the
+		// runtime check just above
+		Boolean val = (Boolean)(newValue);
+		Tag t = tags.get(row);
+		if( val ) {
+			selectedTags.add(t);
+			newTags = Collections.singleton(t);
+			t.addListener(this.childrenChangedListener);
+		}
+		else {
+			selectedTags.remove(t);
+			rmTags = Collections.singleton(t);
+			t.removeListener(this.childrenChangedListener);
+		}
+		emitEvent(new SelectionChangedEvent(this, row, oldTags, newTags, rmTags));
+	}
 }
