@@ -132,7 +132,6 @@ public abstract class AbstractTableModel<T extends Named> implements TableModel 
 			listener.selectionChanged(e);
 		}
 		emitEvent((TableModelEvent)e);
-		System.out.print(e.getFirstRow());
 	}
 	
 	/**
