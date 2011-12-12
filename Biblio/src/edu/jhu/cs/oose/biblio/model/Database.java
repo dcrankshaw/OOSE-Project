@@ -59,11 +59,6 @@ public class Database<T extends Keyed> {
 	}
 
 	/**
-	 * The type that queries to this database return.
-	 */
-	private Class<T> criteriaResultType;
-
-	/**
 	 * A mapping from primary key to the actual object of things that have
 	 * already been created.
 	 */
@@ -77,7 +72,6 @@ public class Database<T extends Keyed> {
 	 * @param resultType the type that queries to this database return
 	 */
 	private Database(Class<T> resultType) {
-		this.criteriaResultType = resultType;
 		objectCache = new HashMap<Integer, T>();
 	}
 
