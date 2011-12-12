@@ -205,13 +205,24 @@ public class Database<T extends Keyed> {
 	 * @return the Tag named name, or null if it does not exist
 	 */
 	public static Tag getTag(String name) {
-		getNewSession();
+		Session session;
+		boolean opened_session;
+		if( Database.isSessionOpen() ) {
+			session = Database.getSession();
+			opened_session = false;
+		}
+		else {
+			session = Database.getNewSession();
+			opened_session = true;
+		}
 		//TODO cleanse the input, using sql parameters instead of string concatenation
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
+		Criteria crit = session.createCriteria(Tag.class).add(Restrictions.eq("name", "%" + name + "%"));
 		
 		@SuppressWarnings("unchecked")
 		List<Tag> result = ((Database<Tag>)Database.get(Tag.class)).executeCriteria(crit);
-		
+		if( opened_session ) {
+			Database.rollback();
+		}
 		if( result.size() <= 0 ) {
 			return null;
 		} else if (result.size() == 1) {
