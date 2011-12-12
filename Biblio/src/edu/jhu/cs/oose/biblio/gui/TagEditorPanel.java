@@ -13,7 +13,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import edu.jhu.cs.oose.biblio.gui.CategoryTableModel.CategorySelectionChangedEvent;
 import edu.jhu.cs.oose.biblio.model.Category;
 import edu.jhu.cs.oose.biblio.model.EditorManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -124,9 +123,9 @@ public class TagEditorPanel extends JPanel {
 		subpanel.add(new JLabel("Categories:"), BorderLayout.NORTH);
 		
 		categoryModel = new CategoryTableModel(manager);
-		categoryModel.addCategorySelectionListener(new CategorySelectionListener() {
+		categoryModel.addSelectionListener(new TableSelectionChangedListener<Category>() {
 			@Override
-			public void categorySelectionChanged(CategorySelectionChangedEvent e) {
+			public void selectionChanged(AbstractTableModel<Category>.SelectionChangedEvent e) {
 				for( Category cat : e.oldTags ) {
 					cat.getTags().remove(getSelectedTag());
 				}

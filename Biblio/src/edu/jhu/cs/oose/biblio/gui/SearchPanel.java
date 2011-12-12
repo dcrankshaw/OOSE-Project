@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import edu.jhu.cs.oose.biblio.gui.TagTableModel.TagSelectionChangedEvent;
+import edu.jhu.cs.oose.biblio.gui.AbstractTableModel.SelectionChangedEvent;
 import edu.jhu.cs.oose.biblio.model.FilterSearchStrategy;
 import edu.jhu.cs.oose.biblio.model.SearchManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
@@ -77,9 +77,9 @@ public class SearchPanel extends JPanel {
 		
 		
 		tagTable = new TagTableModel();
-		tagTable.addTagSelectionListener(new TagSelectionChangedListener() {
+		tagTable.addSelectionListener(new TableSelectionChangedListener<Tag>() {
 			@Override
-			public void tagSelectionChanged(TagSelectionChangedEvent e) {
+			public void selectionChanged(AbstractTableModel<Tag>.SelectionChangedEvent e) {
 				Set<Tag> selectedTags = new HashSet<Tag>(e.oldTags);
 				if( e.newTags != null && e.newTags.size() > 0 ) {
 					selectedTags.addAll(e.newTags);
@@ -88,6 +88,7 @@ public class SearchPanel extends JPanel {
 					selectedTags.removeAll(e.removedTags);
 				}
 				executeFilter(selectedTags);
+				
 			}
 		});
 		possibleTagsTable = new JTable(tagTable);
@@ -136,14 +137,14 @@ public class SearchPanel extends JPanel {
 		selectedTagsList = new JList(selectedModel);
 		panel.add(selectedTagsList, BorderLayout.CENTER);
 		this.add(panel, BorderLayout.SOUTH);
-		tagTable.addTagSelectionListener(new SelectionListener(selectedModel));
+		tagTable.addSelectionListener(new SelectionListener(selectedModel));
 	}
 	
 	/**
 	 * A simple listener that keeps the JList of currently
 	 * selected Tags up to date
 	 */
-	private class SelectionListener implements TagSelectionChangedListener {
+	private class SelectionListener implements TableSelectionChangedListener<Tag> {
 		/** The list of Tag names to be displayed in the list */
 		SortedListModel<String> model;
 		
@@ -151,12 +152,12 @@ public class SearchPanel extends JPanel {
 		 * Creates a new SelectionListener updating the given list.
 		 * @param m the list to keep up to date
 		 */
-		SelectionListener( SortedListModel<String> m) {
+		SelectionListener(SortedListModel<String> m) {
 			model = m;
 		}
 		
 		@Override
-		public void tagSelectionChanged(TagSelectionChangedEvent e) {
+		public void selectionChanged(AbstractTableModel<Tag>.SelectionChangedEvent e) {
 			if( e.removedTags != null  ) {
 				for( Tag t : e.removedTags ) {
 					model.remove(t.getName());

@@ -21,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 */
 @Entity
 @Table( name = "CATEGORY" )
-public class Category implements Comparable<Category>, Keyed {
+public class Category implements Comparable<Category>, Keyed, Named {
 	
 	/** The database's primary key for this Category */
 	@Id
@@ -79,6 +79,11 @@ public class Category implements Comparable<Category>, Keyed {
 	@Override
 	public int getId() {
 		return id;
+	}
+	
+	public String getClassName()
+	{
+		return "Category";
 	}
 	
 	/**

@@ -24,7 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "TAG")
-public class Tag implements Comparable<Tag>, Keyed {
+public class Tag implements Comparable<Tag>, Keyed, Named {
 
 	/** The database's primary key for this Tag */
 	@Id
@@ -63,6 +63,11 @@ public class Tag implements Comparable<Tag>, Keyed {
 		children = new HashSet<Tag>();
 		taggedFiles = new HashSet<FileMetadata>();
 		taggedBookmarks = new HashSet<Bookmark>();
+	}
+	
+	public String getClassName()
+	{
+		return "Tag";
 	}
 
 	/**

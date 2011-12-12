@@ -2,14 +2,11 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -34,26 +31,26 @@ public class FileImportCell extends JPanel
 	/** Whether this file is currently selected to add tags to */
 	private boolean isSelected;
 	/** Value determines what the user wants to do with the file. */
-	private CopyStatus copyStatus;
+	//private CopyStatus copyStatus;
 	/** Our preferred choice for copying/moving/leaving files */
-	private static final CopyStatus DEFAULT_COPY_STATUS = CopyStatus.MOVEFILE;
+	//private static final CopyStatus DEFAULT_COPY_STATUS = CopyStatus.MOVEFILE;
 	/** The button that tells us to copy the file into our repository. */
-	private JRadioButton copyStatusButton;
+	//private JRadioButton copyStatusButton;
 	/** The button that tells us to move the file into our repository. */
-	private JRadioButton moveStatusButton;
+	//private JRadioButton moveStatusButton;
 	/** The button that tells us to reference the existing file.
 	 * There will not be a copy in our repository. */
-	private JRadioButton leaveStatusButton;
+	//private JRadioButton leaveStatusButton;
 	/** the ButtonGroup that wrap the selectButton */
 	//ButtonGroup selectButtonGroup;
 	/** The button that tells us if this FileImportCell has been selected. */
 	//private JToggleButton selectButton;
 	/** The string telling the user that the file will be moved into the repository. */
-	private static final String MOVE_STRING = "Move";
+	//private static final String MOVE_STRING = "Move";
 	/** The string telling the user that the file will be left along and not copied to the repository. */
-	private static final String LEAVE_IN_PLACE_STRING = "In Place";
+	//private static final String LEAVE_IN_PLACE_STRING = "In Place";
 	/** The string telling the user that the file will be copied into the repository. */
-	private static final String COPY_STRING = "Copy";
+	//private static final String COPY_STRING = "Copy";
 	
 	private Border originalBorder;
 	
@@ -66,12 +63,12 @@ public class FileImportCell extends JPanel
 	public FileImportCell(FileMetadata fileMetadata)
 	{
 		this.file = fileMetadata;
-		copyStatus = DEFAULT_COPY_STATUS;
+		//copyStatus = DEFAULT_COPY_STATUS;
 		isSelected = false;
 		tagsPanel = new TagsListPanel(file);
 		preview = FilePreviewFactory.getFactory().createPreview(file);
 		
-		this.copyStatusButton = new JRadioButton(COPY_STRING);
+		/*this.copyStatusButton = new JRadioButton(COPY_STRING);
 		this.copyStatusButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -97,23 +94,23 @@ public class FileImportCell extends JPanel
 			public void mouseClicked(MouseEvent e) {
 				FileImportCell.this.setCopyStatus(CopyStatus.LEAVEINPLACE);
 			}
-		});
+		});*/
 		//this.selectButton = new JToggleButton("Select");
 		
-		ButtonGroup copyButtonGroup = new ButtonGroup();
+		/*ButtonGroup copyButtonGroup = new ButtonGroup();
 		copyButtonGroup.add(copyStatusButton);
 		copyButtonGroup.add(moveStatusButton);
-		copyButtonGroup.add(leaveStatusButton);
+		copyButtonGroup.add(leaveStatusButton);*/
 		
 		//selectButtonGroup = new ButtonGroup();
 		
 		this.setLayout(new BorderLayout());
-		JPanel copyButtonsPanel = new JPanel(new GridLayout(1, CopyStatus.values().length));
+		/*JPanel copyButtonsPanel = new JPanel(new GridLayout(1, CopyStatus.values().length));
 		copyButtonsPanel.add(moveStatusButton);
 		copyButtonsPanel.add(copyStatusButton);
 		copyButtonsPanel.add(leaveStatusButton);
 		//copyButtonsPanel.add(selectButton);
-		this.add(copyButtonsPanel, BorderLayout.SOUTH);
+		this.add(copyButtonsPanel, BorderLayout.SOUTH);*/
 		previewPanelBorder = new JPanel(new BorderLayout());
 		this.add(previewPanelBorder);
 		if(preview != null) {
@@ -195,18 +192,16 @@ public class FileImportCell extends JPanel
 	 * into the repository, or just referenced in place.
 	 * @return how to reference the file in our repository
 	 */
-	public CopyStatus getCopyStatus() {
+	/*public CopyStatus getCopyStatus() {
 		return copyStatus;
-	}
+	}*/
 
 	/**
 	 * Sets whether this file should be copied or moved
 	 * into the repository, or just referenced in place.
 	 * @param copyStatus how to reference the file in our repository
 	 */
-	private void setCopyStatus(CopyStatus copyStatus) {
+	/*private void setCopyStatus(CopyStatus copyStatus) {
 		this.copyStatus = copyStatus;
-	}
-	
-
+	}*/
 }

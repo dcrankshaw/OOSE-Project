@@ -190,13 +190,6 @@ public class SearchManager {
 	 *            the text to find in the document.
 	 */
 	public void searchText(String searchTerm) {
-		/* ***********************************************************************************
-		 * We need to figure out a way (or if we even need to) normalize our
-		 * search results that doesn't automatically give higher precedence to
-		 * longer documents - Dan
-		 * 
-		 * Also, eventually searching can be done in a separate thread(s)
-		 */
 		List<ResultsPair> pairs = new ArrayList<ResultsPair>();
 		for (FileMetadata file : selectedFiles) {
 			int freq = 0;
