@@ -60,8 +60,11 @@ public class EpubFileMetadata extends FileMetadata {
 	
 	@Override
 	public int searchText(String searchTerm) throws Exception {
-		// TODO unimplemented
-		return 0;
+		getContents(); //make sure contents is initialized
+		if(contents != null)
+			return this.contents.search(searchTerm);
+		else
+			return 0;
 	}
 
 	@Override
