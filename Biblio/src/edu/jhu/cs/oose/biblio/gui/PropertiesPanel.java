@@ -82,4 +82,9 @@ public class PropertiesPanel extends JPanel {
 	public FileMetadata getFile() {
 		return this.file;
 	}
+	
+	/** Removes all the listeners used by the TagsListPane before dying */
+	public void cleanup() {
+		this.tagsListPane.setTags(null);
+	}
 }
