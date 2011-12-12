@@ -86,6 +86,9 @@ public class TagsListPanel extends JPanel {
 	
 	/** Parses the text the user has entered and attempts to find the matching tag */
 	public void parseString() {
+		if( null == this.data ) {
+			return;
+		}
 		String tagName = newTagField.getText();
 		boolean started_session = false;
 		if( Database.getSession() == null ) {
