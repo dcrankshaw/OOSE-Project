@@ -128,11 +128,15 @@ public class TagEditorFrame extends JFrame {
 		categoryModel.addCategorySelectionListener(new CategorySelectionListener() {
 			@Override
 			public void categorySelectionChanged(CategorySelectionChangedEvent e) {
-				for( Category cat : e.oldTags ) {
-					cat.getTags().remove(getSelectedTag());
+				if( e.removedTags != null ) {
+					for( Category cat : e.removedTags ) {
+						cat.getTags().remove(getSelectedTag());
+					}
 				}
-				for( Category cat : e.newTags ) {
-					cat.getTags().add(getSelectedTag());
+				if( null != e.newTags ) {
+					for( Category cat : e.newTags ) {
+						cat.getTags().add(getSelectedTag());
+					}
 				}
 			}
 		});
