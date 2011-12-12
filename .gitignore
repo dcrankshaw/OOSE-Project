@@ -11,3 +11,4 @@ Biblio/*
 !Biblio/.project
 .metadata
 fparser.log
+filedb*
