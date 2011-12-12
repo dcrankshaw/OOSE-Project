@@ -64,29 +64,6 @@ public class MainWindow extends JFrame {
 	}
 	
 	/**
-	 * Creates a panel for searching through and previewing
-	 * the bookmarks.
-	 * @param manager the manager of the searches, used to actually do searching
-	 * @return the searching panel
-	 */
-	private JPanel makeBookmarkSearchPanel(SearchManager manager) {
-		JPanel largePanel = new JPanel();
-		
-		largePanel.setLayout(new BorderLayout());
-		List<TextSearchStrategy> searchMethods = new ArrayList<TextSearchStrategy>();
-		searchMethods.add(TextSearchStrategy.getStrategy(SearchMode.TAGS));
-		SearchPanel searchPanel = new SearchPanel(searchMethods, FilterSearchStrategy.getStrategy(SearchMode.BOOKMARKS));
-		searchPanel.setSearchController(manager);
-		largePanel.add(searchPanel, BorderLayout.WEST);
-		
-		SearchResultsPreviewPanel preview = new SearchResultsPreviewPanel();
-		preview.setSearchController(manager);
-		preview.listenForBookmarkResults();
-		largePanel.add(preview, BorderLayout.CENTER);
-		return largePanel;
-	}
-	
-	/**
 	 * Creates a new GUI.  This is the reading/searching window.
 	 */
 	public MainWindow() {
@@ -97,9 +74,6 @@ public class MainWindow extends JFrame {
 		JPanel searchPanel = makeSearchPanel(sManager);
 		tabs.add("Search Files", searchPanel);
 		
-		sManager = new SearchManager();
-		searchPanel = makeBookmarkSearchPanel(sManager);
-		tabs.add("Search Bookmarks", searchPanel);
 		this.getContentPane().add(tabs);
 		
 		FileViewManager.getViewManager().setFactory(new FileTabFactory());
