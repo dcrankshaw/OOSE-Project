@@ -188,7 +188,7 @@ public class Database<T extends Keyed> {
 	 * Updates the given object in the DB
 	 * @param obj the object to sync to the DB
 	 */
-	public static void update(Keyed obj) {
+	public static void update(Object obj) {
 		if (isTransactionOpen) {
 			sessionFactory.getCurrentSession().update(obj);
 		} else {
