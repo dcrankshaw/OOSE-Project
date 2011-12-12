@@ -63,6 +63,12 @@ public class MainWindow extends JFrame {
 		return largePanel;
 	}
 	
+	/**
+	 * Creates a panel for searching through and previewing
+	 * the bookmarks.
+	 * @param manager the manager of the searches, used to actually do searching
+	 * @return the searching panel
+	 */
 	private JPanel makeBookmarkSearchPanel(SearchManager manager) {
 		JPanel largePanel = new JPanel();
 		

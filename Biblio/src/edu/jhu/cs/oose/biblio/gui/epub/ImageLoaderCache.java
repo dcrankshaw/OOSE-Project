@@ -19,8 +19,6 @@ import nl.siegmann.epublib.util.CollectionUtil;
 import nl.siegmann.epublib.util.StringUtil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class is a trick to get the JEditorKit to load its images from the epub file instead of from the given url.

@@ -7,8 +7,6 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import org.hibernate.Session;
-
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
