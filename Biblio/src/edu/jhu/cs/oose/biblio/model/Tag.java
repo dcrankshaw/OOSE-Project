@@ -227,7 +227,7 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable, Named {
 	/** Compares tags based on a string comparison of their names */
 	@Override
 	public int compareTo(Tag other) {
-		return getName().compareTo(other.getName());
+		return getName().compareToIgnoreCase(other.getName());
 	}
 
 	/**
