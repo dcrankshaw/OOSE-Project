@@ -89,10 +89,6 @@ public class Tag implements Comparable<Tag>, Keyed, Tagable {
 		taggedBookmarks = new HashSet<Bookmark>();
 		listeners = new HashSet<TagListener>();
 		
-		if (!Database.isSessionOpen()) {
-			Database.getNewSession();
-		}
-		
 		Database.getSession().save(this);
 		
 		@SuppressWarnings("unchecked")
