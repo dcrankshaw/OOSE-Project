@@ -9,7 +9,11 @@ import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.epub.EpubFileMetadata;
-
+/**
+ * Unit Test for EpubFileMetadata
+ * 
+ *
+ */
 public class EpubFileMetadataTest {
 	EpubFileMetadata e;
 	
@@ -28,11 +32,16 @@ public class EpubFileMetadataTest {
 			e = null;
 		}
 	}
-
+	
+	/**
+	 * Test if full text search return the correct occurrence of searchTerm.
+	 * @throws Exception
+	 */
 	@Test
 	public void testSearchText() throws Exception {
 		//System.out.println(e.searchText("detective"));
 		assertTrue(e.searchText("detective")==7);
+		Database.commit();
 	}
 
 }

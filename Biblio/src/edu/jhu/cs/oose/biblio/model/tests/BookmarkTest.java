@@ -57,7 +57,9 @@ public class BookmarkTest {
 	}
 	
 
-
+	/**
+	 * Test setId and getId for bookmark.
+	 */
 	@Test
 	public void testSetGetId() {
 		bkmk.setId(1);
@@ -65,26 +67,36 @@ public class BookmarkTest {
 	}
 
 
-
+	/**
+	 * Test if the file bookmarked is set correctly.
+	 */
 	@Test
 	public void testSetFile() {
 		bkmk.setFile(file1);
 		assertEquals(bkmk.getFile(), file1);
 	}
 
-
+	/**
+	 * Test if location bookmarked in the file is reset correctly.
+	 */
 	@Test
 	public void testSetLocation() {
 		bkmk.setLocation(loc1);
 		assertEquals(bkmk.getLocation(), loc1);
 	}
-
+	
+	/**
+	 * Test if a tag is add correctly to the bookmark.
+	 */
 	@Test
 	public void testAddTag() {
 		bkmk.addTag(tag);
 		assertTrue(bkmk.getTags().contains(tag));
 	}
-
+	
+	/**
+	 * Test if getTags return the same tags added to the bookmark.
+	 */
 	@Test
 	public void testGetTags() {
 		bkmk.addTag(tag);

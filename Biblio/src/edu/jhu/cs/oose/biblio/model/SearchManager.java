@@ -39,9 +39,9 @@ public class SearchManager {
 		bookmarkResultsListeners = new HashSet<BookmarkSearchResultsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
 		selectedBookmarks = new ArrayList<Bookmark>();
-		searchTags("");
-		filterBookmarksByTags(null);
-		filterByTags(null);
+		//searchTags("");
+		//filterBookmarksByTags(null);
+		//filterByTags(null);
 	}
 
 	// Constructor just for testing purposes
@@ -294,7 +294,8 @@ public class SearchManager {
 		// if no tags are specified, then match everything
 		else {
 			Session session = Database.getNewSession();
-			session.beginTransaction();
+			session = Database.getNewSession();
+			//session.beginTransaction();
 			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);

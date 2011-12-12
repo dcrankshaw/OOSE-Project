@@ -13,12 +13,16 @@ import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
 
-
+/**
+ * Unit Test for PDFFileMetadata class.
+ * 
+ *
+ */
 public class PDFFileMetadataTest extends TestCase {
 
 	PDFFileMetadata searchTestFile, getContentFile;
 	
-
+	@Before
 	protected void setUp() throws Exception {
 		super.setUp();
 		String path = "testfiles/test1.pdf";
@@ -33,14 +37,21 @@ public class PDFFileMetadataTest extends TestCase {
 			searchTestFile = null;
 		}
 	}
-
+	/**
+	 * Test if the PDF file is read from the directory.
+	 */
+	@Test
 	public void testGetContents() {
 		getContentFile = new PDFFileMetadata("testfiles/test1.pdf");
 		Database.rollback();
 		assertNotNull(getContentFile.getContents());
 		
 	}
-
+	
+	/**
+	 * Test if the full text search returns the correct occurrence of searchTerm.
+	 */
+	@Test
 	public void testSearchText() throws Exception{
 		String search1 = "Conclusion"; //String occurs once in document
 		String search0 = "kjsdhfkjdsh"; //String occurs 0 times

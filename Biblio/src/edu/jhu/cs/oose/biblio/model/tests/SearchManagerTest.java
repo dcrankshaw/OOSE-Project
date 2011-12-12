@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package edu.jhu.cs.oose.biblio.model.tests;
 
 import java.io.File;
@@ -12,7 +10,6 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +28,7 @@ import edu.jhu.cs.oose.biblio.model.pdf.PDFFileMetadata;
  */
 public class SearchManagerTest extends TestCase {
 
-	// SearchManager search;
-	List<FileMetadata> testFiles;
+	SearchManager searcher;
 	List<FileMetadata> originalFiles;
 	List<FileMetadata> searchResults;
 	Set<Tag> tagSearchResults;
@@ -40,11 +36,18 @@ public class SearchManagerTest extends TestCase {
 	
 	@Before
 	protected void setUp()
-	{
-		testFiles = new ArrayList<FileMetadata>();
+	{	Database.getNewSession();
+
 		originalFiles = new ArrayList<FileMetadata>();
 		searchResults = new ArrayList<FileMetadata>();
-		tagSearchResults = new HashSet<Tag>();
+		tagSearchResults = new TreeSet<Tag>();
+		categorySearchResults = new ArrayList<Tag>();
+		fileExist("testfiles/test1.pdf");
+		fileExist("testfiles/test2.pdf");
+		fileExist("testfiles/test3.pdf");
+		fileExist("testfiles/test4.pdf");
+		fileExist("testfiles/test5.pdf");
+		fileExist("testfiles/test6.pdf");
 		
 	}
 
@@ -57,7 +60,7 @@ public class SearchManagerTest extends TestCase {
 	public void fileExist(String path) {
 		File f = new File(path);
 		if (f.exists()) {
-			testFiles.add(new PDFFileMetadata(path));
+			originalFiles.add(new PDFFileMetadata(path));
 		} else {
 			System.out.println("Error: " + path);
 		}
@@ -76,36 +79,15 @@ public class SearchManagerTest extends TestCase {
 	/**
 	 * Test if searchText() returns results in the correct order
 	 */
+	@Test
 	public void testSearchText() {
-		fail();
-		Session s = Database.getNewSession();
-		s.beginTransaction();
-		originalFiles = new ArrayList<FileMetadata>();
-		testFiles = new ArrayList<FileMetadata>();
-		searchResults = new ArrayList<FileMetadata>();
-		tagSearchResults = new TreeSet<Tag>();
-		String path1 = "testfiles/test4.pdf", path2 = "testfiles/test5.pdf", path3 = "testfiles/test6.pdf";
-		this.fileExist(path1);// 2 Occurrences of searchTerm "Ignorance"
-		this.fileExist(path2);// 5 Occurrences, should return on the top of the
-								// list
-		this.fileExist(path3);// 1 Occurrences
-		fileExist("testfiles/test1.pdf");
-		fileExist("testfiles/test2.pdf");
-		fileExist("testfiles/test3.pdf");
-		Database.commit();
-		for (FileMetadata f : testFiles) {
-			originalFiles.add(f);
-		}
-		System.out.println("\n\n\n\n\n\n");
-		for (FileMetadata t : originalFiles) {
-			System.out.println(t.getName());
-		}
+		List<FileMetadata> testFiles = new ArrayList<FileMetadata>();
+		testFiles.add(new PDFFileMetadata("testfiles/test5.pdf"));// 5 Occurrences, should return on the top of the list
+		testFiles.add(new PDFFileMetadata("testfiles/test4.pdf"));// 2 Occurrences of searchTerm "Ignorance"
+		testFiles.add(new PDFFileMetadata("testfiles/test6.pdf"));// 1 Occurrences
 		
-		
-		
-		
-		assertFalse(originalFiles == null);
-		SearchManager search = new SearchManager(originalFiles);
+		searcher = new SearchManager(originalFiles);
+		assertFalse(originalFiles == null);	
 		String searchTerm = "Ignorance";
 
 		List<PDFFileMetadata> expectedResults = new ArrayList<PDFFileMetadata>();
@@ -115,9 +97,9 @@ public class SearchManagerTest extends TestCase {
 
 		try {
 
-			search.addResultsListener(new TestListener());
-			search.searchText(searchTerm);
-			System.out.println("\n\n\n\n\n\n\nSearch text");
+			searcher.addResultsListener(new TestListener());
+			searcher.searchText(searchTerm);
+			//System.out.println("\n\n\n\n\n\n\nSearch text");
 
 			for (FileMetadata f : searchResults) {
 
@@ -129,14 +111,16 @@ public class SearchManagerTest extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();//
+			e.printStackTrace();
 			fail("Threw unexpected exception");
 		}
+		Database.commit();
 	}
 
 	/**
 	 * Tests searching for tags based on their name
 	 */
+	@Test
 	public void testSearchTags() {
 		try {
 		testSearchCategory();
@@ -146,15 +130,18 @@ public class SearchManagerTest extends TestCase {
 		{
 			e.printStackTrace();
 		}
+		Database.commit();
 	}
 
 	/**
 	 * searches for tags matching a search term belonging to a given category.
 	 * searchterm is of the form "category: term"
 	 */
+	@Test
 	public void testSearchCategory() throws Exception{
-		categorySearchResults = new ArrayList<Tag>();
-		SearchManager searcher = new SearchManager();
+		
+		searcher = new SearchManager();
+		//categorySearchResults = new ArrayList<Tag>();
 		searcher.addTagsListener(new SearchTagsListener() {
 
 			@Override
@@ -164,7 +151,6 @@ public class SearchManagerTest extends TestCase {
 			}
 
 		});
-		Database.getNewSession().beginTransaction();
 		Category matches = new Category("matches");
 		Category noMatch = new Category("hello");
 
@@ -281,7 +267,6 @@ public class SearchManagerTest extends TestCase {
 			tags.add(new Tag("abcdeefg"));
 			tags.add(new Tag("xyzabc"));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Database.commit();
@@ -311,11 +296,10 @@ public class SearchManagerTest extends TestCase {
 	/**
 	 * Test the filterByTags function
 	 */
-
+	@Test
 	public void testFilterByTags() throws Exception {
-		SearchManager search = new SearchManager(originalFiles);
+		searcher = new SearchManager(originalFiles);
 
-		Database.getNewSession().beginTransaction();
 		Tag math = new Tag("math");
 		Tag numbers = new Tag("numbers");
 		Tag one = new Tag("one");
@@ -350,7 +334,7 @@ public class SearchManagerTest extends TestCase {
 		 * file2: math, english, twoPointFive
 		 * file3: school, b, c
 		 --------------------------------------------------*/
-
+		
 		letters.addTaggedFiles(originalFiles.get(0));
 		numbers.addTaggedFiles(originalFiles.get(0));
 		integer.addTaggedFiles(originalFiles.get(0));
@@ -373,7 +357,7 @@ public class SearchManagerTest extends TestCase {
 		filterBy.add(letters);
 		filterBy.add(numbers);
 		Database.commit();
-		search.addResultsListener(new SearchResultsListener() {
+		searcher.addResultsListener(new SearchResultsListener() {
 
 			@Override
 			public void displayFileResults(List<FileMetadata> results) {
@@ -381,7 +365,7 @@ public class SearchManagerTest extends TestCase {
 			}
 
 		});
-		search.filterByTags(filterBy);
+		searcher.filterByTags(filterBy);
 		System.out.println("Search Results");
 		for (FileMetadata t : searchResults) {
 			System.out.println(t.getName());
