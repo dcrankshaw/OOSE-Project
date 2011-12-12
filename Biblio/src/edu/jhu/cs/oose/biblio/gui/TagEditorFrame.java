@@ -200,15 +200,13 @@ public class TagEditorFrame extends JFrame {
 		if( selectedIndex < 0 ) {
 			this.selectedTag = null;
 			this.nameField.setText("");
-			@SuppressWarnings("unchecked")
-			Collection<Tag> emptySet = (Collection<Tag>)Collections.EMPTY_SET;
-			this.associatedTagPanel.setTagsList(emptySet);
+			this.associatedTagPanel.setTags(null);
 			this.categoryModel.setTag(null);
 		}
 		else {
 			this.selectedTag = this.tagListModel.getTag(selectedIndex);
 			this.nameField.setText(selectedTag.getName());
-			this.associatedTagPanel.setTagsList(selectedTag.getChildren());
+			this.associatedTagPanel.setTags(selectedTag);
 			this.categoryModel.setTag(selectedTag);
 		}
 		this.pack();
