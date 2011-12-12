@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;

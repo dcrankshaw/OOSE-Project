@@ -12,6 +12,15 @@ import javax.swing.table.TableModel;
 
 import edu.jhu.cs.oose.biblio.model.Named;
 
+/**
+ * This is an abstract class to store the information in a 2xN table. The table has
+ * checkboxes in the first column and String names representing the names
+ * of the objects in the table in the second column.
+ * 
+ *
+ * @param <T> The type of object in this table. Must extend Named (e.g. have a getName() method).
+ */
+
 public abstract class AbstractTableModel<T extends Named> implements TableModel {
 	
 	/** Objects that need to know when the table should be updated.	 */
