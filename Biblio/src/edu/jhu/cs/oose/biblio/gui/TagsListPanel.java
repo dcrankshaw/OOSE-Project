@@ -3,6 +3,8 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -72,6 +74,14 @@ public class TagsListPanel extends JPanel {
 			public void childrenChanged(Tag tag) {
 			}
 		};
+		this.addedTags.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if( e.getKeyCode() == KeyEvent.VK_BACK_SPACE ) {
+					removeTag();
+				}
+			}
+		});
 	}
 	
 	/**
@@ -129,11 +139,33 @@ public class TagsListPanel extends JPanel {
 	 */
 	public void addTag(Tag t)
 	{
-		if( data.addTag(t) ) {
-			tagsListModel.add(t);
-			Database.update(t);
-			Database.update(data);
-			t.addListener(this.listener);
+		if( null != data ) {
+			if( data.addTag(t) ) {
+				tagsListModel.add(t);
+				Database.update(t);
+				Database.update(data);
+				t.addListener(this.listener);
+			}
+		}
+	}
+	
+	/**
+	 * Gets the currently selected Tag and
+	 * removes it from the file/ thing backing the panel
+	 */
+	private void removeTag() {
+		if( null != data ) {
+			int idx = this.addedTags.getSelectedIndex();
+			if( idx < 0 || idx >= this.tagsListModel.getSize() ) {
+				return;
+			}
+			Tag tag = this.tagsListModel.getElementAt(idx);
+			if( data.removeTag(tag) ) {
+				tagsListModel.remove(tag);
+				Database.update(tag);
+				Database.update(data);
+				tag.removeListener(this.listener);
+			}
 		}
 	}
 		
