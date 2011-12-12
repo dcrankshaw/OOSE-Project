@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
@@ -60,6 +61,7 @@ public class TagsListPanel extends JPanel {
 		data = null;
 		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.VERTICAL);
+		addedTags.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		addedTags.setVisibleRowCount(-1);
 		this.setLayout(new BorderLayout());
 		this.add(newTagField, BorderLayout.SOUTH);
