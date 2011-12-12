@@ -39,19 +39,9 @@ public class SearchManager {
 		bookmarkResultsListeners = new HashSet<BookmarkSearchResultsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
 		selectedBookmarks = new ArrayList<Bookmark>();
-		boolean closeSession = false;
-		Session session = Database.getSession();
-		/*if(session == null)
-		{
-			session = Database.getNewSession();
-			session.beginTransaction();
-			closeSession = true;
-		}*/
 		searchTags("");
 		filterBookmarksByTags(null);
 		filterByTags(null);
-		/*if(closeSession)
-			Database.commit();*/
 	}
 
 	// Constructor just for testing purposes
@@ -361,7 +351,6 @@ public class SearchManager {
 
 			Session session = Database.getNewSession();
 			session.beginTransaction();
-			//Query query = session.createQuery("from Category where :category like name.lower()");
 			Query query = session.createQuery("from Category where lower(name) like :term");
 			query.setString("term", "%" + category + "%");
 			@SuppressWarnings("unchecked")
