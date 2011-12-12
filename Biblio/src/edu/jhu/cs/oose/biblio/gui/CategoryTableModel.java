@@ -11,7 +11,6 @@ import edu.jhu.cs.oose.biblio.model.Category;
 import edu.jhu.cs.oose.biblio.model.EditorManager;
 import edu.jhu.cs.oose.biblio.model.Tag;
 
-// We should combine this with TagTableModel, b/c they're mostly the same
 /**
  * The data model of the table that displays
  * the tags matching the current query and selects

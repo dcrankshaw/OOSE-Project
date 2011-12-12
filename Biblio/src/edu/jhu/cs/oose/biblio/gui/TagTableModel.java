@@ -11,6 +11,7 @@ import javax.swing.event.TableModelEvent;
 import edu.jhu.cs.oose.biblio.model.SearchTagsListener;
 import edu.jhu.cs.oose.biblio.model.Tag;
 import edu.jhu.cs.oose.biblio.model.TagListener;
+import edu.jhu.cs.oose.biblio.model.Tagable;
 
 /**
  * The data model of the table that displays
@@ -27,17 +28,17 @@ public class TagTableModel extends AbstractTableModel<Tag> implements SearchTags
 		super();
 		listener = new TagListener() {
 			@Override
-			public void nameChanged(Tag t) {
+			public void nameChanged(Tagable t) {
 				TagTableModel.this.matchedTags(TagTableModel.this.tags);
 			}
 			@Override
-			public void childrenChanged(Tag t) {}
+			public void childrenChanged(Tagable t) {}
 		};
 		childrenChangedListener = new TagListener() {
 			@Override
-			public void nameChanged(Tag t) {	}
+			public void nameChanged(Tagable t) {	}
 			@Override
-			public void childrenChanged(Tag t) {
+			public void childrenChanged(Tagable t) {
 				emitEvent(new SelectionChangedEvent(TagTableModel.this, 0, new HashSet<Tag>(TagTableModel.this.selectedTags), null, null));
 			}
 		};
