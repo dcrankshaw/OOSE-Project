@@ -3,10 +3,9 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.Collections;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -23,7 +22,7 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 /**
  * Provides the functionality needed to get the user input to edit tags.
  */
-public class TagEditorPanel extends JPanel {
+public class TagEditorFrame extends JFrame {
 	
 	/** A table containing all of the tags. The user can select from here to edit
 	 * existing tags.
@@ -51,7 +50,7 @@ public class TagEditorPanel extends JPanel {
 	private CategoryTableModel categoryModel;
 	
 	/** Creates, lays out, and connects the GUI elements for editing/creating Tags and Categories. */
-	public TagEditorPanel() {
+	public TagEditorFrame() {
 		super();
 		
 		EditorManager manager = new EditorManager();
@@ -126,11 +125,15 @@ public class TagEditorPanel extends JPanel {
 		categoryModel.addSelectionListener(new TableSelectionChangedListener<Category>() {
 			@Override
 			public void selectionChanged(AbstractTableModel<Category>.SelectionChangedEvent e) {
-				for( Category cat : e.oldTags ) {
-					cat.getTags().remove(getSelectedTag());
+				if( e.removedTags != null ) {
+					for( Category cat : e.removedTags ) {
+						cat.getTags().remove(getSelectedTag());
+					}
 				}
-				for( Category cat : e.newTags ) {
-					cat.getTags().add(getSelectedTag());
+				if( null != e.newTags ) {
+					for( Category cat : e.newTags ) {
+						cat.getTags().add(getSelectedTag());
+					}
 				}
 			}
 		});
@@ -160,6 +163,8 @@ public class TagEditorPanel extends JPanel {
 		subpanel.add(subsubpanel, BorderLayout.SOUTH);
 		
 		this.add(subpanel, BorderLayout.EAST);
+		
+		this.setTitle("Manage Tags");
 	}
 	
 	/** Create a new tag */
@@ -192,18 +197,16 @@ public class TagEditorPanel extends JPanel {
 		if( selectedIndex < 0 ) {
 			this.selectedTag = null;
 			this.nameField.setText("");
-			@SuppressWarnings("unchecked")
-			Collection<Tag> emptySet = (Collection<Tag>)Collections.EMPTY_SET;
-			this.associatedTagPanel.setTagsList(emptySet);
+			this.associatedTagPanel.setTags(null);
 			this.categoryModel.setTag(null);
 		}
 		else {
 			this.selectedTag = this.tagListModel.getTag(selectedIndex);
 			this.nameField.setText(selectedTag.getName());
-			this.associatedTagPanel.setTagsList(selectedTag.getChildren());
+			this.associatedTagPanel.setTags(selectedTag);
 			this.categoryModel.setTag(selectedTag);
 		}
-		this.revalidate();
+		this.pack();
 		this.nameField.revalidate();
 		this.associatedTagPanel.revalidate();
 		this.repaint();

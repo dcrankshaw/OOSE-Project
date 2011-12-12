@@ -1,8 +1,5 @@
 package edu.jhu.cs.oose.biblio.gui;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import javax.swing.JPanel;
 import javax.swing.JViewport;
 import javax.swing.Scrollable;

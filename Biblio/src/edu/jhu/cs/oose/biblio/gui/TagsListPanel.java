@@ -3,9 +3,7 @@ package edu.jhu.cs.oose.biblio.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,6 +12,8 @@ import javax.swing.JTextField;
 import edu.jhu.cs.oose.biblio.model.Database;
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 import edu.jhu.cs.oose.biblio.model.Tag;
+import edu.jhu.cs.oose.biblio.model.TagListener;
+import edu.jhu.cs.oose.biblio.model.Tagable;
 
 /**
  * Automatically recognizes tags that are entered in and converts the string to an atomic entity. If it cannot
@@ -22,17 +22,10 @@ import edu.jhu.cs.oose.biblio.model.Tag;
 public class TagsListPanel extends JPanel {
 	
 	/** All of the tags already added to the file */
-	private DefaultListModel tagsListModel;
-	// TODO migrate this to a List<Tag> extends ListModel (for the JList)
-	// or, combine the text field in the bottom with the
-	// list, so that you type into the list, and it absorbs
-	// recognized tags into atomic units.  Just my thoughts... Paul
+	private SortedListModel<Tag> tagsListModel;
 	
-	/** The set of tags that are displayed / managed by this panel */
-	private Collection<Tag> tagSet;
-	
-	/** The file whose tags are displayed in this panel */
-	private FileMetadata file;
+	/** The things whose Tags are displayed on this panel */
+	private Tagable data;
 	
 	/** The label saying "Tags:" */
 	private JLabel tagsLabel;
@@ -43,6 +36,12 @@ public class TagsListPanel extends JPanel {
 	/** Display of the tags that have already been applied to this file. */
 	private JList addedTags;
 	
+	/**
+	 * Listens for updates to the data's collection of Tags,
+	 * and updates this panel
+	 */
+	private TagListener listener;
+	
 	/** Creates a new Panel that displays the tags applied to a file. */
 	public TagsListPanel() {
 		tagsLabel = new JLabel("Tags:");
@@ -51,17 +50,12 @@ public class TagsListPanel extends JPanel {
 		newTagField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String tagName = newTagField.getText();
-				Tag t = findOrCreateTag(tagName);
-				if(t != null) {
-					newTagField.setText("");
-					addTag(t);
-				}
+				parseString();
 			}
 		});
 		
-		tagsListModel = new DefaultListModel();
-		tagSet = null;
+		tagsListModel = new SortedListModel<Tag>();
+		data = null;
 		addedTags = new JList(tagsListModel);
 		addedTags.setLayoutOrientation(JList.VERTICAL);
 		addedTags.setVisibleRowCount(-1);
@@ -69,6 +63,15 @@ public class TagsListPanel extends JPanel {
 		this.add(newTagField, BorderLayout.SOUTH);
 		this.add(addedTags, BorderLayout.CENTER);
 		this.add(tagsLabel, BorderLayout.NORTH);
+		listener = new TagListener() {
+			@Override
+			public void nameChanged(Tag tag) {
+				TagsListPanel.this.setTags(TagsListPanel.this.data);
+			}
+			@Override
+			public void childrenChanged(Tag tag) {
+			}
+		};
 	}
 	
 	/**
@@ -78,12 +81,29 @@ public class TagsListPanel extends JPanel {
 	public TagsListPanel(FileMetadata fileMetadata)
 	{
 		this();
-		this.file = fileMetadata;
-		this.setFile(fileMetadata);
+		this.setTags(fileMetadata);
 	}
 	
 	/** Parses the text the user has entered and attempts to find the matching tag */
-	public void parseString() {}
+	public void parseString() {
+		if( null == this.data ) {
+			return;
+		}
+		String tagName = newTagField.getText();
+		boolean started_session = false;
+		if( Database.getSession() == null ) {
+			Database.getNewSession();
+			started_session = true;
+		}
+		Tag t = findOrCreateTag(tagName);
+		if(t != null) {
+			newTagField.setText("");
+			addTag(t);
+		}
+		if( started_session ) {
+			Database.commit();
+		}
+	}
 	
 	/**
 	 * Gets the tag specified by the string, or creates it if it does
@@ -94,7 +114,6 @@ public class TagsListPanel extends JPanel {
 	private Tag findOrCreateTag(String tagName) {
 		Tag t = Database.getTag(tagName);
 		if (t == null) {
-			
 			try {
 				t = new Tag(tagName);
 			} catch (Exception e) {
@@ -110,34 +129,37 @@ public class TagsListPanel extends JPanel {
 	 */
 	public void addTag(Tag t)
 	{
-		if( tagSet.add(t) ) {
-			tagsListModel.addElement(t.getName());
-			t.addTaggedFiles(file);
+		if( data.addTag(t) ) {
+			tagsListModel.add(t);
 			Database.update(t);
+			Database.update(data);
+			t.addListener(this.listener);
 		}
 	}
-	
+		
 	/**
-	 * Sets the file whose tags should be displayed
-	 * @param f the file whose tags should be displayed
+	 * Sets the thing whose Tags should be displayed on this Panel
+	 * @param newData the new thing whose Tags should be displayed
 	 */
-	public void setFile(FileMetadata f) {
-		setTagsList(f.getTags());
-	}
-	
-	/**
-	 * Sets the collection of Tags that this panel updates
-	 * and displays
-	 * @param newTags the set of Tags to manipulate
-	 */
-	public void setTagsList(Collection<Tag> newTags) {
-		tagSet = newTags;
+	public void setTags(Tagable newData) {
+		if( null != this.data ) {
+			for( Tag t : this.data.getTags() ) {
+				t.removeListener(this.listener);
+			}
+		}
+		data = newData;
 		tagsListModel.clear();
-		for( Tag t : newTags ) {
-			tagsListModel.addElement(t);
+		if( null != newData ) {
+			for( Tag t : newData.getTags() ) {
+				@SuppressWarnings("unchecked")
+				Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
+				db.add(t);
+				t.addListener(this.listener);
+				tagsListModel.add(t);
+			}
 		}
 	}
-	
+		
 	/**
 	 * Sets the title of this box
 	 * @param title the new title of the box

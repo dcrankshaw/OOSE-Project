@@ -62,12 +62,14 @@ public class SearchResultsPreviewPanel extends JPanel implements SearchResultsLi
 		this.controller = sc;
 	}
 	
+	/** Creates the listeners to respond to search results made up of files */
 	public void listenForFileResults() {
 		if( null != controller ) {
 			this.controller.addResultsListener(this);
 		}
 	}
 	
+	/** Creates the listeners to respond to search results made up of Bookmarks */
 	public void listenForBookmarkResults() {
 		if( null != controller ) {
 			this.controller.addBookmarkResultsListener(this);

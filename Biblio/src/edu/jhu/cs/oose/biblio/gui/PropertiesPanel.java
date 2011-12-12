@@ -72,7 +72,7 @@ public class PropertiesPanel extends JPanel {
 		this.file = f;
 		lastOpenedLabel.setText(formatter.format(this.file.getLastOpened()));
 		openedCountLabel.setText(Integer.toString(this.file.getOpenedCount()));
-		tagsListPane.setFile(this.file);
+		tagsListPane.setTags(this.file);
 	}
 	
 	/**
@@ -81,5 +81,10 @@ public class PropertiesPanel extends JPanel {
 	 */
 	public FileMetadata getFile() {
 		return this.file;
+	}
+	
+	/** Removes all the listeners used by the TagsListPane before dying */
+	public void cleanup() {
+		this.tagsListPane.setTags(null);
 	}
 }

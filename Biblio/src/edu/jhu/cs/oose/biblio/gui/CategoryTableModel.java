@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
 
@@ -95,8 +96,9 @@ public class CategoryTableModel extends AbstractTableModel<Category> {
 		else if( col == 1 ) {
 			setTextField(newValue, row);
 		}
+		
 	}
-	
+		
 	/**
 	 * Sets the list of Categories that are displayed in this table
 	 * @param newCats the new list of Categories to display
