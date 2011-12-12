@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.junit.Before;
+import org.junit.Test;
 
 import edu.jhu.cs.oose.biblio.model.Category;
 import edu.jhu.cs.oose.biblio.model.Database;
@@ -35,6 +36,7 @@ public class SearchManagerTest extends TestCase {
 	List<FileMetadata> originalFiles;
 	List<FileMetadata> searchResults;
 	Set<Tag> tagSearchResults;
+	List<Tag> categorySearchResults;
 	
 	@Before
 	protected void setUp()
@@ -151,6 +153,7 @@ public class SearchManagerTest extends TestCase {
 	 * searchterm is of the form "category: term"
 	 */
 	public void testSearchCategory() throws Exception{
+		categorySearchResults = new ArrayList<Tag>();
 		SearchManager searcher = new SearchManager();
 		searcher.addTagsListener(new SearchTagsListener() {
 
@@ -181,10 +184,33 @@ public class SearchManagerTest extends TestCase {
 
 
 		Database.commit();
-		searcher.searchTags("matches: aa");
-		for (Tag t : tagSearchResults) {
+		boolean found1 = false;
+		boolean found2 = false;
+		//searcher.searchTags("matches: aa");
+		searcher.searchTags("aa");
+		System.out.println("-----------------------------------");
+		for (Tag t : categorySearchResults) {
 			System.out.println(t.getName());
+			if(t.getName().compareToIgnoreCase(aa.getName()) == 0)
+				found1 = true;
+			if(t.getName().compareToIgnoreCase(aabb.getName()) == 0)
+				found2 = true;
+			
 		}
+		System.out.println("Actual\n\n");
+		System.out.println(aa.getName());
+		System.out.println(aabb.getName());
+		System.out.println("\n\n");
+		
+		
+		assertTrue(found1 && found2);
+		
+		assertTrue(categorySearchResults.contains(aa));
+		assertTrue(categorySearchResults.contains(aabb));
+		assertFalse(categorySearchResults.contains(noA));
+		
+		
+		/*
 		assertFalse(tagSearchResults == null);
 		assertTrue(tagSearchResults.contains(aa));
 		assertTrue(tagSearchResults.contains(aabb));
@@ -213,7 +239,7 @@ public class SearchManagerTest extends TestCase {
 
 		searcher.searchTags("Hello:: aa");
 		assertTrue(tagSearchResults.size() == 0);
-
+*/
 	}
 
 	/**
@@ -223,9 +249,15 @@ public class SearchManagerTest extends TestCase {
 	 *            the results of the search (given to a listener)
 	 */
 	private void setSearchCategoryResults(List<Tag> matches) {
-		tagSearchResults.clear();
-		if (matches != null)
-			tagSearchResults.addAll(matches);
+		categorySearchResults.clear();
+		if (matches != null) {
+			System.out.println("Matches in listener:");
+			for(Tag t: matches)
+			{
+				System.out.println(t.getName());
+			}
+			categorySearchResults.addAll(matches);
+		}
 	}
 
 	/**
@@ -283,7 +315,7 @@ public class SearchManagerTest extends TestCase {
 	public void testFilterByTags() throws Exception {
 		SearchManager search = new SearchManager(originalFiles);
 
-		
+		Database.getNewSession().beginTransaction();
 		Tag math = new Tag("math");
 		Tag numbers = new Tag("numbers");
 		Tag one = new Tag("one");
@@ -340,6 +372,7 @@ public class SearchManagerTest extends TestCase {
 		Set<Tag> filterBy = new HashSet<Tag>();
 		filterBy.add(letters);
 		filterBy.add(numbers);
+		Database.commit();
 		search.addResultsListener(new SearchResultsListener() {
 
 			@Override
@@ -366,6 +399,7 @@ public class SearchManagerTest extends TestCase {
 		// TODO add more searching testcases here
 
 	}
+	
 
 	/**
 	 * helper method to update the searchResults after a
