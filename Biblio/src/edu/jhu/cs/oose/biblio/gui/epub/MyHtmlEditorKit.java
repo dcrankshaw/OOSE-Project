@@ -26,6 +26,8 @@ import javax.swing.text.html.StyleSheet;
  * 
  * @author paul.siegmann
  *
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
  */
 class MyHtmlEditorKit extends HTMLEditorKit {
 	private HTMLEditorKit htmlEditorKit;

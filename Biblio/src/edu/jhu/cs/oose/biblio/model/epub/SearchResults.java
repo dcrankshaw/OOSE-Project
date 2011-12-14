@@ -5,6 +5,12 @@ import java.util.List;
 
 import nl.siegmann.epublib.domain.Book;
 
+
+/**
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
+ */
+
 public class SearchResults {
 	private String searchTerm;
 	public String getSearchTerm() {

@@ -128,7 +128,6 @@ public class SearchManager {
 			Session session = Database.getNewSession();
 			session.beginTransaction();
 			
-			/*Criteria crit = session.createCriteria(FileMetadata.class);*/
 			@SuppressWarnings("unchecked")
 			Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
 			Query query = session.createQuery("from FileMetadata");
@@ -158,13 +157,9 @@ public class SearchManager {
 		else {
 			Session session = Database.getNewSession();
 			session.beginTransaction();
-			//Query searchQuery = session.createQuery("from Tag where :term like name.lower()");
 			Query searchQuery = session.createQuery("from Tag where lower(name) like :term");
 			searchQuery.setString("term", "%" + searchTerm + "%");
 			
-			/*
-			Criteria crit = session.createCriteria(Tag.class).add(
-					Restrictions.like("name", "%" + searchTerm + "%"));*/
 			@SuppressWarnings("unchecked")
 			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
 			tagResults = db.executeQuery(searchQuery);
@@ -295,7 +290,6 @@ public class SearchManager {
 		else {
 			Session session = Database.getNewSession();
 			session = Database.getNewSession();
-			//session.beginTransaction();
 			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);

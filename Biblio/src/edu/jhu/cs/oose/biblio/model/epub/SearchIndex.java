@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  * A searchindex for searching through a book.
  * 
  * @author paul.siegmann
- *
+ * see http://www.siegmann.nl/epublib/
  */
 public class SearchIndex {
 

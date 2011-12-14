@@ -31,10 +31,10 @@ import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-
 /**
- * Displays a page
- */
+* This class written by Paul Siegmann and taken from the EpubLib software project.
+* See http://www.siegmann.nl/epublib
+*/
 public class ContentPane extends JPanel implements NavigationEventListener,
 		HyperlinkListener {
 

@@ -27,6 +27,9 @@ import org.apache.commons.io.IOUtils;
  * Between books the init(Book) function needs to be called in order for images to appear correctly.
  * 
  * @author paul.siegmann
+ * 
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
  *
  */
 public class HTMLDocumentFactory implements NavigationEventListener {

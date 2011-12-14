@@ -33,6 +33,8 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author paul
  *
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
  */
 public class TableOfContentsPane extends JPanel implements NavigationEventListener {
 

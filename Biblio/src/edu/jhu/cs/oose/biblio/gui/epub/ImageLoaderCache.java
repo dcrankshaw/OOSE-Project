@@ -29,7 +29,8 @@ import org.apache.commons.lang3.StringUtils;
  * Can be shared by multiple documents but can only be <em>used</em> by one document at the time because of the currentFolder issue. 
  * 
  * @author paul
- *
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
  */
 class ImageLoaderCache extends Dictionary<String, Image> {
 

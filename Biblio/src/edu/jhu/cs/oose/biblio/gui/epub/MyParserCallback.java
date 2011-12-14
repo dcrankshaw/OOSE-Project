@@ -9,6 +9,10 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTML.Tag;
 import javax.swing.text.html.HTMLEditorKit.ParserCallback;
 
+/**
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
+ */
 class MyParserCallback extends ParserCallback {
 	private ParserCallback parserCallback;
 	private List<String> stylesheetHrefs = new ArrayList<String>();

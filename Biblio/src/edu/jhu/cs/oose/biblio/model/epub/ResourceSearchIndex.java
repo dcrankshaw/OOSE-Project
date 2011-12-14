@@ -3,6 +3,10 @@ package edu.jhu.cs.oose.biblio.model.epub;
 import nl.siegmann.epublib.domain.Resource;
 
 /**
+ * /**
+ * This class written by Paul Siegmann and taken from the EpubLib software project.
+ * See http://www.siegmann.nl/epublib
+ *
  * The search index for a single resource.
  * 
  * @author paul.siegmann
