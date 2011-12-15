@@ -155,7 +155,6 @@ public class TagsListPanel extends JPanel {
 	{
 		if( null != data ) {
 			if( data.addTag(t) ) {
-				tagsListModel.add(t);
 				Database.update(t);
 				Database.update(data);
 				t.addListener(this.listener);
