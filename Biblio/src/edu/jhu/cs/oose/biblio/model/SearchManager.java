@@ -39,9 +39,9 @@ public class SearchManager {
 		bookmarkResultsListeners = new HashSet<BookmarkSearchResultsListener>();
 		selectedFiles = new ArrayList<FileMetadata>();
 		selectedBookmarks = new ArrayList<Bookmark>();
-		//searchTags("");
-		//filterBookmarksByTags(null);
-		//filterByTags(null);
+		searchTags("");
+		filterBookmarksByTags(null);
+		filterByTags(null);
 	}
 
 	// Constructor just for testing purposes
@@ -125,8 +125,16 @@ public class SearchManager {
 		}
 		// if no tags are specified, then match everything
 		else {
-			Session session = Database.getNewSession();
-			session.beginTransaction();
+			Session session;
+			boolean opened_session;
+			if( Database.isSessionOpen() ) {
+				session = Database.getSession();
+				opened_session = false;
+			}
+			else {
+				session = Database.getNewSession();
+				opened_session = true;
+			}
 			
 			@SuppressWarnings("unchecked")
 			Database<FileMetadata> db = (Database<FileMetadata>)Database.get(FileMetadata.class);
@@ -138,7 +146,10 @@ public class SearchManager {
 					return a.getName().compareToIgnoreCase(b.getName());
 				}
 			});
-			Database.commit();
+			
+			if( opened_session ) {
+				Database.commit();
+			}
 		}
 		fireSearchResult();
 	}
@@ -155,15 +166,25 @@ public class SearchManager {
 		if (searchTerm.contains(":"))
 			searchCategory(searchTerm);
 		else {
-			Session session = Database.getNewSession();
-			session.beginTransaction();
+			boolean opened_session;
+			Session session;
+			if( Database.isSessionOpen() ) {
+				session = Database.getSession();
+				opened_session = false;
+			}
+			else {
+				session = Database.getNewSession();
+				opened_session = true;
+			}
 			Query searchQuery = session.createQuery("from Tag where lower(name) like :term");
 			searchQuery.setString("term", "%" + searchTerm + "%");
 			
 			@SuppressWarnings("unchecked")
 			Database<Tag> db = (Database<Tag>)Database.get(Tag.class);
 			tagResults = db.executeQuery(searchQuery);
-			Database.commit();
+			if( opened_session ) {
+				Database.commit();
+			}
 			fireSearchTags(tagResults);
 		}
 	}
@@ -288,13 +309,20 @@ public class SearchManager {
 		}
 		// if no tags are specified, then match everything
 		else {
-			Session session = Database.getNewSession();
-			session = Database.getNewSession();
+			boolean opened_session;
+			Session session;
+			if( Database.isSessionOpen() ) {
+				session = Database.getSession();
+				opened_session = false;
+			}
+			else {
+				session = Database.getNewSession();
+				opened_session = true;
+			}
 			Query q = session.createQuery("from Bookmark");
 			@SuppressWarnings("unchecked")
 			Database<Bookmark> db = (Database<Bookmark>)Database.get(Bookmark.class);
 			selectedBookmarks = db.executeQuery(q);
-			Database.commit();
 			Collections.sort(selectedBookmarks, new Comparator<Bookmark>() {
 				@Override
 				public int compare(Bookmark a, Bookmark b) {
@@ -314,7 +342,9 @@ public class SearchManager {
 					}
 				}
 			});
-			Database.commit();
+			if( opened_session ) {
+				Database.commit();
+			}
 		}
 		fireBookmarkSearchResult();
 	}
