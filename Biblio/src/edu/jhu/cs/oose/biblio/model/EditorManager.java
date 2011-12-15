@@ -1,6 +1,7 @@
 package edu.jhu.cs.oose.biblio.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Query;
@@ -94,9 +95,26 @@ public class EditorManager {
 			file.removeTag(toRemove);
 			Database.update(file);
 		}
+		
+		//Query q = session.createQuery("from TAG_CHILD where TAG_CHILD_ID=" + Integer.toString(toRemove.getId()) + " " )
+		
+		//  select Tag_child.Tag_parent_id as parent from Tag_child where Tag_Child_id=" +  kjfhk  + inner join 
+		// select parent from Tag as parent inner join tag child
+		// From Tag where 
+
+		// we really should do a DB query to find all of the parents of this tag,
+		// but it's 10:30 and we don't know HQL well enough...
+		@SuppressWarnings("unchecked")
+		Database<Tag> tag_db = (Database<Tag>) Database.get(Tag.class);
+		List<Tag> parents = tag_db.executeQuery(session.createQuery("from Tag"));
+		for( Tag p : parents ) {
+			p.removeChild(toRemove);
+			Database.update(p);
+		}
 		session.delete(toRemove);
 		Database.commit();
 	}
+	
 
 	/**
 	 * Insert a new Category into the database.
