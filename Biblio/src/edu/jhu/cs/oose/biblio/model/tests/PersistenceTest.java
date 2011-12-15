@@ -19,9 +19,7 @@ public class PersistenceTest {
 	 */
 	private static void write() throws Exception {
 		Session session = Database.getNewSession();
-		session.getTransaction();
 		
-		session.getTransaction().begin();
 		Tag mag = new Tag("Magnetism");
 		Tag electric = new Tag("Electricity");
 		mag.addChild(electric);
