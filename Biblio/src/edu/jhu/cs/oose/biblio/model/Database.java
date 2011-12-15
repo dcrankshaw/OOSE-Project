@@ -94,14 +94,8 @@ public class Database<T extends Keyed> {
 	 */
 	public List<T> executeQuery(Query q) {
 		// re-attach all of our objects - TODO is this expensive?
-		for( T toAttach : objectCache.values() ) {
-			try {
-				update(toAttach);
-			}
-			catch(NonUniqueObjectException e) {
-				// This means that this object was already attached to the
-				// session, so we can just continue
-			}
+		for( Database<?> db : caches.values() ) {
+			db.attachAll();
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -134,14 +128,8 @@ public class Database<T extends Keyed> {
 	 */
 	public List<T> executeCriteria(Criteria c) {
 		// re-attach all of our objects - TODO is this expensive?
-		for( T toAttach : objectCache.values() ) {
-			try {
-				update(toAttach);
-			}
-			catch(NonUniqueObjectException e) {
-				// This means that this object was already attached to the
-				// session, so we can just continue
-			}
+		for( Database<?> db : caches.values() ) {
+			db.attachAll();
 		}
 		// first, execute the query.  This can't possibly be entirely
 		// typesafe, but we must continue anyway, so the warning is suppressed.
@@ -306,6 +294,18 @@ public class Database<T extends Keyed> {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	/** Attaches all of this database's objects to Hibernate */
+	private void attachAll() {
+		for( Object o : this.objectCache.values() ) {
+			try {
+				update(o);
+			}
+			catch(NonUniqueObjectException e) {
+				// this means the object was already attached, so continue
+			}
 		}
 	}
 }
