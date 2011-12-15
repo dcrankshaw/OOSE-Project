@@ -76,6 +76,3 @@ public abstract class FilterSearchStrategy extends SearchStrategy {
 		}
 	}
 }
-
-
-

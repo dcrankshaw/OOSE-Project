@@ -239,7 +239,7 @@ public class Tag extends Tagable implements Comparable<Tag>, Keyed, Named {
 	
 	@Override
 	public String toString() {
-		return getName() + "\t" + super.toString();
+		return getName();
 	}
 	
 	@Override
