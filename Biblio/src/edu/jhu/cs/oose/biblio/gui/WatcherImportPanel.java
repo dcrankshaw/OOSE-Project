@@ -70,8 +70,7 @@ public class WatcherImportPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				getSelectedFiles();
-				ImportDialog importer = new ImportDialog(getMetadataForFiles(), (JFrame) owner.getParent());
-				cancelImport();
+				startImport();
 			}
 		});
 		
@@ -101,35 +100,23 @@ public class WatcherImportPanel extends JPanel {
 		}
 	}
 	
-	/**
-	 * Close this dialog
-	 */
-	public void cancelImport() {
+	private void cancelImport()
+	{
 		owner.dispose();
 	}
 	
-	/**
-	 * Construct a list of fileMetatData from the File objects
-	 * @return a list of FileMetadata
-	 */
-	private List<FileMetadata> getMetadataForFiles() {
-		Session session = Database.getNewSession();
-		List<FileMetadata> result = new ArrayList<FileMetadata>(selectedFiles.size());
-		for( File f : selectedFiles ) {
-			// TODO use the MIME type library...
-			if( f.getName().endsWith(".pdf")) {
-				result.add(new PDFFileMetadata(f.getAbsolutePath()));
-			}
-			else if(f.getName().endsWith(".epub")) {
-				result.add(new EpubFileMetadata(f.getAbsolutePath()));
-			}
-			else {
-				// TODO read other kinds of files or give errors
-			}
+	public void startImport()
+	{
+		getSelectedFiles();
+		List<File> myfiles = new ArrayList<File>();
+		for(File f: selectedFiles)
+		{
+			myfiles.add(f.getAbsoluteFile());
 		}
-		Database.commit();
-		return result;
+		new ImportManager().startImportProcess((JFrame) owner.getParent(), myfiles);
+		owner.dispose();
 	}
+	
 	
 	/**
 	 * Go through all the selected JCheckBox and add the associated file into selectedFiles

@@ -128,7 +128,7 @@ public class WatcherSelectorPanel extends JPanel {
 	public void closeDialog() {
 		//TODO: save changes to watched directories, then close
 		Watcher w = Watcher.getWatcher();
-		w.addWatchedDirectories(directoriesToAdd);
+		w.addWatchedDirectories(files);
 		w.removeWatchedDirectories(directoriesToRemove);
 		owner.dispose();
 	}
