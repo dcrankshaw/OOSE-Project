@@ -48,7 +48,6 @@ public class SearchManagerTest extends TestCase {
 		fileExist("testfiles/test4.pdf");
 		fileExist("testfiles/test5.pdf");
 		fileExist("testfiles/test6.pdf");
-		
 	}
 
 	PDFFileMetadata testFile1, testFile2, testFile3;
@@ -71,7 +70,7 @@ public class SearchManagerTest extends TestCase {
 		public void displayFileResults(List<FileMetadata> results) {
 			searchResults.clear();
 			for (FileMetadata f : results) {
-				searchResults.add((PDFFileMetadata) f);
+				searchResults.add(f);
 			}
 		}
 	}
