@@ -71,11 +71,15 @@ public class TagTableModel extends AbstractTableModel<Tag> implements SearchTags
 	 */
 	@Override
 	public void matchedTags(List<Tag> matches) {
-		super.tags = new ArrayList<Tag>(matches);
 		for( Tag t : tags ) {
 			t.removeListener(this.listener);
 		}
-		tags = new ArrayList<Tag>(matches);
+		if( null != matches ) {
+			tags = new ArrayList<Tag>(matches);
+		}
+		else {
+			tags = new ArrayList<Tag>();
+		}
 		for( Tag t : tags ) {
 			t.addListener(this.listener);
 		}
