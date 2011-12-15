@@ -16,7 +16,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Singleton Watcher class. This class runs in a separate thread
+ * Singleton Watcher class. This class runs in a separate thread.
+ * It is used to watch user specified directories for the addition of any files of filetypes we support.
+ * When it detects files have been added, it notifies all of its listeners.
  * 
  * @author Daniel
  * 
@@ -32,7 +34,7 @@ public class Watcher implements Runnable {
 
 	private Lock directoryListLock;
 	private Lock stopLock;
-
+	
 	/** Length of time to sleep between checking for directory changes */
 	public static final int UPDATE_DELAY = 1000;
 
@@ -118,11 +120,15 @@ public class Watcher implements Runnable {
 	}
 
 	public void addListener(WatcherEventListener l) {
+		//listenerLock.lock();
 		listeners.add(l);
+		//listenerLock.unlock();
 	}
 
 	public void removeListener(WatcherEventListener l) {
+		//listenerLock.lock();
 		listeners.remove(l);
+		
 	}
 
 	private void writeConfigFile() {
@@ -169,8 +175,7 @@ public class Watcher implements Runnable {
 		}
 	}
 
-	// TODO currently this does not check recursively for subdirectories, do we
-	// want to do this?
+	//currently this does not check recursively for subdirectories
 	private void checkForUpdates() {
 		// get latest state of directory
 		getCurrentState();
@@ -178,7 +183,6 @@ public class Watcher implements Runnable {
 		Set<File> addedFiles = new HashSet<File>();
 		addedFiles.addAll(currentState);
 		addedFiles.removeAll(cachedFiles);
-
 		// get all files that were in directory that no longer are
 		Set<File> deletedFiles = new HashSet<File>();
 		deletedFiles.addAll(cachedFiles);
@@ -192,8 +196,14 @@ public class Watcher implements Runnable {
 	}
 
 	public void addWatchedDirectories(List<File> paths) {
+		
+		for(File f: paths)
+		{
+			System.out.println(f.getName());
+		}
 		try {
 			directoryListLock.lock();
+			System.out.println("Hello");
 			addDirectories(paths);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,6 +250,7 @@ public class Watcher implements Runnable {
 	private void getCurrentState() {
 		currentState.clear();
 		for (File currentDir : directories) {
+			System.out.println(currentDir.getAbsolutePath());
 			String[] children = currentDir.list();
 			for (String s : children) {
 				if(supportedFileType(s)) {
@@ -249,7 +260,7 @@ public class Watcher implements Runnable {
 		}
 	}
 
-	//TODO Bad way to do this, we should think of a better one
+	
 	private boolean supportedFileType(String s)
 	{
 		List<String> supportedTypes = new ArrayList<String>();
@@ -258,7 +269,7 @@ public class Watcher implements Runnable {
 		boolean supported = false;
 		for(String type: supportedTypes)
 		{
-			if(s.toLowerCase().endsWith(type)) {
+			if((supported == false) && s.toLowerCase().endsWith(type)) {
 				supported = true;
 			}
 		}

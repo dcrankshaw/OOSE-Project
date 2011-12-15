@@ -1,0 +1,8 @@
+edu.jhu.cs.oose.biblio.gui
+edu.jhu.cs.oose.biblio.gui.epub
+edu.jhu.cs.oose.biblio.gui.pdf
+edu.jhu.cs.oose.biblio.gui.tests
+edu.jhu.cs.oose.biblio.model
+edu.jhu.cs.oose.biblio.model.epub
+edu.jhu.cs.oose.biblio.model.pdf
+edu.jhu.cs.oose.biblio.model.tests

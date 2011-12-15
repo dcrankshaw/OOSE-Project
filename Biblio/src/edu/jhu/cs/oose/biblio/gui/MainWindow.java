@@ -167,8 +167,7 @@ public class MainWindow extends JFrame {
 		win.setVisible(true);
 		Watcher watcher = Watcher.getWatcher();
 		Thread watch =  new Thread (watcher);
-		
-		
+		watch.start();
 		
 		win.addWindowListener(new WindowListener() {
 
@@ -216,7 +215,6 @@ public class MainWindow extends JFrame {
 			}
 			
 		});
-		watch.start();
 	}
 	
 	/** The tabs displayed in the interface

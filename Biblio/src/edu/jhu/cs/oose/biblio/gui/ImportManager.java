@@ -2,6 +2,7 @@ package edu.jhu.cs.oose.biblio.gui;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -37,9 +38,20 @@ public class ImportManager {
 			return;
 		}
 		else if( JFileChooser.APPROVE_OPTION == choiceResult ) {
-			List<FileMetadata> files = getMetadataForFiles(fileChooser.getSelectedFiles());
-			new ImportDialog(files, parent);
+			startImportProcess(parent, Arrays.asList(fileChooser.getSelectedFiles()));
 		}
+		
+		
+	}
+	
+	public void startImportProcess(JFrame parent, List<File> rawFiles)
+	{
+		List<FileMetadata> files = getMetadataForFiles(rawFiles);
+		for(FileMetadata f: files)
+		{
+			System.out.println(f.getName());
+		}
+		new ImportDialog(files, parent);
 	}
 	
 	/**
@@ -47,9 +59,9 @@ public class ImportManager {
 	 * @param paths the filenames to process
 	 * @return FileMetadata for the given files
 	 */
-	private List<FileMetadata> getMetadataForFiles(File[] paths) {
+	private List<FileMetadata> getMetadataForFiles(List<File> paths) {
 		Database.getNewSession();
-		List<FileMetadata> result = new ArrayList<FileMetadata>(paths.length);
+		List<FileMetadata> result = new ArrayList<FileMetadata>();
 		for( File f : paths ) {
 			// TODO use the MIME type library...
 			if( f.getName().endsWith(".pdf")) {
