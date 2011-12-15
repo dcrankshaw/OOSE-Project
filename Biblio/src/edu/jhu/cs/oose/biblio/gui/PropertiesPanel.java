@@ -1,17 +1,13 @@
 package edu.jhu.cs.oose.biblio.gui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.text.DateFormat;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.jhu.cs.oose.biblio.model.FileMetadata;
 
 /**
  * Interface to display a list of the properties associated with a file
- * 
  */
 public class PropertiesPanel extends JPanel {
 	/** The list of tags the file is associated with */
