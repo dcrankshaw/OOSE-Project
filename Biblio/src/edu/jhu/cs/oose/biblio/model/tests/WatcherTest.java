@@ -70,7 +70,7 @@ public class WatcherTest {
 		try {
 			Thread.sleep(Watcher.UPDATE_DELAY * 5);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			fail();
 			e.printStackTrace();
 		}
 
@@ -86,7 +86,7 @@ public class WatcherTest {
 					+ newDir + File.separator + "test3.pdf"));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			fail();
 			e.printStackTrace();
 		}
 
@@ -99,7 +99,7 @@ public class WatcherTest {
 		try {
 			Thread.sleep(Watcher.UPDATE_DELAY * 5);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			fail();
 			e.printStackTrace();
 		}
 
@@ -110,14 +110,14 @@ public class WatcherTest {
 			File fileToDelete = new File(baseDir + File.separator + newDir + File.separator +  "test1.pdf");
 			fileToDelete.delete();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			fail();
 			e.printStackTrace();
 		}
 		try {
 			Thread.sleep(Watcher.UPDATE_DELAY * 5);
 		}
 		catch(InterruptedException e)
-		{
+		{	fail();
 			e.printStackTrace();
 		}
 		w.requestStop();
