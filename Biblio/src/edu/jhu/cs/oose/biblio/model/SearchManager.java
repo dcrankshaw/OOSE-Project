@@ -373,14 +373,22 @@ public class SearchManager {
 			if(split.length > 1) {
 				tagName = split[1].trim();
 			}
-
-			Session session = Database.getNewSession();
-			session.beginTransaction();
+			
+			boolean opened_session;
+			Session session;
+			if( Database.isSessionOpen() ) {
+				session = Database.getSession();
+				opened_session = false;
+			}
+			else {
+				session = Database.getNewSession();
+				opened_session = true;
+			}
 			Query query = session.createQuery("from Category where lower(name) like :term");
 			query.setString("term", "%" + category + "%");
 			@SuppressWarnings("unchecked")
 			List<Category> cats = ((Database<Category>)Database.get(Category.class)).executeQuery(query);
-			Database.commit();
+
 			for (Category c : cats) {
 				potentialTags.addAll(c.getTags());
 			}
@@ -389,7 +397,9 @@ public class SearchManager {
 					results.add(t);
 				}
 			}
-			Database.commit();
+			if (opened_session == true){
+				Database.commit();
+			}
 		}
 		fireSearchTags(results);
 	}
